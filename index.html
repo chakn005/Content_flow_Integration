@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Integration Flow - E2E Diagram</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app">
+        <!-- Sticky Navigation Header -->
+        <header class="header" role="banner">
+            <div class="header-container">
+                <div class="header-brand">
+                    <div class="brand-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                            <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                            <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="brand-text">
+                        <h1>Content Integration Flow</h1>
+                        <p class="brand-subtitle">End-to-End Pipeline Visualization</p>
+                    </div>
+                </div>
+                
+                <div class="header-actions">
+                    <div class="epic-badge">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M14 2H6A2 2 0 0 0 4 4V20A2 2 0 0 0 6 22H18A2 2 0 0 0 20 20V8L14 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <polyline points="14,2 14,8 20,8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Epic CPTR-68587
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Control Panel -->
+            <div class="control-panel">
+                <div class="control-section">
+                    <h3 class="control-title">Diagram Controls</h3>
+                    <div class="control-buttons">
+                        <button id="zoomIn" class="btn btn-secondary" aria-label="Zoom in">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+                                <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <line x1="11" y1="8" x2="11" y2="14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <line x1="8" y1="11" x2="14" y2="11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Zoom In
+                        </button>
+                        <button id="zoomOut" class="btn btn-secondary" aria-label="Zoom out">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+                                <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <line x1="8" y1="11" x2="14" y2="11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Zoom Out
+                        </button>
+                        <button id="resetZoom" class="btn btn-secondary" aria-label="Reset zoom">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1 4V10H7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M23 20V14H17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10M23 14L18.36 18.36A9 9 0 0 1 3.51 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Reset
+                        </button>
+                        <button id="toggleLabels" class="btn btn-outline" aria-label="Toggle details">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1 12S5 4 12 4S23 12 23 12S19 20 12 20S1 12 1 12Z" stroke="currentColor" stroke-width="2"/>
+                                <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                            Toggle Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Diagram Container -->
+            <div class="diagram-section">
+                <div class="diagram-header">
+                    <h2>Integration Pipeline</h2>
+                    <p class="diagram-description">Content Platform → Media Platform → Data Layer → Streaming/Client → QA</p>
+                </div>
+                
+                <div class="diagram-container">
+                    <svg id="flowchart" viewBox="0 0 1400 1000" aria-label="Content integration flow diagram">
+                        <!-- Background -->
+                        <defs>
+                            <linearGradient id="bgGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" style="stop-color:#fafbfc;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#f6f8fa;stop-opacity:1" />
+                            </linearGradient>
+                            
+                            <!-- Arrow marker -->
+                            <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                <polygon points="0 0, 10 3, 0 6" fill="#6b7280" />
+                            </marker>
+                            
+                            <!-- Drop shadow filter -->
+                            <filter id="dropshadow" x="-20%" y="-20%" width="140%" height="140%">
+                                <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.1"/>
+                            </filter>
+                        </defs>
+
+                        <rect width="1400" height="1000" fill="url(#bgGradient)"/>
+
+                        <!-- Phase 1: Content Platform -->
+                        <g class="phase" data-phase="content">
+                            <rect x="50" y="50" width="300" height="180" rx="12" class="phase-box content-platform" filter="url(#dropshadow)"/>
+                            <text x="200" y="80" class="phase-title">Content Platform</text>
+                            
+                            <rect x="70" y="100" width="260" height="40" rx="8" class="step-box"/>
+                            <text x="200" y="125" class="step-text">Content Ingestion</text>
+                            
+                            <rect x="70" y="150" width="260" height="40" rx="8" class="step-box"/>
+                            <text x="200" y="175" class="step-text">Metadata Creation</text>
+                            
+                            <rect x="70" y="200" width="260" height="20" rx="6" class="detail-box"/>
+                            <text x="200" y="214" class="detail-text">Assets, Rights, Localization</text>
+                        </g>
+
+                        <!-- Arrow 1 -->
+                        <line x1="350" y1="140" x2="430" y2="140" class="flow-arrow" marker-end="url(#arrowhead)"/>
+                        <text x="370" y="130" class="arrow-label">Publish</text>
+
+                        <!-- Phase 2: Media Platform -->
+                        <g class="phase" data-phase="media">
+                            <rect x="430" y="50" width="300" height="230" rx="12" class="phase-box media-platform" filter="url(#dropshadow)"/>
+                            <text x="580" y="80" class="phase-title">Media Platform</text>
+                            
+                            <rect x="450" y="100" width="260" height="40" rx="8" class="step-box"/>
+                            <text x="580" y="125" class="step-text">Content Transformation</text>
+                            
+                            <rect x="450" y="150" width="260" height="40" rx="8" class="step-box"/>
+                            <text x="580" y="175" class="step-text">Encoding & Packaging</text>
+                            
+                            <rect x="450" y="200" width="260" height="40" rx="8" class="step-box"/>
+                            <text x="580" y="225" class="step-text">DRM Application</text>
+                            
+                            <rect x="450" y="250" width="260" height="20" rx="6" class="detail-box"/>
+                            <text x="580" y="264" class="detail-text">ABR, Subtitles, Audio Tracks</text>
+                        </g>
+
+                        <!-- Arrow 2 -->
+                        <line x1="730" y1="165" x2="810" y2="165" class="flow-arrow" marker-end="url(#arrowhead)"/>
+                        <text x="745" y="155" class="arrow-label">Deliver</text>
+
+                        <!-- Phase 3: Data Layer -->
+                        <g class="phase" data-phase="data">
+                            <rect x="810" y="50" width="300" height="230" rx="12" class="phase-box data-layer" filter="url(#dropshadow)"/>
+                            <text x="960" y="80" class="phase-title">Data Layer</text>
+                            
+                            <rect x="830" y="100" width="260" height="40" rx="8" class="step-box"/>
+                            <text x="960" y="125" class="step-text">Data Aggregation</text>
+                            
+                            <rect x="830" y="150" width="260" height="40" rx="8" class="step-box"/>
+                            <text x="960" y="175" class="step-text">Catalog Sync</text>
+                            
+                            <rect x="830" y="200" width="260" height="40" rx="8" class="step-box"/>
+                            <text x="960" y="225" class="step-text">API Gateway</text>
+                            
+                            <rect x="830" y="250" width="260" height="20" rx="6" class="detail-box"/>
+                            <text x="960" y="264" class="detail-text">Search Index, Recommendations</text>
+                        </g>
+
+                        <!-- Arrow 3 -->
+                        <line x1="960" y1="280" x2="960" y2="360" class="flow-arrow" marker-end="url(#arrowhead)"/>
+                        <text x="970" y="320" class="arrow-label">Expose</text>
+
+                        <!-- Phase 4: Streaming/Client -->
+                        <g class="phase" data-phase="streaming">
+                            <rect x="810" y="360" width="300" height="230" rx="12" class="phase-box streaming" filter="url(#dropshadow)"/>
+                            <text x="960" y="390" class="phase-title">Streaming/Client</text>
+                            
+                            <rect x="830" y="410" width="260" height="40" rx="8" class="step-box"/>
+                            <text x="960" y="435" class="step-text">Content Discovery</text>
+                            
+                            <rect x="830" y="460" width="260" height="40" rx="8" class="step-box"/>
+                            <text x="960" y="485" class="step-text">Playback Engine</text>
+                            
+                            <rect x="830" y="510" width="260" height="40" rx="8" class="step-box"/>
+                            <text x="960" y="535" class="step-text">Analytics & Monitoring</text>
+                            
+                            <rect x="830" y="560" width="260" height="20" rx="6" class="detail-box"/>
+                            <text x="960" y="574" class="detail-text">Multi-device, Offline, CDN</text>
+                        </g>
+
+                        <!-- Arrow 4 (Feedback loop) -->
+                        <line x1="810" y1="475" x2="730" y2="475" class="flow-arrow feedback" marker-end="url(#arrowhead)"/>
+                        <line x1="730" y1="475" x2="730" y2="280" class="flow-arrow feedback"/>
+                        <text x="740" y="380" class="arrow-label feedback-label">Feedback</text>
+
+                        <!-- Phase 5: QA Layer (Horizontal) -->
+                        <g class="phase" data-phase="qa">
+                            <rect x="50" y="650" width="1060" height="300" rx="12" class="phase-box qa-layer" filter="url(#dropshadow)"/>
+                            <text x="580" y="680" class="phase-title">QA & Testing Layer</text>
+                            
+                            <!-- QA Steps -->
+                            <rect x="70" y="710" width="240" height="50" rx="8" class="qa-box"/>
+                            <text x="190" y="740" class="qa-text">Content Validation</text>
+                            
+                            <rect x="330" y="710" width="240" height="50" rx="8" class="qa-box"/>
+                            <text x="450" y="740" class="qa-text">Media Quality Check</text>
+                            
+                            <rect x="590" y="710" width="240" height="50" rx="8" class="qa-box"/>
+                            <text x="710" y="740" class="qa-text">API Testing</text>
+                            
+                            <rect x="850" y="710" width="240" height="50" rx="8" class="qa-box"/>
+                            <text x="970" y="740" class="qa-text">E2E Playback Testing</text>
+                            
+                            <!-- Test Types -->
+                            <rect x="70" y="780" width="240" height="40" rx="8" class="test-box"/>
+                            <text x="190" y="805" class="test-text">Functional Tests</text>
+                            
+                            <rect x="330" y="780" width="240" height="40" rx="8" class="test-box"/>
+                            <text x="450" y="805" class="test-text">Integration Tests</text>
+                            
+                            <rect x="590" y="780" width="240" height="40" rx="8" class="test-box"/>
+                            <text x="710" y="805" class="test-text">Performance Tests</text>
+                            
+                            <rect x="850" y="780" width="240" height="40" rx="8" class="test-box"/>
+                            <text x="970" y="805" class="test-text">Regression Tests</text>
+                            
+                            <!-- Test Execution Details -->
+                            <rect x="70" y="840" width="1020" height="90" rx="8" class="execution-box"/>
+                            <text x="580" y="865" class="execution-title">Test Execution & Reporting</text>
+                            <text x="580" y="890" class="execution-detail">• Automated Test Suites • Manual Test Cases • Bug Tracking</text>
+                            <text x="580" y="910" class="execution-detail">• Test Coverage Reports • Performance Metrics • Sign-off Criteria</text>
+                        </g>
+
+                        <!-- QA Connection Arrows -->
+                        <line x1="200" y1="230" x2="190" y2="650" class="qa-arrow" marker-end="url(#arrowhead)" stroke-dasharray="5,5"/>
+                        <line x1="580" y1="280" x2="450" y2="650" class="qa-arrow" marker-end="url(#arrowhead)" stroke-dasharray="5,5"/>
+                        <line x1="960" y1="280" x2="710" y2="650" class="qa-arrow" marker-end="url(#arrowhead)" stroke-dasharray="5,5"/>
+                        <line x1="960" y1="590" x2="970" y2="650" class="qa-arrow" marker-end="url(#arrowhead)" stroke-dasharray="5,5"/>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Two Column Layout for Legend and Info -->
+            <div class="content-grid">
+                <!-- Legend Card -->
+                <div class="card legend-card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <rect x="14" y="14" width="7" height="7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Legend
+                        </h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="legend-grid">
+                            <div class="legend-item">
+                                <div class="legend-color content-platform"></div>
+                                <span>Content Platform</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color media-platform"></div>
+                                <span>Media Platform</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color data-layer"></div>
+                                <span>Data Layer</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color streaming"></div>
+                                <span>Streaming/Client</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color qa-layer"></div>
+                                <span>QA & Testing</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Info Panel Card -->
+                <div class="card info-card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                                <path d="L12 16L12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="L12 8L12.01 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Integration Details
+                        </h3>
+                    </div>
+                    <div class="card-content">
+                        <div id="phaseInfo" class="phase-info">
+                            <p class="info-placeholder">Click on any phase in the diagram above to see detailed information about that stage of the integration process.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
