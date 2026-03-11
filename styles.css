@@ -503,13 +503,6 @@ body {
   opacity: 0.8;
 }
 
-.qa-feedback-arrow {
-  stroke: var(--color-error-500);
-  stroke-width: 2;
-  fill: none;
-  opacity: 0.8;
-}
-
 /* Animated flowing effect for QA connections */
 .animated-flow {
   stroke-dasharray: 8, 4;
@@ -525,33 +518,10 @@ body {
   }
 }
 
-/* Animated pulsing effect for QA feedback */
-.animated-pulse {
-  stroke-dasharray: 6, 3;
-  animation: pulse-animation 2s ease-in-out infinite;
-}
-
-@keyframes pulse-animation {
-  0%, 100% {
-    opacity: 0.6;
-    stroke-width: 2;
-  }
-  50% {
-    opacity: 1;
-    stroke-width: 2.5;
-  }
-}
-
 /* Enhanced QA layer hover effect */
 .qa-phase:hover .animated-flow {
   animation-duration: 1s;
   stroke: var(--color-error-600);
-  opacity: 1;
-}
-
-.qa-phase:hover .animated-pulse {
-  animation-duration: 1s;
-  stroke: var(--color-error-700);
   opacity: 1;
 }
 
