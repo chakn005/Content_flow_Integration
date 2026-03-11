@@ -509,13 +509,6 @@ body {
   fill: none;
 }
 
-.qa-connection-label {
-  font-size: 10px;
-  fill: var(--color-error-600);
-  font-weight: 500;
-  text-anchor: middle;
-}
-
 .arrow-label {
   font-size: 11px;
   fill: var(--color-neutral-600);
