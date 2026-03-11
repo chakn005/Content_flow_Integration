@@ -293,45 +293,57 @@ document.addEventListener('DOMContentLoaded', function() {
         URL.revokeObjectURL(url);
     }
 
-    // Integration Testing indicators interaction
-    const integrationIndicators = document.querySelectorAll('.integration-test-indicator, .integration-test-dot');
+    // Integration Testing tooltip interaction
+    const hoverZones = document.querySelectorAll('.integration-hover-zone');
     
-    integrationIndicators.forEach(indicator => {
-        indicator.addEventListener('click', () => {
-            showIntegrationTestInfo();
-        });
+    hoverZones.forEach(zone => {
+        const integrationId = zone.getAttribute('data-integration');
+        const tooltip = document.getElementById(`tooltip-${integrationId}`);
+        
+        if (tooltip) {
+            let hoverTimeout;
+            
+            zone.addEventListener('mouseenter', () => {
+                clearTimeout(hoverTimeout);
+                
+                // Hide all other tooltips
+                document.querySelectorAll('.integration-tooltip').forEach(t => {
+                    t.classList.remove('show');
+                    t.style.display = 'none';
+                });
+                
+                // Show current tooltip
+                tooltip.style.display = 'block';
+                setTimeout(() => tooltip.classList.add('show'), 10);
+            });
+            
+            zone.addEventListener('mouseleave', () => {
+                hoverTimeout = setTimeout(() => {
+                    tooltip.classList.remove('show');
+                    setTimeout(() => {
+                        if (!tooltip.classList.contains('show')) {
+                            tooltip.style.display = 'none';
+                        }
+                    }, 250);
+                }, 100);
+            });
+            
+            // Keep tooltip visible when hovering over it
+            tooltip.addEventListener('mouseenter', () => {
+                clearTimeout(hoverTimeout);
+                tooltip.classList.add('show');
+            });
+            
+            tooltip.addEventListener('mouseleave', () => {
+                tooltip.classList.remove('show');
+                setTimeout(() => {
+                    if (!tooltip.classList.contains('show')) {
+                        tooltip.style.display = 'none';
+                    }
+                }, 250);
+            });
+        }
     });
-    
-    function showIntegrationTestInfo() {
-        const phaseInfo = document.getElementById('phaseInfo');
-        phaseInfo.innerHTML = `
-            <h4>Integration Testing</h4>
-            <p><strong>Testing connections between pipeline phases</strong></p>
-            
-            <h4>Integration Test Points:</h4>
-            <ul>
-                <li><strong>Content → Media:</strong> Validate content format compatibility, metadata transfer, file integrity during handoff</li>
-                <li><strong>Media → Data:</strong> Test encoded content ingestion, metadata synchronization, API data consistency</li>
-                <li><strong>Data → Streaming:</strong> Verify API responses, content catalog accuracy, search functionality integration</li>
-            </ul>
-            
-            <h4>Integration Test Types:</h4>
-            <ul>
-                <li><strong>Interface Testing:</strong> API contracts, data formats, communication protocols</li>
-                <li><strong>Data Flow Testing:</strong> End-to-end data integrity across phase boundaries</li>
-                <li><strong>Error Handling:</strong> Failure scenarios, rollback procedures, error propagation</li>
-                <li><strong>Performance Testing:</strong> Throughput, latency, resource usage at integration points</li>
-            </ul>
-            
-            <h4>Test Automation:</h4>
-            <ul>
-                <li><strong>Continuous Integration:</strong> Automated tests run on every phase transition</li>
-                <li><strong>Contract Testing:</strong> API contract validation between services</li>
-                <li><strong>Smoke Tests:</strong> Quick validation of critical integration paths</li>
-                <li><strong>Monitoring:</strong> Real-time integration health checks and alerting</li>
-            </ul>
-        `;
-    }
 
     console.log('Content Integration Flow App Loaded');
     console.log('Reference: Epic CPTR-68587');

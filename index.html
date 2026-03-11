@@ -152,15 +152,29 @@
                         <line x1="350" y1="140" x2="430" y2="140" class="flow-arrow" marker-end="url(#arrowhead)"/>
                         <text x="370" y="130" class="arrow-label">Publish</text>
                         
-                        <!-- Integration Testing indicator between Content and Media -->
-                        <circle cx="390" cy="140" r="12" class="integration-test-indicator" fill="#3b82f6" opacity="0.9"/>
-                        <text x="390" y="145" class="integration-test-label" fill="white" font-size="10" font-weight="bold" text-anchor="middle">IT</text>
+                        <!-- Integration Testing hover zone between Content and Media -->
+                        <rect x="350" y="125" width="80" height="30" class="integration-hover-zone" 
+                              data-integration="content-media" fill="transparent" cursor="pointer"/>
                         
-                        <!-- Integration test connection lines -->
-                        <line x1="390" y1="152" x2="390" y2="180" class="integration-test-line" stroke="#3b82f6" stroke-width="2" stroke-dasharray="3,2"/>
-                        <circle cx="390" cy="185" r="3" fill="#3b82f6" class="integration-test-dot">
-                            <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite"/>
-                        </circle>
+                        <!-- Tooltip for Content-Media Integration -->
+                        <g class="integration-tooltip" id="tooltip-content-media" style="display: none;">
+                            <rect x="320" y="60" width="200" height="120" rx="8" fill="white" 
+                                  stroke="#3b82f6" stroke-width="2" filter="url(#dropshadow)"/>
+                            <text x="330" y="80" class="tooltip-title">Content → Media Integration</text>
+                            <text x="330" y="100" class="tooltip-text">• Format Validation Tests</text>
+                            <text x="330" y="115" class="tooltip-text">• Metadata Transfer Tests</text>
+                            <text x="330" y="130" class="tooltip-text">• File Integrity Checks</text>
+                            <text x="330" y="145" class="tooltip-text">• API Contract Testing</text>
+                            
+                            <!-- Mini status indicator -->
+                            <circle cx="490" cy="85" r="6" fill="#22c55e"/>
+                            <text x="500" y="90" class="tooltip-status">98% Pass</text>
+                            
+                            <!-- Mini progress bar -->
+                            <rect x="330" y="155" width="160" height="8" rx="4" fill="#e5e7eb"/>
+                            <rect x="330" y="155" width="157" height="8" rx="4" fill="#3b82f6"/>
+                            <text x="330" y="175" class="tooltip-small">Last run: 2 min ago</text>
+                        </g>
 
                         <!-- Phase 2: Media Platform -->
                         <g class="phase" data-phase="media">
@@ -184,15 +198,29 @@
                         <line x1="730" y1="165" x2="810" y2="165" class="flow-arrow" marker-end="url(#arrowhead)"/>
                         <text x="745" y="155" class="arrow-label">Deliver</text>
                         
-                        <!-- Integration Testing indicator between Media and Data -->
-                        <circle cx="770" cy="165" r="12" class="integration-test-indicator" fill="#3b82f6" opacity="0.9"/>
-                        <text x="770" y="170" class="integration-test-label" fill="white" font-size="10" font-weight="bold" text-anchor="middle">IT</text>
+                        <!-- Integration Testing hover zone between Media and Data -->
+                        <rect x="730" y="150" width="80" height="30" class="integration-hover-zone" 
+                              data-integration="media-data" fill="transparent" cursor="pointer"/>
                         
-                        <!-- Integration test connection lines -->
-                        <line x1="770" y1="177" x2="770" y2="205" class="integration-test-line" stroke="#3b82f6" stroke-width="2" stroke-dasharray="3,2"/>
-                        <circle cx="770" cy="210" r="3" fill="#3b82f6" class="integration-test-dot">
-                            <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite" begin="0.5s"/>
-                        </circle>
+                        <!-- Tooltip for Media-Data Integration -->
+                        <g class="integration-tooltip" id="tooltip-media-data" style="display: none;">
+                            <rect x="700" y="85" width="200" height="120" rx="8" fill="white" 
+                                  stroke="#3b82f6" stroke-width="2" filter="url(#dropshadow)"/>
+                            <text x="710" y="105" class="tooltip-title">Media → Data Integration</text>
+                            <text x="710" y="125" class="tooltip-text">• Content Ingestion Tests</text>
+                            <text x="710" y="140" class="tooltip-text">• Metadata Sync Tests</text>
+                            <text x="710" y="155" class="tooltip-text">• API Data Consistency</text>
+                            <text x="710" y="170" class="tooltip-text">• Search Index Updates</text>
+                            
+                            <!-- Mini status indicator -->
+                            <circle cx="870" cy="110" r="6" fill="#f59e0b"/>
+                            <text x="880" y="115" class="tooltip-status">94% Pass</text>
+                            
+                            <!-- Mini progress bar -->
+                            <rect x="710" y="180" width="160" height="8" rx="4" fill="#e5e7eb"/>
+                            <rect x="710" y="180" width="150" height="8" rx="4" fill="#f59e0b"/>
+                            <text x="710" y="200" class="tooltip-small">Last run: 5 min ago</text>
+                        </g>
 
                         <!-- Phase 3: Data Layer -->
                         <g class="phase" data-phase="data">
@@ -216,15 +244,29 @@
                         <line x1="960" y1="280" x2="960" y2="360" class="flow-arrow" marker-end="url(#arrowhead)"/>
                         <text x="970" y="320" class="arrow-label">Expose</text>
                         
-                        <!-- Integration Testing indicator between Data and Streaming -->
-                        <circle cx="960" cy="320" r="12" class="integration-test-indicator" fill="#3b82f6" opacity="0.9"/>
-                        <text x="960" y="325" class="integration-test-label" fill="white" font-size="10" font-weight="bold" text-anchor="middle">IT</text>
+                        <!-- Integration Testing hover zone between Data and Streaming -->
+                        <rect x="945" y="280" width="30" height="80" class="integration-hover-zone" 
+                              data-integration="data-streaming" fill="transparent" cursor="pointer"/>
                         
-                        <!-- Integration test connection lines -->
-                        <line x1="948" y1="320" x2="920" y2="320" class="integration-test-line" stroke="#3b82f6" stroke-width="2" stroke-dasharray="3,2"/>
-                        <circle cx="915" cy="320" r="3" fill="#3b82f6" class="integration-test-dot">
-                            <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite" begin="1s"/>
-                        </circle>
+                        <!-- Tooltip for Data-Streaming Integration -->
+                        <g class="integration-tooltip" id="tooltip-data-streaming" style="display: none;">
+                            <rect x="800" y="290" width="200" height="120" rx="8" fill="white" 
+                                  stroke="#3b82f6" stroke-width="2" filter="url(#dropshadow)"/>
+                            <text x="810" y="310" class="tooltip-title">Data → Streaming Integration</text>
+                            <text x="810" y="330" class="tooltip-text">• API Response Tests</text>
+                            <text x="810" y="345" class="tooltip-text">• Content Catalog Tests</text>
+                            <text x="810" y="360" class="tooltip-text">• Search Functionality</text>
+                            <text x="810" y="375" class="tooltip-text">• Performance Metrics</text>
+                            
+                            <!-- Mini status indicator -->
+                            <circle cx="970" cy="315" r="6" fill="#22c55e"/>
+                            <text x="980" y="320" class="tooltip-status">99% Pass</text>
+                            
+                            <!-- Mini progress bar -->
+                            <rect x="810" y="385" width="160" height="8" rx="4" fill="#e5e7eb"/>
+                            <rect x="810" y="385" width="158" height="8" rx="4" fill="#22c55e"/>
+                            <text x="810" y="405" class="tooltip-small">Last run: 1 min ago</text>
+                        </g>
 
                         <!-- Phase 4: Streaming/Client -->
                         <g class="phase" data-phase="streaming">
@@ -345,8 +387,10 @@
                                 <span>QA & Testing</span>
                             </div>
                             <div class="legend-item">
-                                <div style="width: 20px; height: 20px; background: #3b82f6; border-radius: 50%; border: 1.5px solid #1d4ed8; flex-shrink: 0;"></div>
-                                <span>Integration Testing</span>
+                                <div style="width: 20px; height: 20px; background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); border-radius: 50%; border: 1.5px solid #1d4ed8; flex-shrink: 0; position: relative;">
+                                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 6px; height: 6px; background: white; border-radius: 50%;"></div>
+                                </div>
+                                <span>Integration Testing (hover arrows)</span>
                             </div>
                         </div>
                     </div>
