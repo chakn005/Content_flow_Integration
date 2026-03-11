@@ -82,7 +82,7 @@ const phaseData = {
             "Media Quality Check: Automated and manual quality assurance during transformation",
             "Integration Testing: Functional, integration, and contract testing of data layer APIs",
             "E2E Playback Testing: Full user journey validation across streaming platforms",
-            "Performance Testing: Load, stress, and scalability testing at each phase",
+            "End to End Testing: Load, stress, and scalability testing at each phase",
             "Regression Testing: Ensure new changes don't break existing functionality",
             "Security Testing: Vulnerability scanning and penetration testing throughout pipeline",
             "Accessibility Testing: WCAG compliance and assistive technology support"
@@ -90,7 +90,7 @@ const phaseData = {
         testTypes: [
             "Functional Tests: Feature-level validation at each integration phase",
             "Integration Tests: Cross-system interaction verification between all components",
-            "Performance Tests: Response time, throughput, resource usage across pipeline",
+            "End to End: Response time, throughput, resource usage across pipeline",
             "Regression Tests: Automated suite for continuous validation of all phases",
             "Manual Tests: Exploratory and user experience testing end-to-end",
             "Smoke Tests: Quick validation of critical paths after each deployment"
