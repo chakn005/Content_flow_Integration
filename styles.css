@@ -356,6 +356,19 @@ body {
   stroke-width: 3;
 }
 
+.qa-phase {
+  cursor: pointer;
+}
+
+.qa-phase:hover .phase-box {
+  filter: brightness(0.95);
+  stroke-width: 3;
+}
+
+.qa-phase .phase-title {
+  cursor: pointer;
+}
+
 .content-platform {
   fill: var(--color-success-50);
   stroke: var(--color-success-500);
@@ -384,6 +397,11 @@ body {
   fill: var(--color-error-50);
   stroke: var(--color-error-500);
   stroke-width: 2;
+}
+
+.qa-layer:hover {
+  fill: var(--color-error-100);
+  stroke: var(--color-error-600);
 }
 
 /* Text Styles */
@@ -627,6 +645,26 @@ body {
 .phase-info strong {
   color: var(--color-neutral-800);
   font-weight: var(--font-weight-semibold);
+}
+
+.click-indicator {
+  font-family: var(--font-family-primary);
+  font-weight: var(--font-weight-bold);
+  text-anchor: middle;
+  dominant-baseline: middle;
+}
+
+.qa-phase .click-indicator {
+  animation: pulse-indicator 2s infinite;
+}
+
+@keyframes pulse-indicator {
+  0%, 100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 /* ===== ANIMATIONS ===== */
