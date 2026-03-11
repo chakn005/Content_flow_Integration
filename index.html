@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- GitHub Pages compatibility -->
     <base href="./">
+    <!-- Cache buster: Updated tooltips without percentage data -->
 </head>
 <body>
     <div class="app">
@@ -289,7 +290,7 @@
                         <!-- Integration Testing Tooltips - Moved to end for proper z-index -->
                         <!-- Tooltip for Content-Media Integration -->
                         <g class="integration-tooltip" id="tooltip-content-media" style="display: none;">
-                            <rect x="280" y="20" width="220" height="110" rx="8" fill="white" 
+                            <rect x="280" y="20" width="220" height="100" rx="8" fill="white" 
                                   stroke="#3b82f6" stroke-width="2" filter="url(#dropshadow)"/>
                             <text x="290" y="40" class="tooltip-title">Content → Media Integration</text>
                             <text x="290" y="60" class="tooltip-text">• Format Validation Tests</text>
@@ -297,16 +298,12 @@
                             <text x="290" y="90" class="tooltip-text">• File Integrity Checks</text>
                             <text x="290" y="105" class="tooltip-text">• API Contract Testing</text>
                             
-                            <!-- Mini status indicator -->
-                            <circle cx="470" cy="45" r="6" fill="#22c55e"/>
-                            <text x="480" y="50" class="tooltip-status">Active</text>
-                            
-                            <text x="290" y="115" class="tooltip-small">Last run: 2 min ago</text>
+                            <text x="290" y="105" class="tooltip-small">Last run: 2 min ago</text>
                         </g>
 
                         <!-- Tooltip for Media-Data Integration -->
                         <g class="integration-tooltip" id="tooltip-media-data" style="display: none;">
-                            <rect x="660" y="20" width="220" height="110" rx="8" fill="white" 
+                            <rect x="660" y="20" width="220" height="100" rx="8" fill="white" 
                                   stroke="#3b82f6" stroke-width="2" filter="url(#dropshadow)"/>
                             <text x="670" y="40" class="tooltip-title">Media → Data Integration</text>
                             <text x="670" y="60" class="tooltip-text">• Content Ingestion Tests</text>
@@ -314,16 +311,12 @@
                             <text x="670" y="90" class="tooltip-text">• API Data Consistency</text>
                             <text x="670" y="105" class="tooltip-text">• Search Index Updates</text>
                             
-                            <!-- Mini status indicator -->
-                            <circle cx="850" cy="45" r="6" fill="#f59e0b"/>
-                            <text x="860" y="50" class="tooltip-status">Active</text>
-                            
-                            <text x="670" y="115" class="tooltip-small">Last run: 5 min ago</text>
+                            <text x="670" y="105" class="tooltip-small">Last run: 5 min ago</text>
                         </g>
 
                         <!-- Tooltip for Data-Streaming Integration -->
                         <g class="integration-tooltip" id="tooltip-data-streaming" style="display: none;">
-                            <rect x="1020" y="250" width="220" height="110" rx="8" fill="white" 
+                            <rect x="1020" y="250" width="220" height="100" rx="8" fill="white" 
                                   stroke="#3b82f6" stroke-width="2" filter="url(#dropshadow)"/>
                             <text x="1030" y="270" class="tooltip-title">Data → Streaming Integration</text>
                             <text x="1030" y="290" class="tooltip-text">• API Response Tests</text>
@@ -331,11 +324,7 @@
                             <text x="1030" y="320" class="tooltip-text">• Search Functionality</text>
                             <text x="1030" y="335" class="tooltip-text">• Performance Metrics</text>
                             
-                            <!-- Mini status indicator -->
-                            <circle cx="1210" cy="275" r="6" fill="#22c55e"/>
-                            <text x="1220" y="280" class="tooltip-status">Active</text>
-                            
-                            <text x="1030" y="345" class="tooltip-small">Last run: 1 min ago</text>
+                            <text x="1030" y="335" class="tooltip-small">Last run: 1 min ago</text>
                         </g>
                     </svg>
                 </div>
