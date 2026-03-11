@@ -497,17 +497,17 @@ body {
 }
 
 .qa-arrow {
-  stroke: var(--color-error-400);
-  stroke-width: 2;
+  stroke: var(--color-error-600) !important;
+  stroke-width: 3 !important;
   fill: none;
-  opacity: 0.8;
+  opacity: 1 !important;
 }
 
 .qa-feedback-arrow {
-  stroke: var(--color-error-500);
-  stroke-width: 2;
+  stroke: var(--color-error-700) !important;
+  stroke-width: 3 !important;
   fill: none;
-  opacity: 0.8;
+  opacity: 1 !important;
 }
 
 /* Animated flowing effect for QA connections */
