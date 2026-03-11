@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Animation Test - QA Dotted Lines</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px; 
+            background: #f5f5f5;
+        }
+        
+        .test-container {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .qa-feedback-arrow {
+            stroke: #dc2626;
+            stroke-width: 3;
+            fill: none;
+            opacity: 1;
+        }
+
+        .animated-dots {
+            stroke-dasharray: 6, 6;
+            animation: dots-flow 1.5s linear infinite;
+        }
+
+        @keyframes dots-flow {
+            0% { stroke-dashoffset: 0; }
+            100% { stroke-dashoffset: 12; }
+        }
+        
+        .test-line {
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>QA Animation Test</h1>
+        <p>Testing animated dotted lines going out of QA block:</p>
+        
+        <div class="test-line">
+            <h3>Test Line 1: Horizontal</h3>
+            <svg width="300" height="50">
+                <defs>
+                    <marker id="testArrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                        <polygon points="0 0, 10 3, 0 6" fill="#dc2626" />
+                    </marker>
+                </defs>
+                <line x1="50" y1="25" x2="250" y2="25" 
+                      class="qa-feedback-arrow animated-dots" 
+                      marker-end="url(#testArrow)" 
+                      stroke-dasharray="6,6"/>
+                <text x="10" y="30" font-size="12">QA</text>
+                <text x="260" y="30" font-size="12">Phase</text>
+            </svg>
+        </div>
+        
+        <div class="test-line">
+            <h3>Test Line 2: Diagonal</h3>
+            <svg width="300" height="100">
+                <line x1="50" y1="80" x2="250" y2="20" 
+                      class="qa-feedback-arrow animated-dots" 
+                      marker-end="url(#testArrow)" 
+                      stroke-dasharray="6,6"/>
+                <text x="10" y="85" font-size="12">QA</text>
+                <text x="260" y="25" font-size="12">Phase</text>
+            </svg>
+        </div>
+        
+        <p><strong>Expected behavior:</strong> You should see red dotted lines with moving dots flowing from left to right, with arrowheads at the end.</p>
+        
+        <p><a href="index.html">← Back to Main App</a></p>
+    </div>
+</body>
+</html>

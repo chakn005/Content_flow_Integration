@@ -497,16 +497,16 @@ body {
 }
 
 .qa-feedback-arrow {
-  stroke: var(--color-error-600);
-  stroke-width: 2;
+  stroke: #dc2626;
+  stroke-width: 3;
   fill: none;
-  opacity: 0.8;
+  opacity: 1;
 }
 
 /* Animated dotted lines going OUT of QA block */
 .animated-dots {
-  stroke-dasharray: 4, 4;
-  animation: dots-flow 2s linear infinite;
+  stroke-dasharray: 6, 6;
+  animation: dots-flow 1.5s linear infinite;
 }
 
 @keyframes dots-flow {
@@ -514,16 +514,16 @@ body {
     stroke-dashoffset: 0;
   }
   100% {
-    stroke-dashoffset: 8;
+    stroke-dashoffset: 12;
   }
 }
 
 /* Enhanced QA layer hover effect */
 .qa-phase:hover .animated-dots {
-  animation-duration: 1s;
-  stroke: var(--color-error-700);
+  animation-duration: 0.8s;
+  stroke: #b91c1c;
   opacity: 1;
-  stroke-width: 2.5;
+  stroke-width: 4;
 }
 
 .arrow-label {
