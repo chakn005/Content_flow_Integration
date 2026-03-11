@@ -504,9 +504,10 @@ body {
 }
 
 .qa-feedback-arrow {
-  stroke: var(--color-error-300);
-  stroke-width: 1;
+  stroke: var(--color-error-500);
+  stroke-width: 2;
   fill: none;
+  opacity: 0.8;
 }
 
 .arrow-label {
