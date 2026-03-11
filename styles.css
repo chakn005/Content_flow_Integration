@@ -496,33 +496,11 @@ body {
   stroke-dasharray: 6, 3;
 }
 
-.qa-arrow {
-  stroke: var(--color-error-600) !important;
-  stroke-width: 3 !important;
-  fill: none;
-  opacity: 1 !important;
-}
-
 .qa-feedback-arrow {
   stroke: var(--color-error-700) !important;
   stroke-width: 3 !important;
   fill: none;
   opacity: 1 !important;
-}
-
-/* Animated flowing effect for QA connections */
-.animated-flow {
-  stroke-dasharray: 8, 4;
-  animation: flow-animation 3s linear infinite;
-}
-
-@keyframes flow-animation {
-  0% {
-    stroke-dashoffset: 0;
-  }
-  100% {
-    stroke-dashoffset: 12;
-  }
 }
 
 /* Animated pulsing effect for QA feedback */
@@ -543,12 +521,6 @@ body {
 }
 
 /* Enhanced QA layer hover effect */
-.qa-phase:hover .animated-flow {
-  animation-duration: 1s;
-  stroke: var(--color-error-600);
-  opacity: 1;
-}
-
 .qa-phase:hover .animated-pulse {
   animation-duration: 1s;
   stroke: var(--color-error-700);
