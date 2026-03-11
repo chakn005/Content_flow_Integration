@@ -80,7 +80,7 @@ const phaseData = {
         steps: [
             "Content Validation: Verify source content meets specifications at ingestion",
             "Media Quality Check: Automated and manual quality assurance during transformation",
-            "API Testing: Functional, integration, and contract testing of data layer APIs",
+            "Integration Testing: Functional, integration, and contract testing of data layer APIs",
             "E2E Playback Testing: Full user journey validation across streaming platforms",
             "Performance Testing: Load, stress, and scalability testing at each phase",
             "Regression Testing: Ensure new changes don't break existing functionality",
