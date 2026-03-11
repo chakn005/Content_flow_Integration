@@ -597,6 +597,15 @@ body {
   fill: #1d4ed8;
 }
 
+.tooltip-click-area:hover {
+  fill: rgba(59, 130, 246, 0.1);
+}
+
+.integration-tooltip:hover rect {
+  stroke-width: 3;
+  stroke: #1d4ed8;
+}
+
 /* Enhanced QA layer hover effect */
 .qa-phase:hover .animated-dots {
   animation-duration: 0.8s;

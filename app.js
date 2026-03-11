@@ -350,21 +350,37 @@ document.addEventListener('DOMContentLoaded', function() {
     if (contentMediaTooltip) {
         const linkElement = contentMediaTooltip.querySelector('.tooltip-link');
         const rectElement = contentMediaTooltip.querySelector('rect');
+        const clickArea = contentMediaTooltip.querySelector('.tooltip-click-area');
         
+        const openLink = (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            console.log('Opening Google Sheets link...');
+            const url = 'https://docs.google.com/spreadsheets/d/1twFm_Jmv2j6sVVkD2WOp2fv3AMEHJGDLqqlO9654u3Y/edit?pli=1&gid=1024354782#gid=1024354782';
+            window.open(url, '_blank');
+        };
+        
+        // Add click handlers to multiple elements
         if (linkElement) {
-            linkElement.addEventListener('click', (e) => {
-                e.stopPropagation();
-                window.open('https://docs.google.com/spreadsheets/d/1twFm_Jmv2j6sVVkD2WOp2fv3AMEHJGDLqqlO9654u3Y/edit?pli=1&gid=1024354782#gid=1024354782', '_blank');
-            });
+            linkElement.addEventListener('click', openLink);
+            console.log('Added click handler to link text');
         }
         
-        // Also make the entire tooltip clickable
         if (rectElement) {
-            rectElement.addEventListener('click', (e) => {
-                e.stopPropagation();
-                window.open('https://docs.google.com/spreadsheets/d/1twFm_Jmv2j6sVVkD2WOp2fv3AMEHJGDLqqlO9654u3Y/edit?pli=1&gid=1024354782#gid=1024354782', '_blank');
-            });
+            rectElement.addEventListener('click', openLink);
+            console.log('Added click handler to tooltip background');
         }
+        
+        if (clickArea) {
+            clickArea.addEventListener('click', openLink);
+            console.log('Added click handler to click area');
+        }
+        
+        // Also try adding to the entire tooltip group
+        contentMediaTooltip.addEventListener('click', openLink);
+        console.log('Added click handler to entire tooltip');
+    } else {
+        console.log('Content-Media tooltip not found');
     }
 
     console.log('Content Integration Flow App Loaded');
