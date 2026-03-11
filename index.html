@@ -151,6 +151,16 @@
                         <!-- Arrow 1 -->
                         <line x1="350" y1="140" x2="430" y2="140" class="flow-arrow" marker-end="url(#arrowhead)"/>
                         <text x="370" y="130" class="arrow-label">Publish</text>
+                        
+                        <!-- Integration Testing indicator between Content and Media -->
+                        <circle cx="390" cy="140" r="12" class="integration-test-indicator" fill="#3b82f6" opacity="0.9"/>
+                        <text x="390" y="145" class="integration-test-label" fill="white" font-size="10" font-weight="bold" text-anchor="middle">IT</text>
+                        
+                        <!-- Integration test connection lines -->
+                        <line x1="390" y1="152" x2="390" y2="180" class="integration-test-line" stroke="#3b82f6" stroke-width="2" stroke-dasharray="3,2"/>
+                        <circle cx="390" cy="185" r="3" fill="#3b82f6" class="integration-test-dot">
+                            <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite"/>
+                        </circle>
 
                         <!-- Phase 2: Media Platform -->
                         <g class="phase" data-phase="media">
@@ -173,6 +183,16 @@
                         <!-- Arrow 2 -->
                         <line x1="730" y1="165" x2="810" y2="165" class="flow-arrow" marker-end="url(#arrowhead)"/>
                         <text x="745" y="155" class="arrow-label">Deliver</text>
+                        
+                        <!-- Integration Testing indicator between Media and Data -->
+                        <circle cx="770" cy="165" r="12" class="integration-test-indicator" fill="#3b82f6" opacity="0.9"/>
+                        <text x="770" y="170" class="integration-test-label" fill="white" font-size="10" font-weight="bold" text-anchor="middle">IT</text>
+                        
+                        <!-- Integration test connection lines -->
+                        <line x1="770" y1="177" x2="770" y2="205" class="integration-test-line" stroke="#3b82f6" stroke-width="2" stroke-dasharray="3,2"/>
+                        <circle cx="770" cy="210" r="3" fill="#3b82f6" class="integration-test-dot">
+                            <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite" begin="0.5s"/>
+                        </circle>
 
                         <!-- Phase 3: Data Layer -->
                         <g class="phase" data-phase="data">
@@ -195,6 +215,16 @@
                         <!-- Arrow 3 -->
                         <line x1="960" y1="280" x2="960" y2="360" class="flow-arrow" marker-end="url(#arrowhead)"/>
                         <text x="970" y="320" class="arrow-label">Expose</text>
+                        
+                        <!-- Integration Testing indicator between Data and Streaming -->
+                        <circle cx="960" cy="320" r="12" class="integration-test-indicator" fill="#3b82f6" opacity="0.9"/>
+                        <text x="960" y="325" class="integration-test-label" fill="white" font-size="10" font-weight="bold" text-anchor="middle">IT</text>
+                        
+                        <!-- Integration test connection lines -->
+                        <line x1="948" y1="320" x2="920" y2="320" class="integration-test-line" stroke="#3b82f6" stroke-width="2" stroke-dasharray="3,2"/>
+                        <circle cx="915" cy="320" r="3" fill="#3b82f6" class="integration-test-dot">
+                            <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite" begin="1s"/>
+                        </circle>
 
                         <!-- Phase 4: Streaming/Client -->
                         <g class="phase" data-phase="streaming">
@@ -313,6 +343,10 @@
                             <div class="legend-item">
                                 <div class="legend-color qa-layer"></div>
                                 <span>QA & Testing</span>
+                            </div>
+                            <div class="legend-item">
+                                <div style="width: 20px; height: 20px; background: #3b82f6; border-radius: 50%; border: 1.5px solid #1d4ed8; flex-shrink: 0;"></div>
+                                <span>Integration Testing</span>
                             </div>
                         </div>
                     </div>

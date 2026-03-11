@@ -518,6 +518,36 @@ body {
   }
 }
 
+/* Integration Testing Indicators */
+.integration-test-indicator {
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.integration-test-indicator:hover {
+  r: 14;
+  opacity: 1;
+  filter: drop-shadow(0 2px 4px rgba(59, 130, 246, 0.3));
+}
+
+.integration-test-label {
+  font-family: var(--font-family-primary);
+  font-weight: var(--font-weight-bold);
+  pointer-events: none;
+}
+
+.integration-test-line {
+  opacity: 0.7;
+}
+
+.integration-test-dot {
+  cursor: pointer;
+}
+
+.integration-test-dot:hover {
+  r: 4;
+}
+
 /* Enhanced QA layer hover effect */
 .qa-phase:hover .animated-dots {
   animation-duration: 0.8s;
