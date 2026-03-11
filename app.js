@@ -76,32 +76,39 @@ const phaseData = {
     },
     qa: {
         title: "QA & Testing Layer",
-        description: "Comprehensive testing across all integration phases",
+        description: "Comprehensive testing across ALL integration phases with continuous feedback loops",
         steps: [
-            "Content Validation: Verify source content meets specifications",
-            "Media Quality Check: Automated and manual quality assurance",
-            "API Testing: Functional, integration, and contract testing",
-            "E2E Playback Testing: Full user journey validation",
-            "Performance Testing: Load, stress, and scalability testing",
+            "Content Validation: Verify source content meets specifications at ingestion",
+            "Media Quality Check: Automated and manual quality assurance during transformation",
+            "API Testing: Functional, integration, and contract testing of data layer APIs",
+            "E2E Playback Testing: Full user journey validation across streaming platforms",
+            "Performance Testing: Load, stress, and scalability testing at each phase",
             "Regression Testing: Ensure new changes don't break existing functionality",
-            "Security Testing: Vulnerability scanning and penetration testing",
+            "Security Testing: Vulnerability scanning and penetration testing throughout pipeline",
             "Accessibility Testing: WCAG compliance and assistive technology support"
         ],
         testTypes: [
-            "Functional Tests: Feature-level validation",
-            "Integration Tests: Cross-system interaction verification",
-            "Performance Tests: Response time, throughput, resource usage",
-            "Regression Tests: Automated suite for continuous validation",
-            "Manual Tests: Exploratory and user experience testing",
-            "Smoke Tests: Quick validation of critical paths"
+            "Functional Tests: Feature-level validation at each integration phase",
+            "Integration Tests: Cross-system interaction verification between all components",
+            "Performance Tests: Response time, throughput, resource usage across pipeline",
+            "Regression Tests: Automated suite for continuous validation of all phases",
+            "Manual Tests: Exploratory and user experience testing end-to-end",
+            "Smoke Tests: Quick validation of critical paths after each deployment"
         ],
         deliverables: [
-            "Test Plans: Comprehensive testing strategy and scope",
-            "Test Cases: Detailed step-by-step test scenarios",
-            "Test Execution Reports: Results, pass/fail rates, defects",
-            "Bug Reports: Detailed defect documentation and tracking",
-            "Coverage Reports: Code and feature coverage metrics",
-            "Sign-off Documentation: Approval for production release"
+            "Test Plans: Comprehensive testing strategy covering all integration phases",
+            "Test Cases: Detailed step-by-step test scenarios for each component",
+            "Test Execution Reports: Results, pass/fail rates, defects across all phases",
+            "Bug Reports: Detailed defect documentation and tracking with phase attribution",
+            "Coverage Reports: Code and feature coverage metrics for entire pipeline",
+            "Sign-off Documentation: Phase-by-phase approval process for production release"
+        ],
+        connections: [
+            "Content Platform: Validates content format, metadata accuracy, rights compliance",
+            "Media Platform: Tests encoding quality, DRM functionality, packaging integrity", 
+            "Data Layer: Verifies API responses, data consistency, search accuracy",
+            "Streaming/Client: End-to-end playback testing, device compatibility, user experience",
+            "Feedback Loops: QA results inform improvements at each phase continuously"
         ]
     }
 };
@@ -220,6 +227,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 <h4>Test Types:</h4>
                 <ul>
                     ${data.testTypes.map(type => `<li>${type}</li>`).join('')}
+                </ul>
+            `;
+        }
+        
+        if (data.connections) {
+            html += `
+                <h4>Phase Connections:</h4>
+                <ul>
+                    ${data.connections.map(connection => `<li>${connection}</li>`).join('')}
                 </ul>
             `;
         }

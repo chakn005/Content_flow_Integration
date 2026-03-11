@@ -503,6 +503,19 @@ body {
   opacity: 0.7;
 }
 
+.qa-feedback-arrow {
+  stroke: var(--color-error-300);
+  stroke-width: 1;
+  fill: none;
+}
+
+.qa-connection-label {
+  font-size: 10px;
+  fill: var(--color-error-600);
+  font-weight: 500;
+  text-anchor: middle;
+}
+
 .arrow-label {
   font-size: 11px;
   fill: var(--color-neutral-600);
