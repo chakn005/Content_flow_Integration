@@ -290,15 +290,18 @@
                         <!-- Integration Testing Tooltips - Moved to end for proper z-index -->
                         <!-- Tooltip for Content-Media Integration -->
                         <g class="integration-tooltip" id="tooltip-content-media" style="display: none;">
-                            <rect x="280" y="20" width="220" height="100" rx="8" fill="white" 
-                                  stroke="#3b82f6" stroke-width="2" filter="url(#dropshadow)"/>
+                            <rect x="280" y="20" width="220" height="120" rx="8" fill="white" 
+                                  stroke="#3b82f6" stroke-width="2" filter="url(#dropshadow)" cursor="pointer"/>
                             <text x="290" y="40" class="tooltip-title">Content → Media Integration</text>
                             <text x="290" y="60" class="tooltip-text">• Format Validation Tests</text>
                             <text x="290" y="75" class="tooltip-text">• Metadata Transfer Tests</text>
                             <text x="290" y="90" class="tooltip-text">• File Integrity Checks</text>
                             <text x="290" y="105" class="tooltip-text">• API Contract Testing</text>
                             
-                            <text x="290" y="105" class="tooltip-small">Last run: 2 min ago</text>
+                            <text x="290" y="125" class="tooltip-small">Last run: 2 min ago</text>
+                            
+                            <!-- Click to view link -->
+                            <text x="390" y="135" class="tooltip-link" text-anchor="middle" cursor="pointer">📋 View Test Details</text>
                         </g>
 
                         <!-- Tooltip for Media-Data Integration -->

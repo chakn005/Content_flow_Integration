@@ -345,6 +345,28 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Add click handler for Content-Media integration link
+    const contentMediaTooltip = document.getElementById('tooltip-content-media');
+    if (contentMediaTooltip) {
+        const linkElement = contentMediaTooltip.querySelector('.tooltip-link');
+        const rectElement = contentMediaTooltip.querySelector('rect');
+        
+        if (linkElement) {
+            linkElement.addEventListener('click', (e) => {
+                e.stopPropagation();
+                window.open('https://docs.google.com/spreadsheets/d/1twFm_Jmv2j6sVVkD2WOp2fv3AMEHJGDLqqlO9654u3Y/edit?pli=1&gid=1024354782#gid=1024354782', '_blank');
+            });
+        }
+        
+        // Also make the entire tooltip clickable
+        if (rectElement) {
+            rectElement.addEventListener('click', (e) => {
+                e.stopPropagation();
+                window.open('https://docs.google.com/spreadsheets/d/1twFm_Jmv2j6sVVkD2WOp2fv3AMEHJGDLqqlO9654u3Y/edit?pli=1&gid=1024354782#gid=1024354782', '_blank');
+            });
+        }
+    }
+
     console.log('Content Integration Flow App Loaded');
     console.log('Reference: Epic CPTR-68587');
     console.log('Click on any phase to see detailed information');
