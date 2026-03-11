@@ -115,6 +115,15 @@
                             <filter id="dropshadow" x="-20%" y="-20%" width="140%" height="140%">
                                 <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.1"/>
                             </filter>
+                            
+                            <!-- Glow effect for QA connections -->
+                            <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                                <feMerge> 
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
                         </defs>
 
                         <rect width="1400" height="1000" fill="url(#bgGradient)"/>
@@ -249,29 +258,29 @@
 
                         <!-- QA Connection Arrows - Testing happens at every phase -->
                         <!-- Content Platform to QA -->
-                        <line x1="200" y1="230" x2="190" y2="650" class="qa-arrow" marker-end="url(#arrowhead)" stroke-dasharray="5,5"/>
+                        <line x1="200" y1="230" x2="190" y2="650" class="qa-arrow animated-flow" marker-end="url(#arrowhead)" stroke-dasharray="8,4" filter="url(#glow)"/>
                         
                         <!-- Media Platform to QA -->
-                        <line x1="580" y1="280" x2="450" y2="650" class="qa-arrow" marker-end="url(#arrowhead)" stroke-dasharray="5,5"/>
+                        <line x1="580" y1="280" x2="450" y2="650" class="qa-arrow animated-flow" marker-end="url(#arrowhead)" stroke-dasharray="8,4" filter="url(#glow)"/>
                         
                         <!-- Data Layer to QA -->
-                        <line x1="960" y1="280" x2="710" y2="650" class="qa-arrow" marker-end="url(#arrowhead)" stroke-dasharray="5,5"/>
+                        <line x1="960" y1="280" x2="710" y2="650" class="qa-arrow animated-flow" marker-end="url(#arrowhead)" stroke-dasharray="8,4" filter="url(#glow)"/>
                         
                         <!-- Streaming/Client to QA -->
-                        <line x1="960" y1="590" x2="970" y2="650" class="qa-arrow" marker-end="url(#arrowhead)" stroke-dasharray="5,5"/>
+                        <line x1="960" y1="590" x2="970" y2="650" class="qa-arrow animated-flow" marker-end="url(#arrowhead)" stroke-dasharray="8,4" filter="url(#glow)"/>
                         
-                        <!-- Additional bidirectional arrows to show QA feedback -->
+                        <!-- QA Feedback arrows with pulse animation -->
                         <!-- QA feedback to Content Platform -->
-                        <line x1="150" y1="650" x2="140" y2="230" class="qa-feedback-arrow" marker-end="url(#feedbackArrowhead)" stroke-dasharray="3,3"/>
+                        <line x1="150" y1="650" x2="140" y2="230" class="qa-feedback-arrow animated-pulse" marker-end="url(#feedbackArrowhead)" stroke-dasharray="6,3" filter="url(#glow)"/>
                         
                         <!-- QA feedback to Media Platform -->
-                        <line x1="400" y1="650" x2="520" y2="280" class="qa-feedback-arrow" marker-end="url(#feedbackArrowhead)" stroke-dasharray="3,3"/>
+                        <line x1="400" y1="650" x2="520" y2="280" class="qa-feedback-arrow animated-pulse" marker-end="url(#feedbackArrowhead)" stroke-dasharray="6,3" filter="url(#glow)"/>
                         
                         <!-- QA feedback to Data Layer -->
-                        <line x1="650" y1="650" x2="900" y2="280" class="qa-feedback-arrow" marker-end="url(#feedbackArrowhead)" stroke-dasharray="3,3"/>
+                        <line x1="650" y1="650" x2="900" y2="280" class="qa-feedback-arrow animated-pulse" marker-end="url(#feedbackArrowhead)" stroke-dasharray="6,3" filter="url(#glow)"/>
                         
                         <!-- QA feedback to Streaming -->
-                        <line x1="900" y1="650" x2="920" y2="590" class="qa-feedback-arrow" marker-end="url(#feedbackArrowhead)" stroke-dasharray="3,3"/>
+                        <line x1="900" y1="650" x2="920" y2="590" class="qa-feedback-arrow animated-pulse" marker-end="url(#feedbackArrowhead)" stroke-dasharray="6,3" filter="url(#glow)"/>
                     </svg>
                 </div>
             </div>
