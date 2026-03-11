@@ -551,7 +551,6 @@ body {
   pointer-events: auto;
   opacity: 0;
   transition: opacity var(--transition-normal);
-  z-index: 100;
 }
 
 .integration-tooltip.show {
