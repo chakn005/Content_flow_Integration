@@ -359,9 +359,17 @@ body {
 }
 
 .control-buttons {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: var(--space-3);
-  flex-wrap: wrap;
+  width: 100%;
+}
+
+.control-buttons .btn {
+  justify-content: center;
+  min-width: 120px;
+  height: 48px;
+  padding: var(--space-3) var(--space-4);
 }
 
 /* ===== BUTTON SYSTEM ===== */
