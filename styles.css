@@ -11,6 +11,25 @@ body {
   font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   color: #111827;
   background: var(--disney-blue-bg);
+  background-attachment: fixed;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Disney magical background overlay */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
 }
 
 a { color: inherit; }
@@ -20,10 +39,10 @@ a { color: inherit; }
 
   --disney-blue: #0A2A66;
   --disney-blue-soft: #E8F0FA;
-  --disney-blue-bg: #F2F6FC;
+  --disney-blue-bg: linear-gradient(135deg, #0A2A66 0%, #1F4A8C 25%, #2563EB 50%, #3B82F6 75%, #60A5FA 100%);
 
   --bg: #f6f8fa;
-  --surface: #ffffff;
+  --surface: rgba(255, 255, 255, 0.95);
   --border: rgba(0,0,0,0.08);
   --shadow: 0 2px 10px rgba(0,0,0,0.05);
   --shadow-strong: 0 8px 24px rgba(0,0,0,0.2);
@@ -234,7 +253,13 @@ background: linear-gradient(
   transform: scale(0.98);
 }
 
-.kpi-title { font-weight: 900; color: #111827; }
+.kpi-title { 
+  font-weight: 900; 
+  color: #111827; 
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 .kpi-value { 
   font-size: 22px; 
   font-weight: 900; 
@@ -242,16 +267,18 @@ background: linear-gradient(
   display: flex;
   justify-content: center;
   align-items: center;
+  min-height: 20px;
 }
 
-/* Status Circles */
+/* Status Circles - Updated for inline positioning */
 .status-circle {
-  width: 32px;
-  height: 32px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
-  border: 3px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   transition: all 0.2s ease;
+  flex-shrink: 0;
 }
 
 .status-circle.green {
@@ -290,6 +317,18 @@ background: linear-gradient(
 .cell-amber { background: #fef3c7; color: #92400e; }
 .cell-red   { background: #fee2e2; color: #991b1b; }
 .cell-na    { background: #f3f4f6; color: #6b7280; font-weight: 700; }
+
+/* Clickable heatmap cells */
+.clickable-cell {
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.clickable-cell:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
 
 /* ---------- Control Panel ---------- */
 .control-panel {

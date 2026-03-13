@@ -260,13 +260,62 @@ function renderHeatmap() {
         cls === "cell-amber" ? "IN‑PROGRESS" :
         cls === "cell-red"   ? "RISK" :
         "—";
-      html += `<td class="${cls}">${text}</td>`;
+      html += `<td class="${cls} clickable-cell" data-alliance="${a}" data-milestone="${i}" title="Click to change status">${text}</td>`;
     });
     html += `</tr>`;
   });
 
   html += `</tbody></table>`;
   el.innerHTML = html;
+
+  // Add click functionality to heatmap cells
+  setupHeatmapCells();
+}
+
+// ===== Heatmap Cell Status Cycling =====
+function setupHeatmapCells() {
+  const cells = document.querySelectorAll('.clickable-cell');
+  
+  // Status cycle for heatmap: Green -> Amber -> Red -> N/A -> Green
+  const statusCycle = [
+    { class: 'cell-green', text: 'GOOD' },
+    { class: 'cell-amber', text: 'IN‑PROGRESS' },
+    { class: 'cell-red', text: 'RISK' },
+    { class: 'cell-na', text: '—' }
+  ];
+  
+  cells.forEach(cell => {
+    cell.addEventListener('click', () => {
+      // Find current status
+      let currentIndex = 0;
+      statusCycle.forEach((status, index) => {
+        if (cell.classList.contains(status.class)) {
+          currentIndex = index;
+        }
+      });
+      
+      // Remove current status class
+      statusCycle.forEach(status => cell.classList.remove(status.class));
+      
+      // Move to next status
+      const nextIndex = (currentIndex + 1) % statusCycle.length;
+      const newStatus = statusCycle[nextIndex];
+      
+      // Apply new status
+      cell.classList.add(newStatus.class);
+      cell.textContent = newStatus.text;
+      
+      // Add visual feedback
+      cell.style.transform = 'scale(0.95)';
+      setTimeout(() => {
+        cell.style.transform = 'scale(1)';
+      }, 150);
+    });
+    
+    // Add hover effect
+    cell.style.cursor = 'pointer';
+    cell.style.transition = 'all 0.15s ease';
+  });
 }
 
 // ===== KPI Card Status Cycling =====
