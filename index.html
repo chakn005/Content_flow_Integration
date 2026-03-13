@@ -1,413 +1,501 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Content Integration Flow - E2E Diagram</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- GitHub Pages compatibility -->
-    <base href="./">
-    <!-- Cache buster: Updated tooltips without percentage data -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Content Integration Flow - E2E Console</title>
+
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- GitHub Pages compatibility -->
+  <base href="./" />
+
+  <!-- Minimal UI additions so tabs/drawer work even if styles.css doesn't yet include them -->
+  <style>
+    .header-tabs { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+    .tab-btn { border:1px solid rgba(0,0,0,.12); background:rgba(255,255,255,.7); border-radius:10px; padding:8px 12px; font-weight:600; cursor:pointer; }
+    .tab-btn.active { background:#111827; color:#fff; border-color:#111827; }
+    .tab-panel { display:none; }
+    .tab-panel.active { display:block; }
+
+    .overview-grid { display:grid; gap:16px; }
+    .kpi-row { display:grid; grid-template-columns:repeat(4, minmax(180px, 1fr)); gap:12px; }
+    .kpi-card { border-radius:14px; padding:14px; background:#fff; border:1px solid rgba(0,0,0,.08); box-shadow:0 2px 10px rgba(0,0,0,.05); }
+    .kpi-title { font-weight:700; color:#111827; }
+    .kpi-value { font-size:22px; font-weight:800; margin-top:6px; }
+    .kpi-sub { font-size:12px; color:#6b7280; margin-top:6px; }
+    .rag-green { border-left:6px solid #16a34a; }
+    .rag-amber { border-left:6px solid #f59e0b; }
+    .rag-red   { border-left:6px solid #dc2626; }
+
+    .heatmap { display:grid; gap:8px; overflow:auto; }
+    .heatmap table { width:100%; border-collapse:collapse; }
+    .heatmap th, .heatmap td { border:1px solid rgba(0,0,0,.08); padding:10px; text-align:center; font-weight:600; }
+    .cell-green { background:#dcfce7; color:#14532d; }
+    .cell-amber { background:#ffedd5; color:#7c2d12; }
+    .cell-red { background:#fee2e2; color:#7f1d1d; }
+    .cell-na { background:#f3f4f6; color:#6b7280; font-weight:500; }
+
+    /* Drawer */
+    .drawer-overlay { position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:90; }
+    .drawer { position:fixed; top:0; right:-420px; width:420px; height:100vh; background:#fff; z-index:100; box-shadow:-8px 0 24px rgba(0,0,0,.2); transition:right .25s ease; display:flex; flex-direction:column; }
+    .drawer.open { right:0; }
+    .drawer-header { display:flex; justify-content:space-between; align-items:center; padding:14px; border-bottom:1px solid rgba(0,0,0,.08); }
+    .drawer-close { border:none; background:transparent; font-size:26px; cursor:pointer; }
+    .drawer-body { padding:14px; overflow:auto; }
+    .drawer-section { margin-bottom:14px; }
+    .drawer-label { font-size:12px; color:#6b7280; font-weight:700; }
+    .drawer-value { font-size:14px; font-weight:700; margin-top:4px; }
+    .drawer-list { margin:8px 0 0 16px; color:#111827; }
+    .drawer-links a { display:block; margin-top:6px; color:#2563eb; text-decoration:none; font-weight:600; }
+    .drawer-links a:hover { text-decoration:underline; }
+    .muted { color:#6b7280; font-size:12px; }
+  </style>
 </head>
+
 <body>
-    <div class="app">
-        <!-- Sticky Navigation Header -->
-        <header class="header" role="banner">
-            <div class="header-container">
-                <div class="header-brand">
-                    <div class="brand-icon">
-                        <svg width="24" height="24" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Disney Logo -->
-                            <path d="M100 20C55.8 20 20 55.8 20 100s35.8 80 80 80 80-35.8 80-80-35.8-80-80-80zm0 140c-33.1 0-60-26.9-60-60s26.9-60 60-60 60 26.9 60 60-26.9 60-60 60z" fill="currentColor"/>
-                            <path d="M100 50c-27.6 0-50 22.4-50 50s22.4 50 50 50 50-22.4 50-50-22.4-50-50-50zm0 80c-16.6 0-30-13.4-30-30s13.4-30 30-30 30 13.4 30 30-13.4 30-30 30z" fill="currentColor"/>
-                            <circle cx="85" cy="85" r="8" fill="currentColor"/>
-                            <circle cx="115" cy="85" r="8" fill="currentColor"/>
-                            <path d="M75 115c5 10 15 15 25 15s20-5 25-15" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"/>
-                        </svg>
-                    </div>
-                    <div class="brand-text">
-                        <h1>Content Integration Flow</h1>
-                        <p class="brand-subtitle">End-to-End Pipeline Visualization</p>
-                    </div>
-                </div>
-                
-                <div class="header-actions">
-                    <a href="https://jira.disney.com/browse/CPTR-68587" target="_blank" rel="noopener noreferrer" class="epic-badge">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M14 2H6A2 2 0 0 0 4 4V20A2 2 0 0 0 6 22H18A2 2 0 0 0 20 20V8L14 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <polyline points="14,2 14,8 20,8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        Epic CPTR-68587
-                    </a>
-                </div>
-            </div>
-        </header>
+  <div class="app">
+    <!-- Sticky Navigation Header -->
+    <header class="header" role="banner">
+      <div class="header-container">
+        <div class="header-brand">
+          <div class="brand-icon">
+            <!-- Simplified "Disney-like" icon placeholder -->
+            <svg width="24" height="24" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M100 20C55.8 20 20 55.8 20 100s35.8 80 80 80 80-35.8 80-80-35.8-80-80-80zm0 140c-33.1 0-60-26.9-60-60s26.9-60 60-60 60 26.9 60 60-26.9 60-60 60z" fill="currentColor"/>
+              <path d="M75 115c5 10 15 15 25 15s20-5 25-15" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <h1>Cross‑Alliance E2E Integration Console</h1>
+            <p class="brand-subtitle">Hotstar Migration | Content → Media → Data → Streaming</p>
+          </div>
+        </div>
 
-        <!-- Main Content Area -->
-        <main class="main-content">
-            <!-- Control Panel -->
-            <div class="control-panel">
-                <div class="control-section sparkle">
-                    <h3 class="control-title">Diagram Controls</h3>
-                    <div class="control-buttons">
-                        <button id="ampBtn" class="btn btn-secondary pulse-glow" aria-label="AMP">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                                <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                                <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                            </svg>
-                            AMP
-                        </button>
-                        <button id="sipBtn" class="btn btn-secondary" aria-label="SIP">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M21 16V8A2 2 0 0 0 19 6H5A2 2 0 0 0 3 8V16A2 2 0 0 0 5 18H19A2 2 0 0 0 21 16Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <polyline points="7,10 12,15 17,10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            SIP
-                        </button>
-                        <button id="availsBtn" class="btn btn-secondary" aria-label="AVAILS">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
-                                <line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            AVAILS
-                        </button>
-                        <button id="rightsBtn" class="btn btn-outline" aria-label="RIGHTS">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2"/>
-                            </svg>
-                            RIGHTS
-                        </button>
-                    </div>
-                </div>
+        <div class="header-actions">
+          <a href="https://jira.disney.com/browse/CPTR-68587" target="_blank" rel="noopener noreferrer" class="epic-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M14 2H6A2 2 0 0 0 4 4V20A2 2 0 0 0 6 22H18A2 2 0 0 0 20 20V8L14 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <polyline points="14,2 14,8 20,8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Epic CPTR‑68587
+          </a>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="header-container" style="padding-top:0;">
+        <nav class="header-tabs" role="navigation" aria-label="Primary">
+          <button class="tab-btn active" data-tab="overview">Overview</button>
+          <button class="tab-btn" data-tab="flow">E2E Flow</button>
+          <button class="tab-btn" data-tab="coverage">Coverage</button>
+          <button class="tab-btn" data-tab="risks">Risks</button>
+          <button class="tab-btn" data-tab="evidence">Evidence</button>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+
+      <!-- TAB: Overview -->
+      <section id="tab-overview" class="tab-panel active">
+        <div class="overview-grid">
+          <div class="kpi-row">
+            <div class="kpi-card rag-green" id="kpi-content">
+              <div class="kpi-title">Content Platform</div>
+              <div class="kpi-value">GREEN</div>
+              <div class="kpi-sub">Handshake readiness + evidence tracked</div>
             </div>
 
-            <!-- Diagram Container -->
-            <div class="diagram-section">
-                <div class="diagram-header">
-                    <h2>Integration Pipeline</h2>
-                    <p class="diagram-description">Content Platform → Media Platform → Data Layer → Streaming/Client → QA</p>
-                </div>
-                
-                <div class="diagram-container">
-                    <svg id="flowchart" viewBox="0 0 1400 1000" aria-label="Content integration flow diagram">
-                        <!-- Background -->
-                        <defs>
-                            <linearGradient id="bgGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                                <stop offset="0%" style="stop-color:#fafbfc;stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:#f6f8fa;stop-opacity:1" />
-                            </linearGradient>
-                            
-                            <!-- Arrow marker -->
-                            <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
-                                <polygon points="0 0, 10 3, 0 6" fill="#6b7280" />
-                            </marker>
-                            
-                            <!-- Feedback arrow marker -->
-                            <marker id="feedbackArrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
-                                <polygon points="0 0, 10 3, 0 6" fill="#dc2626" />
-                            </marker>
-                            
-                            <!-- Feedback arrow marker -->
-                            <marker id="feedbackArrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
-                                <polygon points="0 0, 10 3, 0 6" fill="#ef4444" />
-                            </marker>
-                            
-                            <!-- Drop shadow filter -->
-                            <filter id="dropshadow" x="-20%" y="-20%" width="140%" height="140%">
-                                <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.1"/>
-                            </filter>
-                            
-                            <!-- Glow effect for QA connections -->
-                            <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                                <feMerge> 
-                                    <feMergeNode in="coloredBlur"/>
-                                    <feMergeNode in="SourceGraphic"/>
-                                </feMerge>
-                            </filter>
-                        </defs>
-
-                        <rect width="1400" height="1000" fill="url(#bgGradient)"/>
-
-                        <!-- Phase 1: Content Platform -->
-                        <g class="phase" data-phase="content">
-                            <rect x="50" y="50" width="300" height="230" rx="12" class="phase-box content-platform" filter="url(#dropshadow)"/>
-                            <text x="200" y="80" class="phase-title">Content Platform</text>
-                            
-                            <rect x="70" y="100" width="260" height="40" rx="8" class="step-box"/>
-                            <text x="200" y="125" class="step-text">Content Ingestion</text>
-                            
-                            <rect x="70" y="150" width="260" height="40" rx="8" class="step-box"/>
-                            <text x="200" y="175" class="step-text">Metadata Creation</text>
-                            
-                            <rect x="70" y="200" width="260" height="40" rx="8" class="step-box"/>
-                            <text x="200" y="225" class="step-text">Asset Processing</text>
-                            
-                            <rect x="70" y="250" width="260" height="20" rx="6" class="detail-box"/>
-                            <text x="200" y="264" class="detail-text">Assets, Rights, Localization</text>
-                        </g>
-
-                        <!-- Arrow 1 -->
-                        <line x1="350" y1="165" x2="430" y2="165" class="flow-arrow" marker-end="url(#arrowhead)"/>
-                        <text x="370" y="155" class="arrow-label">Publish</text>
-                        
-                        <!-- Integration Testing hover zone between Content and Media -->
-                        <rect x="350" y="150" width="80" height="30" class="integration-hover-zone" 
-                              data-integration="content-media" fill="transparent" cursor="pointer"/>
-
-                        <!-- Phase 2: Media Platform -->
-                        <g class="phase" data-phase="media">
-                            <rect x="430" y="50" width="300" height="230" rx="12" class="phase-box media-platform" filter="url(#dropshadow)"/>
-                            <text x="580" y="80" class="phase-title">Media Platform</text>
-                            
-                            <rect x="450" y="100" width="260" height="40" rx="8" class="step-box"/>
-                            <text x="580" y="125" class="step-text">Content Transformation</text>
-                            
-                            <rect x="450" y="150" width="260" height="40" rx="8" class="step-box"/>
-                            <text x="580" y="175" class="step-text">Encoding & Packaging</text>
-                            
-                            <rect x="450" y="200" width="260" height="40" rx="8" class="step-box"/>
-                            <text x="580" y="225" class="step-text">DRM Application</text>
-                            
-                            <rect x="450" y="250" width="260" height="20" rx="6" class="detail-box"/>
-                            <text x="580" y="264" class="detail-text">ABR, Subtitles, Audio Tracks</text>
-                        </g>
-
-                        <!-- Arrow 2 -->
-                        <line x1="730" y1="165" x2="810" y2="165" class="flow-arrow" marker-end="url(#arrowhead)"/>
-                        <text x="745" y="155" class="arrow-label">Deliver</text>
-                        
-                        <!-- Integration Testing hover zone between Media and Data -->
-                        <rect x="730" y="150" width="80" height="30" class="integration-hover-zone" 
-                              data-integration="media-data" fill="transparent" cursor="pointer"/>
-
-                        <!-- Phase 3: Data Layer -->
-                        <g class="phase" data-phase="data">
-                            <rect x="810" y="50" width="300" height="230" rx="12" class="phase-box data-layer" filter="url(#dropshadow)"/>
-                            <text x="960" y="80" class="phase-title">Data Layer</text>
-                            
-                            <rect x="830" y="100" width="260" height="40" rx="8" class="step-box"/>
-                            <text x="960" y="125" class="step-text">Data Aggregation</text>
-                            
-                            <rect x="830" y="150" width="260" height="40" rx="8" class="step-box"/>
-                            <text x="960" y="175" class="step-text">Catalog Sync</text>
-                            
-                            <rect x="830" y="200" width="260" height="40" rx="8" class="step-box"/>
-                            <text x="960" y="225" class="step-text">API Gateway</text>
-                            
-                            <rect x="830" y="250" width="260" height="20" rx="6" class="detail-box"/>
-                            <text x="960" y="264" class="detail-text">Search Index, Recommendations</text>
-                        </g>
-
-                        <!-- Arrow 3 -->
-                        <line x1="960" y1="280" x2="960" y2="360" class="flow-arrow" marker-end="url(#arrowhead)"/>
-                        <text x="970" y="320" class="arrow-label">Expose</text>
-                        
-                        <!-- Integration Testing hover zone between Data and Streaming -->
-                        <rect x="945" y="280" width="30" height="80" class="integration-hover-zone" 
-                              data-integration="data-streaming" fill="transparent" cursor="pointer"/>
-
-                        <!-- Phase 4: Streaming/Client -->
-                        <g class="phase" data-phase="streaming">
-                            <rect x="810" y="360" width="300" height="230" rx="12" class="phase-box streaming" filter="url(#dropshadow)"/>
-                            <text x="960" y="390" class="phase-title">Streaming/Client</text>
-                            
-                            <rect x="830" y="410" width="260" height="40" rx="8" class="step-box"/>
-                            <text x="960" y="435" class="step-text">Content Discovery</text>
-                            
-                            <rect x="830" y="460" width="260" height="40" rx="8" class="step-box"/>
-                            <text x="960" y="485" class="step-text">Playback Engine</text>
-                            
-                            <rect x="830" y="510" width="260" height="40" rx="8" class="step-box"/>
-                            <text x="960" y="535" class="step-text">Analytics & Monitoring</text>
-                            
-                            <rect x="830" y="560" width="260" height="20" rx="6" class="detail-box"/>
-                            <text x="960" y="574" class="detail-text">Multi-device, Offline, CDN</text>
-                        </g>
-
-                        <!-- Arrow 4 (Feedback loop) -->
-                        <line x1="810" y1="475" x2="730" y2="475" class="flow-arrow feedback" marker-end="url(#arrowhead)"/>
-                        <line x1="730" y1="475" x2="730" y2="280" class="flow-arrow feedback"/>
-                        <text x="740" y="380" class="arrow-label feedback-label">Feedback</text>
-
-                        <!-- QA Feedback arrows - animated dotted lines going OUT of QA block -->
-                        <!-- QA feedback to Content Platform -->
-                        <line x1="150" y1="650" x2="140" y2="280" class="qa-feedback-arrow animated-dots" marker-end="url(#feedbackArrowhead)" stroke-dasharray="6,6"/>
-                        
-                        <!-- QA feedback to Media Platform -->
-                        <line x1="400" y1="650" x2="520" y2="280" class="qa-feedback-arrow animated-dots" marker-end="url(#feedbackArrowhead)" stroke-dasharray="6,6"/>
-                        
-                        <!-- QA feedback to Data Layer -->
-                        <line x1="650" y1="650" x2="900" y2="280" class="qa-feedback-arrow animated-dots" marker-end="url(#feedbackArrowhead)" stroke-dasharray="6,6"/>
-                        
-                        <!-- QA feedback to Streaming -->
-                        <line x1="900" y1="650" x2="920" y2="590" class="qa-feedback-arrow animated-dots" marker-end="url(#feedbackArrowhead)" stroke-dasharray="6,6"/>
-                        
-                        <!-- Phase 5: QA Layer (Horizontal) - Same height as other phases -->
-                        <g class="phase qa-phase" data-phase="qa">
-                            <rect x="50" y="650" width="1060" height="230" rx="12" class="phase-box qa-layer" filter="url(#dropshadow)"/>
-                            <text x="580" y="680" class="phase-title">QA & Testing Layer</text>
-                            
-                            <!-- QA Steps - Uniform sizing -->
-                            <rect x="70" y="710" width="240" height="40" rx="8" class="qa-box"/>
-                            <text x="190" y="735" class="qa-text">Content Validation</text>
-                            
-                            <rect x="330" y="710" width="240" height="40" rx="8" class="qa-box"/>
-                            <text x="450" y="735" class="qa-text">Media Quality Check</text>
-                            
-                            <rect x="590" y="710" width="240" height="40" rx="8" class="qa-box"/>
-                            <text x="710" y="735" class="qa-text">Integration Testing</text>
-                            
-                            <rect x="850" y="710" width="240" height="40" rx="8" class="qa-box"/>
-                            <text x="970" y="735" class="qa-text">E2E Playback Testing</text>
-                            
-                            <!-- Test Types - Uniform sizing -->
-                            <rect x="70" y="760" width="240" height="40" rx="8" class="test-box"/>
-                            <text x="190" y="785" class="test-text">Functional Tests</text>
-                            
-                            <rect x="330" y="760" width="240" height="40" rx="8" class="test-box"/>
-                            <text x="450" y="785" class="test-text">Integration Tests</text>
-                            
-                            <rect x="590" y="760" width="240" height="40" rx="8" class="test-box"/>
-                            <text x="710" y="785" class="test-text">End to End</text>
-                            
-                            <rect x="850" y="760" width="240" height="40" rx="8" class="test-box"/>
-                            <text x="970" y="785" class="test-text">Regression Tests</text>
-                            
-                            <!-- Test Execution Details - Reduced height for uniformity -->
-                            <rect x="70" y="810" width="1020" height="60" rx="8" class="execution-box"/>
-                            <text x="580" y="835" class="execution-title">Test Execution & Reporting</text>
-                            <text x="580" y="855" class="execution-detail">• Automated Test Suites • Manual Test Cases • Bug Tracking • Performance Metrics</text>
-                            
-                            <!-- Click indicator for QA layer -->
-                            <circle cx="1080" cy="670" r="8" fill="#ef4444" opacity="0.8"/>
-                            <text x="1075" y="675" class="click-indicator" fill="white" font-size="10" font-weight="bold">?</text>
-                        </g>
-                        
-                        <!-- Integration Testing Tooltips - Moved to end for proper z-index -->
-                        <!-- Tooltip for Content-Media Integration -->
-                        <g class="integration-tooltip" id="tooltip-content-media" style="display: none;">
-                            <rect x="280" y="20" width="220" height="120" rx="8" fill="white" 
-                                  stroke="#3b82f6" stroke-width="2" filter="url(#dropshadow)" cursor="pointer"/>
-                            <text x="290" y="40" class="tooltip-title">Content → Media Integration</text>
-                            <text x="290" y="60" class="tooltip-text">• Format Validation Tests</text>
-                            <text x="290" y="75" class="tooltip-text">• Metadata Transfer Tests</text>
-                            <text x="290" y="90" class="tooltip-text">• File Integrity Checks</text>
-                            <text x="290" y="105" class="tooltip-text">• API Contract Testing</text>
-                            
-                            <text x="290" y="125" class="tooltip-small">Last run: 2 min ago</text>
-                            
-                            <!-- Click to view link -->
-                            <text x="390" y="135" class="tooltip-link" text-anchor="middle">📋 View Test Details</text>
-                            <!-- Invisible clickable area over the link -->
-                            <rect x="320" y="125" width="140" height="15" fill="transparent" cursor="pointer" class="tooltip-click-area"/>
-                        </g>
-
-                        <!-- Tooltip for Media-Data Integration -->
-                        <g class="integration-tooltip" id="tooltip-media-data" style="display: none;">
-                            <rect x="660" y="20" width="220" height="100" rx="8" fill="white" 
-                                  stroke="#3b82f6" stroke-width="2" filter="url(#dropshadow)"/>
-                            <text x="670" y="40" class="tooltip-title">Media → Data Integration</text>
-                            <text x="670" y="60" class="tooltip-text">• Content Ingestion Tests</text>
-                            <text x="670" y="75" class="tooltip-text">• Metadata Sync Tests</text>
-                            <text x="670" y="90" class="tooltip-text">• API Data Consistency</text>
-                            <text x="670" y="105" class="tooltip-text">• Search Index Updates</text>
-                            
-                            <text x="670" y="105" class="tooltip-small">Last run: 5 min ago</text>
-                        </g>
-
-                        <!-- Tooltip for Data-Streaming Integration -->
-                        <g class="integration-tooltip" id="tooltip-data-streaming" style="display: none;">
-                            <rect x="1020" y="250" width="220" height="100" rx="8" fill="white" 
-                                  stroke="#3b82f6" stroke-width="2" filter="url(#dropshadow)"/>
-                            <text x="1030" y="270" class="tooltip-title">Data → Streaming Integration</text>
-                            <text x="1030" y="290" class="tooltip-text">• API Response Tests</text>
-                            <text x="1030" y="305" class="tooltip-text">• Content Catalog Tests</text>
-                            <text x="1030" y="320" class="tooltip-text">• Search Functionality</text>
-                            <text x="1030" y="335" class="tooltip-text">• Performance Metrics</text>
-                            
-                            <text x="1030" y="335" class="tooltip-small">Last run: 1 min ago</text>
-                        </g>
-                    </svg>
-                </div>
+            <div class="kpi-card rag-amber" id="kpi-media">
+              <div class="kpi-title">Media Platform</div>
+              <div class="kpi-value">AMBER</div>
+              <div class="kpi-sub">Watch: packaging/DRM + sync</div>
             </div>
 
-            <!-- Two Column Layout for Legend and Info -->
-            <div class="content-grid">
-                <!-- Legend Card -->
-                <div class="card legend-card floating">
-                    <div class="card-header">
-                        <h3 class="card-title">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <rect x="14" y="14" width="7" height="7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Legend
-                        </h3>
-                    </div>
-                    <div class="card-content">
-                        <div class="legend-grid">
-                            <div class="legend-item">
-                                <div class="legend-color content-platform"></div>
-                                <span>Content Platform</span>
-                            </div>
-                            <div class="legend-item">
-                                <div class="legend-color media-platform"></div>
-                                <span>Media Platform</span>
-                            </div>
-                            <div class="legend-item">
-                                <div class="legend-color data-layer"></div>
-                                <span>Data Layer</span>
-                            </div>
-                            <div class="legend-item">
-                                <div class="legend-color streaming"></div>
-                                <span>Streaming/Client</span>
-                            </div>
-                            <div class="legend-item">
-                                <div class="legend-color qa-layer"></div>
-                                <span>QA & Testing</span>
-                            </div>
-                            <div class="legend-item">
-                                <div style="width: 20px; height: 20px; background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); border-radius: 50%; border: 1.5px solid #1d4ed8; flex-shrink: 0; position: relative;">
-                                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 6px; height: 6px; background: white; border-radius: 50%;"></div>
-                                </div>
-                                <span>Integration Testing (hover arrows)</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Info Panel Card -->
-                <div class="card info-card floating sparkle">
-                    <div class="card-header">
-                        <h3 class="card-title">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
-                                <path d="L12 16L12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="L12 8L12.01 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Integration Details
-                        </h3>
-                    </div>
-                    <div class="card-content">
-                        <div id="phaseInfo" class="phase-info">
-                            <p class="info-placeholder">Click on any phase in the diagram above to see detailed information about that stage of the integration process.</p>
-                        </div>
-                    </div>
-                </div>
+            <div class="kpi-card rag-amber" id="kpi-data">
+              <div class="kpi-title">Data</div>
+              <div class="kpi-value">AMBER</div>
+              <div class="kpi-sub">Ava IDs + regional rating validation</div>
             </div>
-        </main>
+
+            <div class="kpi-card rag-amber" id="kpi-streaming">
+              <div class="kpi-title">Streaming / Client</div>
+              <div class="kpi-value">AMBER</div>
+              <div class="kpi-sub">Experience parity & discovery</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Coverage Heatmap (Milestone × Alliance)</h3>
+              <p class="muted">This is a UI placeholder. Hook it to Jira/Xray later if needed.</p>
+            </div>
+            <div class="card-content">
+              <div id="heatmap" class="heatmap"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Top Risks / Dependencies</h3>
+            </div>
+            <div class="card-content">
+              <ul id="riskList" class="risk-list">
+                <li>Lower-env testing depends on upstream flow enablement (Data validation chain).</li>
+                <li>Ownership must remain explicit per handshake (avoid ad-hoc execution).</li>
+                <li>Identifier standardization: Ava entity/avail IDs (not DMC media IDs).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB: Flow -->
+      <section id="tab-flow" class="tab-panel">
+        <!-- Control Panel -->
+        <div class="control-panel">
+          <div class="control-section sparkle">
+            <h3 class="control-title">Scenario Filters (Optional)</h3>
+            <div class="control-buttons">
+              <button id="ampBtn" class="btn btn-secondary pulse-glow" aria-label="AMP">
+                AMP
+              </button>
+              <button id="sipBtn" class="btn btn-secondary" aria-label="SIP">
+                SIP
+              </button>
+              <button id="availsBtn" class="btn btn-secondary" aria-label="AVAILS">
+                AVAILS
+              </button>
+              <button id="rightsBtn" class="btn btn-outline" aria-label="RIGHTS">
+                RIGHTS
+              </button>
+            </div>
+            <p class="muted" style="margin-top:8px;">Tip: Click a phase (box) or a handshake zone (between phases) to open the details drawer.</p>
+          </div>
+        </div>
+
+        <!-- Diagram Container -->
+        <div class="diagram-section">
+          <div class="diagram-header">
+            <h2>Integration Pipeline</h2>
+            <p class="diagram-description">Content Platform → Media Platform → Data Layer → Streaming/Client → QA</p>
+          </div>
+
+          <div class="diagram-container">
+            <svg id="flowchart" viewBox="0 0 1400 1000" aria-label="Content integration flow diagram">
+              <defs>
+                <linearGradient id="bgGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" style="stop-color:#fafbfc;stop-opacity:1" />
+                  <stop offset="100%" style="stop-color:#f6f8fa;stop-opacity:1" />
+                </linearGradient>
+
+                <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                  <polygon points="0 0, 10 3, 0 6" fill="#6b7280" />
+                </marker>
+
+                <!-- Keep only ONE feedbackArrowhead (fix duplicate id bug) -->
+                <marker id="feedbackArrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                  <polygon points="0 0, 10 3, 0 6" fill="#ef4444" />
+                </marker>
+
+                <filter id="dropshadow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.1"/>
+                </filter>
+
+                <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                  <feMerge>
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+                </filter>
+              </defs>
+
+              <rect width="1400" height="1000" fill="url(#bgGradient)"/>
+
+              <!-- Phase 1: Content Platform -->
+              <g class="phase" data-phase="content">
+                <rect x="50" y="50" width="300" height="230" rx="12" class="phase-box content-platform" filter="url(#dropshadow)"/>
+                <text x="200" y="80" class="phase-title">Content Platform</text>
+
+                <rect x="70" y="100" width="260" height="40" rx="8" class="step-box"/>
+                <text x="200" y="125" class="step-text">Content Ingestion</text>
+
+                <rect x="70" y="150" width="260" height="40" rx="8" class="step-box"/>
+                <text x="200" y="175" class="step-text">Metadata Creation</text>
+
+                <rect x="70" y="200" width="260" height="40" rx="8" class="step-box"/>
+                <text x="200" y="225" class="step-text">Asset Processing</text>
+
+                <rect x="70" y="250" width="260" height="20" rx="6" class="detail-box"/>
+                <text x="200" y="264" class="detail-text">Assets, Rights, Localization</text>
+              </g>
+
+              <!-- Arrow 1 -->
+              <line x1="350" y1="165" x2="430" y2="165" class="flow-arrow" marker-end="url(#arrowhead)"/>
+              <text x="370" y="155" class="arrow-label">Publish</text>
+
+              <!-- Handshake zone: Content ↔ Media -->
+              <rect x="350" y="150" width="80" height="30" class="integration-hover-zone"
+                    data-integration="content-media" fill="transparent" cursor="pointer"/>
+
+              <!-- Phase 2: Media Platform -->
+              <g class="phase" data-phase="media">
+                <rect x="430" y="50" width="300" height="230" rx="12" class="phase-box media-platform" filter="url(#dropshadow)"/>
+                <text x="580" y="80" class="phase-title">Media Platform</text>
+
+                <rect x="450" y="100" width="260" height="40" rx="8" class="step-box"/>
+                <text x="580" y="125" class="step-text">Content Transformation</text>
+
+                <rect x="450" y="150" width="260" height="40" rx="8" class="step-box"/>
+                <text x="580" y="175" class="step-text">Encoding &amp; Packaging</text>
+
+                <rect x="450" y="200" width="260" height="40" rx="8" class="step-box"/>
+                <text x="580" y="225" class="step-text">DRM Application</text>
+
+                <rect x="450" y="250" width="260" height="20" rx="6" class="detail-box"/>
+                <text x="580" y="264" class="detail-text">ABR, Subtitles, Audio Tracks</text>
+              </g>
+
+              <!-- Arrow 2 -->
+              <line x1="730" y1="165" x2="810" y2="165" class="flow-arrow" marker-end="url(#arrowhead)"/>
+              <text x="745" y="155" class="arrow-label">Deliver</text>
+
+              <!-- Handshake zone: Media ↔ Data -->
+              <rect x="730" y="150" width="80" height="30" class="integration-hover-zone"
+                    data-integration="media-data" fill="transparent" cursor="pointer"/>
+
+              <!-- Phase 3: Data Layer -->
+              <g class="phase" data-phase="data">
+                <rect x="810" y="50" width="300" height="230" rx="12" class="phase-box data-layer" filter="url(#dropshadow)"/>
+                <text x="960" y="80" class="phase-title">Data Layer</text>
+
+                <rect x="830" y="100" width="260" height="40" rx="8" class="step-box"/>
+                <text x="960" y="125" class="step-text">Data Aggregation</text>
+
+                <rect x="830" y="150" width="260" height="40" rx="8" class="step-box"/>
+                <text x="960" y="175" class="step-text">Catalog Sync</text>
+
+                <rect x="830" y="200" width="260" height="40" rx="8" class="step-box"/>
+                <text x="960" y="225" class="step-text">API Gateway</text>
+
+                <rect x="830" y="250" width="260" height="20" rx="6" class="detail-box"/>
+                <text x="960" y="264" class="detail-text">Search Index, Recommendations</text>
+              </g>
+
+              <!-- Arrow 3 -->
+              <line x1="960" y1="280" x2="960" y2="360" class="flow-arrow" marker-end="url(#arrowhead)"/>
+              <text x="970" y="320" class="arrow-label">Expose</text>
+
+              <!-- Handshake zone: Data ↔ Streaming -->
+              <rect x="945" y="280" width="30" height="80" class="integration-hover-zone"
+                    data-integration="data-streaming" fill="transparent" cursor="pointer"/>
+
+              <!-- Phase 4: Streaming/Client -->
+              <g class="phase" data-phase="streaming">
+                <rect x="810" y="360" width="300" height="230" rx="12" class="phase-box streaming" filter="url(#dropshadow)"/>
+                <text x="960" y="390" class="phase-title">Streaming/Client</text>
+
+                <rect x="830" y="410" width="260" height="40" rx="8" class="step-box"/>
+                <text x="960" y="435" class="step-text">Content Discovery</text>
+
+                <rect x="830" y="460" width="260" height="40" rx="8" class="step-box"/>
+                <text x="960" y="485" class="step-text">Playback Engine</text>
+
+                <rect x="830" y="510" width="260" height="40" rx="8" class="step-box"/>
+                <text x="960" y="535" class="step-text">Analytics &amp; Monitoring</text>
+
+                <rect x="830" y="560" width="260" height="20" rx="6" class="detail-box"/>
+                <text x="960" y="574" class="detail-text">Multi-device, Offline, CDN</text>
+              </g>
+
+              <!-- Feedback loop -->
+              <line x1="810" y1="475" x2="730" y2="475" class="flow-arrow feedback" marker-end="url(#arrowhead)"/>
+              <line x1="730" y1="475" x2="730" y2="280" class="flow-arrow feedback"/>
+              <text x="740" y="380" class="arrow-label feedback-label">Feedback</text>
+
+              <!-- QA feedback arrows -->
+              <line x1="150" y1="650" x2="140" y2="280" class="qa-feedback-arrow animated-dots" marker-end="url(#feedbackArrowhead)" stroke-dasharray="6,6"/>
+              <line x1="400" y1="650" x2="520" y2="280" class="qa-feedback-arrow animated-dots" marker-end="url(#feedbackArrowhead)" stroke-dasharray="6,6"/>
+              <line x1="650" y1="650" x2="900" y2="280" class="qa-feedback-arrow animated-dots" marker-end="url(#feedbackArrowhead)" stroke-dasharray="6,6"/>
+              <line x1="900" y1="650" x2="920" y2="590" class="qa-feedback-arrow animated-dots" marker-end="url(#feedbackArrowhead)" stroke-dasharray="6,6"/>
+
+              <!-- Phase 5: QA Layer -->
+              <g class="phase qa-phase" data-phase="qa">
+                <rect x="50" y="650" width="1060" height="230" rx="12" class="phase-box qa-layer" filter="url(#dropshadow)"/>
+                <text x="580" y="680" class="phase-title">QA &amp; Testing Layer</text>
+
+                <rect x="70" y="710" width="240" height="40" rx="8" class="qa-box"/>
+                <text x="190" y="735" class="qa-text">Content Validation</text>
+
+                <rect x="330" y="710" width="240" height="40" rx="8" class="qa-box"/>
+                <text x="450" y="735" class="qa-text">Media Quality Check</text>
+
+                <rect x="590" y="710" width="240" height="40" rx="8" class="qa-box"/>
+                <text x="710" y="735" class="qa-text">Integration Testing</text>
+
+                <rect x="850" y="710" width="240" height="40" rx="8" class="qa-box"/>
+                <text x="970" y="735" class="qa-text">E2E Playback Testing</text>
+
+                <rect x="70" y="760" width="240" height="40" rx="8" class="test-box"/>
+                <text x="190" y="785" class="test-text">Functional Tests</text>
+
+                <rect x="330" y="760" width="240" height="40" rx="8" class="test-box"/>
+                <text x="450" y="785" class="test-text">Integration Tests</text>
+
+                <rect x="590" y="760" width="240" height="40" rx="8" class="test-box"/>
+                <text x="710" y="785" class="test-text">End to End</text>
+
+                <rect x="850" y="760" width="240" height="40" rx="8" class="test-box"/>
+                <text x="970" y="785" class="test-text">Regression Tests</text>
+
+                <rect x="70" y="810" width="1020" height="60" rx="8" class="execution-box"/>
+                <text x="580" y="835" class="execution-title">Test Execution &amp; Reporting</text>
+                <text x="580" y="855" class="execution-detail">• Automated Suites • Manual Cases • Defects • Performance Metrics</text>
+              </g>
+
+              <!-- Tooltips -->
+              <g class="integration-tooltip" id="tooltip-content-media" style="display: none;">
+                <rect x="280" y="20" width="220" height="130" rx="8" fill="white"
+                      stroke="#3b82f6" stroke-width="2" filter="url(#dropshadow)" cursor="pointer"/>
+                <text x="290" y="40" class="tooltip-title">Content → Media</text>
+                <text x="290" y="60" class="tooltip-text">• Format validation</text>
+                <text x="290" y="75" class="tooltip-text">• Metadata transfer</text>
+                <text x="290" y="90" class="tooltip-text">• Integrity checks</text>
+                <text x="290" y="105" class="tooltip-text">• API contract checks</text>
+                <text x="290" y="125" class="tooltip-small">Click: open test sheet</text>
+
+                <text x="390" y="145" class="tooltip-link" text-anchor="middle">📋 View Test Details</text>
+                <rect x="320" y="135" width="140" height="18" fill="transparent" cursor="pointer" class="tooltip-click-area"/>
+              </g>
+
+              <g class="integration-tooltip" id="tooltip-media-data" style="display: none;">
+                <rect x="660" y="20" width="240" height="130" rx="8" fill="white"
+                      stroke="#3b82f6" stroke-width="2" filter="url(#dropshadow)" cursor="pointer"/>
+                <text x="670" y="40" class="tooltip-title">Media → Data</text>
+                <text x="670" y="60" class="tooltip-text">• Ingestion checks</text>
+                <text x="670" y="75" class="tooltip-text">• Metadata sync</text>
+                <text x="670" y="90" class="tooltip-text">• Consistency validation</text>
+                <text x="670" y="105" class="tooltip-text">• Search index updates</text>
+                <text x="670" y="125" class="tooltip-small">Click: open handshake details</text>
+              </g>
+
+              <g class="integration-tooltip" id="tooltip-data-streaming" style="display: none;">
+                <rect x="1020" y="250" width="240" height="130" rx="8" fill="white"
+                      stroke="#3b82f6" stroke-width="2" filter="url(#dropshadow)" cursor="pointer"/>
+                <text x="1030" y="270" class="tooltip-title">Data → Streaming</text>
+                <text x="1030" y="290" class="tooltip-text">• API response tests</text>
+                <text x="1030" y="305" class="tooltip-text">• Catalog correctness</text>
+                <text x="1030" y="320" class="tooltip-text">• Search/discovery</text>
+                <text x="1030" y="335" class="tooltip-text">• Performance signals</text>
+                <text x="1030" y="355" class="tooltip-small">Click: open handshake details</text>
+              </g>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Legend + Info -->
+        <div class="content-grid">
+          <div class="card legend-card floating">
+            <div class="card-header">
+              <h3 class="card-title">Legend</h3>
+            </div>
+            <div class="card-content">
+              <div class="legend-grid">
+                <div class="legend-item"><div class="legend-color content-platform"></div><span>Content Platform</span></div>
+                <div class="legend-item"><div class="legend-color media-platform"></div><span>Media Platform</span></div>
+                <div class="legend-item"><div class="legend-color data-layer"></div><span>Data Layer</span></div>
+                <div class="legend-item"><div class="legend-color streaming"></div><span>Streaming/Client</span></div>
+                <div class="legend-item"><div class="legend-color qa-layer"></div><span>QA &amp; Testing</span></div>
+                <div class="legend-item"><span>Hover zone = handshake; Click = details</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card info-card floating sparkle">
+            <div class="card-header">
+              <h3 class="card-title">Quick Notes</h3>
+            </div>
+            <div class="card-content">
+              <p class="muted">Use the drawer for ownership, validations, risks, and evidence links.</p>
+              <div id="phaseInfo" class="phase-info">
+                <p class="info-placeholder">Click any phase/handshake above.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB: Coverage -->
+      <section id="tab-coverage" class="tab-panel">
+        <div class="card">
+          <div class="card-header"><h3 class="card-title">Coverage</h3></div>
+          <div class="card-content" id="coverageDetails">
+            Select a phase or handshake in <strong>E2E Flow</strong> to drill down.
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB: Risks -->
+      <section id="tab-risks" class="tab-panel">
+        <div class="card">
+          <div class="card-header"><h3 class="card-title">Risks & Dependencies</h3></div>
+          <div class="card-content" id="riskDetails">
+            Select a phase or handshake in <strong>E2E Flow</strong> to view risks.
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB: Evidence -->
+      <section id="tab-evidence" class="tab-panel">
+        <div class="card">
+          <div class="card-header"><h3 class="card-title">Evidence & Traceability</h3></div>
+          <div class="card-content" id="evidenceList">
+            Evidence links are populated from handshake definitions (static for now).
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Drawer -->
+  <div id="drawerOverlay" class="drawer-overlay" hidden></div>
+  <aside id="drawer" class="drawer" aria-hidden="true">
+    <div class="drawer-header">
+      <h3 id="drawerTitle">Details</h3>
+      <button id="drawerClose" class="drawer-close" aria-label="Close">×</button>
     </div>
 
-    <script src="app.js"></script>
+    <div class="drawer-body">
+      <div class="drawer-section">
+        <div class="drawer-label">Owner</div>
+        <div id="drawerOwner" class="drawer-value">—</div>
+      </div>
+
+      <div class="drawer-section">
+        <div class="drawer-label">Validations</div>
+        <ul id="drawerValidations" class="drawer-list"></ul>
+      </div>
+
+      <div class="drawer-section">
+        <div class="drawer-label">Evidence</div>
+        <div id="drawerEvidence" class="drawer-links"></div>
+      </div>
+
+      <div class="drawer-section">
+        <div class="drawer-label">Risks / Blockers</div>
+        <ul id="drawerRisks" class="drawer-list"></ul>
+      </div>
+    </div>
+  </aside>
+
+  <script src="app.js"></script>
 </body>
 </html>
+``
