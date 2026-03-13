@@ -275,9 +275,9 @@ function setupKPICards() {
   
   // Status cycle: Green -> Amber -> Red -> Green
   const statusCycle = [
-    { class: 'rag-green', value: 'GREEN', color: '#22c55e' },
-    { class: 'rag-amber', value: 'AMBER', color: '#f59e0b' },
-    { class: 'rag-red', value: 'RED', color: '#dc2626' }
+    { class: 'rag-green', circle: 'green', color: '#22c55e' },
+    { class: 'rag-amber', circle: 'amber', color: '#f59e0b' },
+    { class: 'rag-red', circle: 'red', color: '#dc2626' }
   ];
   
   kpiCards.forEach(card => {
@@ -299,10 +299,13 @@ function setupKPICards() {
       // Apply new status
       card.classList.add(newStatus.class);
       
-      // Update the value text
-      const valueEl = card.querySelector('.kpi-value');
-      if (valueEl) {
-        valueEl.textContent = newStatus.value;
+      // Update the circle color
+      const circleEl = card.querySelector('.status-circle');
+      if (circleEl) {
+        // Remove all circle classes
+        circleEl.classList.remove('green', 'amber', 'red');
+        // Add new circle class
+        circleEl.classList.add(newStatus.circle);
       }
       
       // Add visual feedback
