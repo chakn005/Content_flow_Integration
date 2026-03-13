@@ -10,13 +10,18 @@ body {
   margin: 0;
   font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   color: #111827;
-  background: #f6f8fa;
+  background: var(--disney-blue-bg);
 }
 
 a { color: inherit; }
 .muted { color: #6b7280; font-size: 12px; }
 
 :root{
+
+  --disney-blue: #0A2A66;
+  --disney-blue-soft: #E8F0FA;
+  --disney-blue-bg: #F2F6FC;
+
   --bg: #f6f8fa;
   --surface: #ffffff;
   --border: rgba(0,0,0,0.08);
@@ -36,6 +41,13 @@ a { color: inherit; }
 
 /* ---------- App Shell ---------- */
 .app {
+
+background: linear-gradient(
+    to bottom,
+    #F2F6FC 0%,
+    #FFFFFF 40%
+);
+
   min-height: 100vh;
   display: flex;
   flex-direction: column;
