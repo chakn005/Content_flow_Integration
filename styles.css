@@ -26,7 +26,7 @@ a { color: inherit; }
   --blue: #2563eb;
   --blue-600: #1d4ed8;
 
-  --green: #16a34a;
+  --green: #22c55e;
   --amber: #f59e0b;
   --red: #dc2626;
 
@@ -208,6 +208,18 @@ a { color: inherit; }
   background: white;
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.kpi-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.kpi-card:active {
+  transform: scale(0.98);
 }
 
 .kpi-title { font-weight: 900; color: #111827; }
@@ -233,9 +245,9 @@ a { color: inherit; }
   font-size: 12px;
 }
 .heatmap th { background: #fafafa; text-align: left; }
-.cell-green { background: #dcfce7; color: #14532d; }
-.cell-amber { background: #ffedd5; color: #7c2d12; }
-.cell-red   { background: #fee2e2; color: #7f1d1d; }
+.cell-green { background: #dcfce7; color: #166534; }
+.cell-amber { background: #fef3c7; color: #92400e; }
+.cell-red   { background: #fee2e2; color: #991b1b; }
 .cell-na    { background: #f3f4f6; color: #6b7280; font-weight: 700; }
 
 /* ---------- Control Panel ---------- */

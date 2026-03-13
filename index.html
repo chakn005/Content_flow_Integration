@@ -105,25 +105,25 @@
       <section id="tab-overview" class="tab-panel active">
         <div class="overview-grid">
           <div class="kpi-row">
-            <div class="kpi-card rag-green" id="kpi-content">
+            <div class="kpi-card rag-green" id="kpi-content" title="Click to change status">
               <div class="kpi-title">Content Platform</div>
               <div class="kpi-value">GREEN</div>
               <div class="kpi-sub">Handshake readiness + evidence tracked</div>
             </div>
 
-            <div class="kpi-card rag-amber" id="kpi-media">
+            <div class="kpi-card rag-amber" id="kpi-media" title="Click to change status">
               <div class="kpi-title">Media Platform</div>
               <div class="kpi-value">AMBER</div>
               <div class="kpi-sub">Watch: packaging/DRM + sync</div>
             </div>
 
-            <div class="kpi-card rag-amber" id="kpi-data">
+            <div class="kpi-card rag-amber" id="kpi-data" title="Click to change status">
               <div class="kpi-title">Data</div>
               <div class="kpi-value">AMBER</div>
               <div class="kpi-sub">Ava IDs + regional rating validation</div>
             </div>
 
-            <div class="kpi-card rag-amber" id="kpi-streaming">
+            <div class="kpi-card rag-amber" id="kpi-streaming" title="Click to change status">
               <div class="kpi-title">Streaming / Client</div>
               <div class="kpi-value">AMBER</div>
               <div class="kpi-sub">Experience parity & discovery</div>
@@ -434,9 +434,23 @@
       <!-- TAB: Coverage -->
       <section id="tab-coverage" class="tab-panel">
         <div class="card">
-          <div class="card-header"><h3 class="card-title">Coverage</h3></div>
+          <div class="card-header">
+            <h3 class="card-title">Coverage Details</h3>
+            <p class="muted">Click any phase box or handshake zone in the E2E Flow tab to view detailed coverage information</p>
+          </div>
           <div class="card-content" id="coverageDetails">
-            Select a phase or handshake in <strong>E2E Flow</strong> to drill down.
+            <div style="text-align: center; padding: 40px 20px; color: #6b7280;">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 16px; opacity: 0.5;">
+                <path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              <h4 style="margin: 0 0 8px; font-weight: 800;">No Phase Selected</h4>
+              <p style="margin: 0; font-weight: 600;">Go to <strong>E2E Flow</strong> tab and click on:</p>
+              <ul style="margin: 12px 0 0; padding: 0; list-style: none; font-weight: 600;">
+                <li>📦 Any colored phase box (Content, Media, Data, Streaming, QA)</li>
+                <li>🔗 Any handshake zone between phases</li>
+              </ul>
+            </div>
           </div>
         </div>
       </section>
@@ -444,9 +458,24 @@
       <!-- TAB: Risks -->
       <section id="tab-risks" class="tab-panel">
         <div class="card">
-          <div class="card-header"><h3 class="card-title">Risks & Dependencies</h3></div>
+          <div class="card-header">
+            <h3 class="card-title">Risks & Dependencies</h3>
+            <p class="muted">Click any phase box or handshake zone in the E2E Flow tab to view risk analysis</p>
+          </div>
           <div class="card-content" id="riskDetails">
-            Select a phase or handshake in <strong>E2E Flow</strong> to view risks.
+            <div style="text-align: center; padding: 40px 20px; color: #6b7280;">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 16px; opacity: 0.5;">
+                <path d="M12 9V13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 17H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10.29 3.86L1.82 18A2 2 0 0 0 3.64 21H20.36A2 2 0 0 0 22.18 18L13.71 3.86A2 2 0 0 0 10.29 3.86Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <h4 style="margin: 0 0 8px; font-weight: 800;">No Phase Selected</h4>
+              <p style="margin: 0; font-weight: 600;">Go to <strong>E2E Flow</strong> tab and click on:</p>
+              <ul style="margin: 12px 0 0; padding: 0; list-style: none; font-weight: 600;">
+                <li>📦 Any colored phase box (Content, Media, Data, Streaming, QA)</li>
+                <li>🔗 Any handshake zone between phases</li>
+              </ul>
+            </div>
           </div>
         </div>
       </section>

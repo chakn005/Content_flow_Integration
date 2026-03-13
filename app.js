@@ -269,6 +269,64 @@ function renderHeatmap() {
   el.innerHTML = html;
 }
 
+// ===== KPI Card Status Cycling =====
+function setupKPICards() {
+  const kpiCards = document.querySelectorAll('.kpi-card');
+  
+  // Status cycle: Green -> Amber -> Red -> Green
+  const statusCycle = [
+    { class: 'rag-green', value: 'GREEN', color: '#22c55e' },
+    { class: 'rag-amber', value: 'AMBER', color: '#f59e0b' },
+    { class: 'rag-red', value: 'RED', color: '#dc2626' }
+  ];
+  
+  kpiCards.forEach(card => {
+    let currentStatusIndex = 0;
+    
+    // Initialize with current status (Green by default)
+    const currentClass = card.classList.contains('rag-amber') ? 1 : 
+                        card.classList.contains('rag-red') ? 2 : 0;
+    currentStatusIndex = currentClass;
+    
+    card.addEventListener('click', () => {
+      // Remove current status class
+      statusCycle.forEach(status => card.classList.remove(status.class));
+      
+      // Move to next status
+      currentStatusIndex = (currentStatusIndex + 1) % statusCycle.length;
+      const newStatus = statusCycle[currentStatusIndex];
+      
+      // Apply new status
+      card.classList.add(newStatus.class);
+      
+      // Update the value text
+      const valueEl = card.querySelector('.kpi-value');
+      if (valueEl) {
+        valueEl.textContent = newStatus.value;
+      }
+      
+      // Add visual feedback
+      card.style.transform = 'scale(0.98)';
+      setTimeout(() => {
+        card.style.transform = 'scale(1)';
+      }, 150);
+    });
+    
+    // Add hover effect to indicate clickability
+    card.style.cursor = 'pointer';
+    card.style.transition = 'all 0.15s ease';
+    
+    card.addEventListener('mouseenter', () => {
+      card.style.transform = 'translateY(-2px)';
+      card.style.boxShadow = '0 4px 20px rgba(0,0,0,0.1)';
+    });
+    
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'translateY(0)';
+      card.style.boxShadow = 'var(--shadow)';
+    });
+  });
+}
 // ===== Evidence tab =====
 function renderEvidence() {
   const el = document.getElementById("evidenceList");
@@ -340,6 +398,11 @@ function setupTooltips(drawerApi) {
       e.stopPropagation();
       const h = handshakeData[integrationId];
       if (!h) return;
+      
+      // Update Coverage and Risks tabs for handshake
+      updateCoverageTab(h, 'handshake');
+      updateRisksTab(h, 'handshake');
+      
       drawerApi.openDrawer({
         title: h.title,
         owner: h.owner,
@@ -377,6 +440,11 @@ function setupTooltips(drawerApi) {
         id === "tooltip-media-data" ? "media-data" : "data-streaming";
       const h = handshakeData[integrationId];
       if (!h) return;
+      
+      // Update Coverage and Risks tabs for handshake
+      updateCoverageTab(h, 'handshake');
+      updateRisksTab(h, 'handshake');
+      
       drawerApi.openDrawer({
         title: h.title,
         owner: h.owner,
@@ -388,6 +456,114 @@ function setupTooltips(drawerApi) {
   });
 }
 
+// ===== Update Coverage and Risks tabs =====
+function updateCoverageTab(data, type = 'phase') {
+  const coverageEl = document.getElementById('coverageDetails');
+  if (!coverageEl) return;
+
+  if (type === 'phase') {
+    coverageEl.innerHTML = `
+      <div style="margin-bottom: 16px;">
+        <h4 style="margin: 0 0 8px; font-weight: 800;">${data.title}</h4>
+        <p style="color: #6b7280; margin: 0 0 16px;">${data.description}</p>
+      </div>
+      
+      <div style="margin-bottom: 20px;">
+        <h5 style="margin: 0 0 12px; font-weight: 800; color: #111827;">Process Steps</h5>
+        <ul style="margin: 0; padding-left: 20px; line-height: 1.6;">
+          ${data.steps.map(step => `<li style="margin-bottom: 8px; font-weight: 600;">${step}</li>`).join('')}
+        </ul>
+      </div>
+      
+      <div>
+        <h5 style="margin: 0 0 12px; font-weight: 800; color: #111827;">Test Coverage Points</h5>
+        <ul style="margin: 0; padding-left: 20px; line-height: 1.6;">
+          ${data.testPoints.map(point => `<li style="margin-bottom: 8px; color: #2563eb; font-weight: 600;">${point}</li>`).join('')}
+        </ul>
+      </div>
+    `;
+  } else {
+    // Handshake coverage
+    coverageEl.innerHTML = `
+      <div style="margin-bottom: 16px;">
+        <h4 style="margin: 0 0 8px; font-weight: 800;">${data.title}</h4>
+        <p style="color: #6b7280; margin: 0 0 16px;">Integration point validation and testing</p>
+      </div>
+      
+      <div style="margin-bottom: 20px;">
+        <h5 style="margin: 0 0 12px; font-weight: 800; color: #111827;">Owner</h5>
+        <p style="margin: 0; font-weight: 600; color: #059669;">${data.owner}</p>
+      </div>
+      
+      <div>
+        <h5 style="margin: 0 0 12px; font-weight: 800; color: #111827;">Validation Requirements</h5>
+        <ul style="margin: 0; padding-left: 20px; line-height: 1.6;">
+          ${data.validations.map(validation => `<li style="margin-bottom: 8px; color: #2563eb; font-weight: 600;">${validation}</li>`).join('')}
+        </ul>
+      </div>
+    `;
+  }
+}
+
+function updateRisksTab(data, type = 'phase') {
+  const risksEl = document.getElementById('riskDetails');
+  if (!risksEl) return;
+
+  if (type === 'phase') {
+    const phaseRisks = [
+      "Ownership must remain explicit at the phase boundary",
+      "Attach evidence per execution for traceability", 
+      "Downstream validation depends on upstream readiness"
+    ];
+    
+    risksEl.innerHTML = `
+      <div style="margin-bottom: 16px;">
+        <h4 style="margin: 0 0 8px; font-weight: 800;">${data.title} - Risk Assessment</h4>
+        <p style="color: #6b7280; margin: 0 0 16px;">Potential risks and mitigation strategies</p>
+      </div>
+      
+      <div style="margin-bottom: 20px;">
+        <h5 style="margin: 0 0 12px; font-weight: 800; color: #dc2626;">Phase-Specific Risks</h5>
+        <ul style="margin: 0; padding-left: 20px; line-height: 1.6;">
+          ${phaseRisks.map(risk => `<li style="margin-bottom: 8px; color: #dc2626; font-weight: 600;">${risk}</li>`).join('')}
+        </ul>
+      </div>
+      
+      <div>
+        <h5 style="margin: 0 0 12px; font-weight: 800; color: #f59e0b;">Dependencies</h5>
+        <ul style="margin: 0; padding-left: 20px; line-height: 1.6;">
+          <li style="margin-bottom: 8px; color: #f59e0b; font-weight: 600;">Requires upstream phase completion</li>
+          <li style="margin-bottom: 8px; color: #f59e0b; font-weight: 600;">Test environment availability</li>
+          <li style="margin-bottom: 8px; color: #f59e0b; font-weight: 600;">Cross-team coordination needed</li>
+        </ul>
+      </div>
+    `;
+  } else {
+    // Handshake risks
+    risksEl.innerHTML = `
+      <div style="margin-bottom: 16px;">
+        <h4 style="margin: 0 0 8px; font-weight: 800;">${data.title} - Integration Risks</h4>
+        <p style="color: #6b7280; margin: 0 0 16px;">Handshake-specific risks and blockers</p>
+      </div>
+      
+      <div style="margin-bottom: 20px;">
+        <h5 style="margin: 0 0 12px; font-weight: 800; color: #dc2626;">Known Risks</h5>
+        <ul style="margin: 0; padding-left: 20px; line-height: 1.6;">
+          ${data.risks.map(risk => `<li style="margin-bottom: 8px; color: #dc2626; font-weight: 600;">${risk}</li>`).join('')}
+        </ul>
+      </div>
+      
+      <div>
+        <h5 style="margin: 0 0 12px; font-weight: 800; color: #f59e0b;">Mitigation Actions</h5>
+        <ul style="margin: 0; padding-left: 20px; line-height: 1.6;">
+          <li style="margin-bottom: 8px; color: #059669; font-weight: 600;">Establish clear ownership boundaries</li>
+          <li style="margin-bottom: 8px; color: #059669; font-weight: 600;">Implement contract testing</li>
+          <li style="margin-bottom: 8px; color: #059669; font-weight: 600;">Regular sync meetings between teams</li>
+        </ul>
+      </div>
+    `;
+  }
+}
 // ===== Phases =====
 function setupPhases(drawerApi) {
   const phases = document.querySelectorAll(".phase");
@@ -404,6 +580,10 @@ function setupPhases(drawerApi) {
         phaseType === "data" ? "Data Alliance" :
         phaseType === "streaming" ? "Streaming / Client QA" :
         "Cross‑Fleet QA";
+
+      // Update Coverage and Risks tabs
+      updateCoverageTab(data, 'phase');
+      updateRisksTab(data, 'phase');
 
       drawerApi.openDrawer({
         title: data.title,
@@ -435,6 +615,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupTabs();
   renderHeatmap();
   renderEvidence();
+  setupKPICards(); // Add KPI card interactivity
 
   const drawerApi = setupDrawer();
   setupPhases(drawerApi);
