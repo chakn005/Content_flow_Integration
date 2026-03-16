@@ -222,7 +222,7 @@
         </div>
 
         <div class="diagram-container">
-          <svg id="flowchart" viewBox="0 0 1400 1000" aria-label="Content integration flow diagram">
+          <svg id="flowchart" viewBox="0 0 1400 650" aria-label="Content integration flow diagram">
             <defs>
               <linearGradient id="bgGradient" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%" style="stop-color:#fafbfc;stop-opacity:1" />
@@ -233,178 +233,116 @@
                 <polygon points="0 0, 10 3, 0 6" fill="#6b7280" />
               </marker>
 
-              <marker id="feedbackArrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
-                <polygon points="0 0, 10 3, 0 6" fill="#ef4444" />
-              </marker>
-
               <filter id="dropshadow" x="-20%" y="-20%" width="140%" height="140%">
                 <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.1"/>
               </filter>
-
-              <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                <feMerge>
-                  <feMergeNode in="coloredBlur"/>
-                  <feMergeNode in="SourceGraphic"/>
-                </feMerge>
-              </filter>
             </defs>
 
-            <rect width="1400" height="1000" fill="url(#bgGradient)"/>
-
-            <!-- Phase 1: Content Platform -->
+            <!-- Main Phases Row -->
+            <!-- Content Platform -->
             <g class="phase" data-phase="content">
-              <rect x="50" y="50" width="300" height="230" rx="12" class="phase-box content-platform" filter="url(#dropshadow)"/>
-              <text x="200" y="80" class="phase-title">Content Platform</text>
-
-              <rect x="70" y="100" width="260" height="40" rx="8" class="step-box"/>
-              <text x="200" y="125" class="step-text">Content Ingestion</text>
-
-              <rect x="70" y="150" width="260" height="40" rx="8" class="step-box"/>
-              <text x="200" y="175" class="step-text">Metadata Creation</text>
-
-              <rect x="70" y="200" width="260" height="40" rx="8" class="step-box"/>
-              <text x="200" y="225" class="step-text">Asset Processing</text>
-
-              <rect x="70" y="250" width="260" height="20" rx="6" class="detail-box"/>
-              <text x="200" y="264" class="detail-text">Assets, Rights, Localization</text>
+              <rect x="50" y="50" width="250" height="120" rx="12" class="phase-box content-platform" filter="url(#dropshadow)"/>
+              <text x="175" y="80" class="phase-title">Content Platform</text>
+              <text x="175" y="105" class="step-text">Content Ingestion</text>
+              <text x="175" y="125" class="step-text">Metadata Creation</text>
+              <text x="175" y="145" class="step-text">Asset Processing</text>
+              <text x="175" y="165" class="detail-text">Assets, Rights, Localization</text>
             </g>
 
-            <!-- Arrow 1 -->
-            <line x1="350" y1="165" x2="430" y2="165" class="flow-arrow" marker-end="url(#arrowhead)"/>
-            <text x="370" y="155" class="arrow-label">Publish</text>
-
-            <!-- Handshake zone: Content ↔ Media -->
-            <rect x="350" y="150" width="80" height="30" class="integration-hover-zone"
-                  data-integration="content-media" fill="transparent" cursor="pointer"/>
-
-            <!-- Phase 2: Media Platform -->
+            <!-- Media Platform -->
             <g class="phase" data-phase="media">
-              <rect x="430" y="50" width="300" height="230" rx="12" class="phase-box media-platform" filter="url(#dropshadow)"/>
-              <text x="580" y="80" class="phase-title">Media Platform</text>
-
-              <rect x="450" y="100" width="260" height="40" rx="8" class="step-box"/>
-              <text x="580" y="125" class="step-text">Content Transformation</text>
-
-              <rect x="450" y="150" width="260" height="40" rx="8" class="step-box"/>
-              <text x="580" y="175" class="step-text">Encoding &amp; Packaging</text>
-
-              <rect x="450" y="200" width="260" height="40" rx="8" class="step-box"/>
-              <text x="580" y="225" class="step-text">DRM Application</text>
-
-              <rect x="450" y="250" width="260" height="20" rx="6" class="detail-box"/>
-              <text x="580" y="264" class="detail-text">ABR, Subtitles, Audio Tracks</text>
+              <rect x="350" y="50" width="250" height="120" rx="12" class="phase-box media-platform" filter="url(#dropshadow)"/>
+              <text x="475" y="80" class="phase-title">Media Platform</text>
+              <text x="475" y="105" class="step-text">Content Transformation</text>
+              <text x="475" y="125" class="step-text">Encoding &amp; Packaging</text>
+              <text x="475" y="145" class="step-text">DRM Application</text>
+              <text x="475" y="165" class="detail-text">ABR, Subtitles, Audio</text>
             </g>
 
-            <!-- Arrow 2 -->
-            <line x1="730" y1="165" x2="810" y2="165" class="flow-arrow" marker-end="url(#arrowhead)"/>
-            <text x="745" y="155" class="arrow-label">Deliver</text>
-
-            <!-- Handshake zone: Media ↔ Data -->
-            <rect x="730" y="150" width="80" height="30" class="integration-hover-zone"
-                  data-integration="media-data" fill="transparent" cursor="pointer"/>
-
-            <!-- Phase 3: Data Layer -->
+            <!-- Data Layer -->
             <g class="phase" data-phase="data">
-              <rect x="810" y="50" width="300" height="230" rx="12" class="phase-box data-layer" filter="url(#dropshadow)"/>
-              <text x="960" y="80" class="phase-title">Data Layer</text>
-
-              <rect x="830" y="100" width="260" height="40" rx="8" class="step-box"/>
-              <text x="960" y="125" class="step-text">Data Aggregation</text>
-
-              <rect x="830" y="150" width="260" height="40" rx="8" class="step-box"/>
-              <text x="960" y="175" class="step-text">Catalog Sync</text>
-
-              <rect x="830" y="200" width="260" height="40" rx="8" class="step-box"/>
-              <text x="960" y="225" class="step-text">API Gateway</text>
-
-              <rect x="830" y="250" width="260" height="20" rx="6" class="detail-box"/>
-              <text x="960" y="264" class="detail-text">Search Index, Recommendations</text>
+              <rect x="650" y="50" width="250" height="120" rx="12" class="phase-box data-layer" filter="url(#dropshadow)"/>
+              <text x="775" y="80" class="phase-title">Data Layer</text>
+              <text x="775" y="105" class="step-text">Data Aggregation</text>
+              <text x="775" y="125" class="step-text">Catalog Sync</text>
+              <text x="775" y="145" class="step-text">API Gateway</text>
+              <text x="775" y="165" class="detail-text">Search, Recommendations</text>
             </g>
 
-            <!-- Arrow 3 -->
-            <line x1="960" y1="280" x2="960" y2="360" class="flow-arrow" marker-end="url(#arrowhead)"/>
-            <text x="970" y="320" class="arrow-label">Expose</text>
-
-            <!-- Handshake zone: Data ↔ Streaming -->
-            <rect x="945" y="280" width="30" height="80" class="integration-hover-zone"
-                  data-integration="data-streaming" fill="transparent" cursor="pointer"/>
-
-            <!-- Phase 4: Streaming/Client -->
+            <!-- Streaming -->
             <g class="phase" data-phase="streaming">
-              <rect x="810" y="360" width="300" height="230" rx="12" class="phase-box streaming" filter="url(#dropshadow)"/>
-              <text x="960" y="390" class="phase-title">Streaming/Client</text>
-
-              <rect x="830" y="410" width="260" height="40" rx="8" class="step-box"/>
-              <text x="960" y="435" class="step-text">Content Discovery</text>
-
-              <rect x="830" y="460" width="260" height="40" rx="8" class="step-box"/>
-              <text x="960" y="485" class="step-text">Playback Engine</text>
-
-              <rect x="830" y="510" width="260" height="40" rx="8" class="step-box"/>
-              <text x="960" y="535" class="step-text">Analytics &amp; Monitoring</text>
-
-              <rect x="830" y="560" width="260" height="20" rx="6" class="detail-box"/>
-              <text x="960" y="574" class="detail-text">Multi-device, Offline, CDN</text>
+              <rect x="950" y="50" width="250" height="120" rx="12" class="phase-box streaming" filter="url(#dropshadow)"/>
+              <text x="1075" y="80" class="phase-title">Streaming/Client</text>
+              <text x="1075" y="105" class="step-text">Content Discovery</text>
+              <text x="1075" y="125" class="step-text">Playback Engine</text>
+              <text x="1075" y="145" class="step-text">Analytics</text>
+              <text x="1075" y="165" class="detail-text">Multi-device, CDN</text>
             </g>
 
-            <!-- Feedback loop -->
-            <line x1="810" y1="475" x2="730" y2="475" class="flow-arrow feedback" marker-end="url(#arrowhead)"/>
-            <line x1="730" y1="475" x2="730" y2="280" class="flow-arrow feedback"/>
-            <text x="740" y="380" class="arrow-label feedback-label">Feedback</text>
+            <!-- Integration Testing (2nd Row) -->
+            <a href="https://jira.disney.com/browse/CPTR-68465" target="_blank" rel="noopener noreferrer">
+              <rect x="400" y="220" width="600" height="100" rx="12" class="integration-hub" filter="url(#dropshadow)" style="cursor: pointer;"/>
+              <text x="700" y="250" class="phase-title" style="cursor: pointer;">Integration Testing</text>
+              <text x="700" y="275" class="step-text" style="cursor: pointer;">Cross-Phase Contract Testing • API Integration • Data Flow Validation</text>
+              <text x="700" y="295" class="step-text" style="cursor: pointer;">Performance Testing • Security Validation • Compatibility Checks</text>
+            </a>
 
-            <!-- QA feedback arrows -->
-            <line x1="150" y1="650" x2="140" y2="280" class="qa-feedback-arrow animated-dots" marker-end="url(#feedbackArrowhead)" stroke-dasharray="6,6"/>
-            <line x1="400" y1="650" x2="520" y2="280" class="qa-feedback-arrow animated-dots" marker-end="url(#feedbackArrowhead)" stroke-dasharray="6,6"/>
-            <line x1="650" y1="650" x2="900" y2="280" class="qa-feedback-arrow animated-dots" marker-end="url(#feedbackArrowhead)" stroke-dasharray="6,6"/>
-            <line x1="900" y1="650" x2="920" y2="590" class="qa-feedback-arrow animated-dots" marker-end="url(#feedbackArrowhead)" stroke-dasharray="6,6"/>
+            <!-- Connections from phases to Integration Hub -->
+            <line x1="175" y1="170" x2="450" y2="220" class="flow-arrow" marker-end="url(#arrowhead)"/>
+            <line x1="475" y1="170" x2="550" y2="220" class="flow-arrow" marker-end="url(#arrowhead)"/>
+            <line x1="775" y1="170" x2="850" y2="220" class="flow-arrow" marker-end="url(#arrowhead)"/>
+            <line x1="1075" y1="170" x2="950" y2="220" class="flow-arrow" marker-end="url(#arrowhead)"/>
 
-            <!-- Phase 5: QA Layer -->
-            <g class="phase qa-phase" data-phase="qa">
-              <rect x="50" y="650" width="1060" height="230" rx="12" class="phase-box qa-layer" filter="url(#dropshadow)"/>
-              <text x="580" y="680" class="phase-title">QA &amp; Testing Layer</text>
+            <!-- Phase Testing Boxes (3rd Row) -->
+            <!-- Content Tests -->
+            <rect x="50" y="370" width="250" height="80" rx="8" class="phase-testing" filter="url(#dropshadow)"/>
+            <text x="175" y="395" class="phase-title" style="font-size: 14px;">Content Tests</text>
+            <text x="175" y="415" class="step-text" style="font-size: 11px;">• Format Validation</text>
+            <text x="175" y="430" class="step-text" style="font-size: 11px;">• Metadata Integrity</text>
+            <text x="175" y="445" class="step-text" style="font-size: 11px;">• Rights Verification</text>
 
-              <rect x="70" y="710" width="240" height="40" rx="8" class="qa-box"/>
-              <text x="190" y="735" class="qa-text">Content Validation</text>
+            <!-- Media Tests -->
+            <rect x="350" y="370" width="250" height="80" rx="8" class="phase-testing" filter="url(#dropshadow)"/>
+            <text x="475" y="395" class="phase-title" style="font-size: 14px;">Media Tests</text>
+            <text x="475" y="415" class="step-text" style="font-size: 11px;">• Encoding Quality</text>
+            <text x="475" y="430" class="step-text" style="font-size: 11px;">• DRM Validation</text>
+            <text x="475" y="445" class="step-text" style="font-size: 11px;">• Package Integrity</text>
 
-              <rect x="330" y="710" width="240" height="40" rx="8" class="qa-box"/>
-              <text x="450" y="735" class="qa-text">Media Quality Check</text>
+            <!-- Data Tests -->
+            <rect x="650" y="370" width="250" height="80" rx="8" class="phase-testing" filter="url(#dropshadow)"/>
+            <text x="775" y="395" class="phase-title" style="font-size: 14px;">Data Tests</text>
+            <text x="775" y="415" class="step-text" style="font-size: 11px;">• API Contract</text>
+            <text x="775" y="430" class="step-text" style="font-size: 11px;">• Catalog Sync</text>
+            <text x="775" y="445" class="step-text" style="font-size: 11px;">• Search Index</text>
 
-              <rect x="590" y="710" width="240" height="40" rx="8" class="qa-box"/>
-              <text x="710" y="735" class="qa-text">Integration Testing</text>
+            <!-- Streaming Tests -->
+            <rect x="950" y="370" width="250" height="80" rx="8" class="phase-testing" filter="url(#dropshadow)"/>
+            <text x="1075" y="395" class="phase-title" style="font-size: 14px;">Streaming Tests</text>
+            <text x="1075" y="415" class="step-text" style="font-size: 11px;">• Playback Quality</text>
+            <text x="1075" y="430" class="step-text" style="font-size: 11px;">• Discovery UX</text>
+            <text x="1075" y="445" class="step-text" style="font-size: 11px;">• Performance</text>
 
-              <rect x="850" y="710" width="240" height="40" rx="8" class="qa-box"/>
-              <text x="970" y="735" class="qa-text">E2E Playback Testing</text>
+            <!-- Connections from Integration Hub to phase tests -->
+            <line x1="450" y1="320" x2="175" y2="370" class="flow-arrow" marker-end="url(#arrowhead)"/>
+            <line x1="550" y1="320" x2="475" y2="370" class="flow-arrow" marker-end="url(#arrowhead)"/>
+            <line x1="850" y1="320" x2="775" y2="370" class="flow-arrow" marker-end="url(#arrowhead)"/>
+            <line x1="950" y1="320" x2="1075" y2="370" class="flow-arrow" marker-end="url(#arrowhead)"/>
 
-              <rect x="70" y="760" width="240" height="40" rx="8" class="test-box"/>
-              <text x="190" y="785" class="test-text">Functional Tests</text>
-
-              <rect x="330" y="760" width="240" height="40" rx="8" class="test-box"/>
-              <text x="450" y="785" class="test-text">Integration Tests</text>
-
-              <rect x="590" y="760" width="240" height="40" rx="8" class="test-box"/>
-              <text x="710" y="785" class="test-text">End to End</text>
-
-              <rect x="850" y="760" width="240" height="40" rx="8" class="test-box"/>
-              <text x="970" y="785" class="test-text">Regression Tests</text>
-
-              <rect x="70" y="810" width="1020" height="60" rx="8" class="execution-box"/>
-              <text x="580" y="835" class="execution-title">Test Execution &amp; Reporting</text>
-              <text x="580" y="855" class="execution-detail">• Automated Suites • Manual Cases • Defects • Performance Metrics</text>
-            </g>
+            <!-- Arrows between 3rd row blocks (phase tests) -->
+            <line x1="300" y1="410" x2="350" y2="410" class="flow-arrow" marker-end="url(#arrowhead)"/>
+            <line x1="600" y1="410" x2="650" y2="410" class="flow-arrow" marker-end="url(#arrowhead)"/>
+            <line x1="900" y1="410" x2="950" y2="410" class="flow-arrow" marker-end="url(#arrowhead)"/>
 
             <!-- Tooltips -->
             <g class="integration-tooltip" id="tooltip-content-media" style="display: none;">
-              <rect x="280" y="20" width="220" height="130" rx="8" fill="white"
+              <rect x="280" y="20" width="220" height="110" rx="8" fill="white"
                     stroke="#3b82f6" stroke-width="2" filter="url(#dropshadow)" cursor="pointer"/>
               <text x="290" y="40" class="tooltip-title">Content → Media</text>
               <text x="290" y="60" class="tooltip-text">• Format validation</text>
               <text x="290" y="75" class="tooltip-text">• Metadata transfer</text>
               <text x="290" y="90" class="tooltip-text">• Integrity checks</text>
               <text x="290" y="105" class="tooltip-text">• API contract checks</text>
-
-
-              <rect x="320" y="135" width="140" height="18" fill="transparent" cursor="pointer" class="tooltip-click-area"/>
+              <rect x="320" y="115" width="140" height="18" fill="transparent" cursor="pointer" class="tooltip-click-area"/>
             </g>
 
             <g class="integration-tooltip" id="tooltip-media-data" style="display: none;">
@@ -453,7 +391,10 @@
                 <div class="legend-color streaming"></div>Streaming / Client
               </div>
               <div class="legend-item">
-                <div class="legend-color qa-layer"></div>QA & Testing
+                <div class="legend-color integration-hub"></div>Integration Testing
+              </div>
+              <div class="legend-item">
+                <div class="legend-color phase-testing"></div>Phase Tests
               </div>
               <div class="legend-item">
                 Hover = hint • Click = details
