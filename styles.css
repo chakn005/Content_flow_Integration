@@ -9,14 +9,14 @@ html, body { height: 100%; }
 body {
   margin: 0;
   font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  color: #111827;
+  color: var(--text);
   background: var(--disney-blue-bg);
   background-attachment: fixed;
   min-height: 100vh;
   position: relative;
 }
 
-/* Disney magical background overlay */
+/* Disney blue-soft theme overlay */
 body::before {
   content: '';
   position: fixed;
@@ -25,9 +25,9 @@ body::before {
   width: 100%;
   height: 100%;
   background: 
-    radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
-    radial-gradient(circle at 40% 40%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
+    radial-gradient(circle at 20% 80%, rgba(232, 240, 250, 0.5) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.6) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(10, 42, 102, 0.04) 0%, transparent 60%);
   pointer-events: none;
   z-index: -1;
 }
@@ -36,37 +36,32 @@ a { color: inherit; }
 .muted { color: #6b7280; font-size: 12px; }
 
 :root{
-
+  /* Disney blue-soft theme */
   --disney-blue: #0A2A66;
   --disney-blue-soft: #E8F0FA;
-  --disney-blue-bg: linear-gradient(135deg, #0A2A66 0%, #1F4A8C 25%, #2563EB 50%, #3B82F6 75%, #60A5FA 100%);
+  --disney-blue-bg: linear-gradient(180deg, #E8F0FA 0%, #D6E6F8 30%, #F0F5FC 70%, #ffffff 100%);
 
-  --bg: #f6f8fa;
-  --surface: rgba(255, 255, 255, 0.95);
-  --border: rgba(0,0,0,0.08);
-  --shadow: 0 2px 10px rgba(0,0,0,0.05);
-  --shadow-strong: 0 8px 24px rgba(0,0,0,0.2);
+  --bg: #E8F0FA;
+  --surface: rgba(255, 255, 255, 0.92);
+  --surface-soft: rgba(232, 240, 250, 0.85);
+  --border: rgba(10, 42, 102, 0.12);
+  --shadow: 0 2px 10px rgba(10, 42, 102, 0.06);
+  --shadow-strong: 0 8px 24px rgba(10, 42, 102, 0.12);
 
-  --blue: #2563eb;
-  --blue-600: #1d4ed8;
+  --blue: #1F5BB5;
+  --blue-600: #0A2A66;
 
   --green: #22c55e;
   --amber: #f59e0b;
   --red: #dc2626;
 
-  --text: #111827;
-  --text2: #6b7280;
+  --text: #0A2A66;
+  --text2: #3B5278;
 }
 
 /* ---------- App Shell ---------- */
 .app {
-
-background: linear-gradient(
-    to bottom,
-    #F2F6FC 0%,
-    #FFFFFF 40%
-);
-
+  background: linear-gradient(180deg, #E8F0FA 0%, #E0EDFA 25%, #F5F9FE 60%, #ffffff 100%);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -77,7 +72,7 @@ background: linear-gradient(
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(255,255,255,0.92);
+  background: rgba(232, 240, 250, 0.95);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--border);
 }
@@ -102,7 +97,7 @@ background: linear-gradient(
   width: 44px;
   height: 44px;
   border-radius: 12px;
-  background: #111827;
+  background: var(--disney-blue);
   color: #fff;
   display: grid;
   place-items: center;
@@ -137,16 +132,16 @@ background: linear-gradient(
   padding: 8px 10px;
   border-radius: 12px;
   border: 1px solid var(--border);
-  background: #fff;
+  background: var(--surface);
   text-decoration: none;
   font-weight: 800;
   font-size: 12px;
-  color: #111827;
+  color: var(--text);
   box-shadow: var(--shadow);
 }
 .epic-badge:hover {
-  border-color: rgba(37, 99, 235, 0.35);
-  box-shadow: 0 4px 16px rgba(37,99,235,0.12);
+  border-color: rgba(10, 42, 102, 0.35);
+  box-shadow: 0 4px 16px rgba(10, 42, 102, 0.12);
   transform: translateY(-1px);
   transition: 120ms ease;
 }
@@ -162,20 +157,20 @@ background: linear-gradient(
 }
 
 .tab-btn {
-  border: 1px solid rgba(0,0,0,0.12);
-  background: rgba(255,255,255,0.7);
+  border: 1px solid var(--border);
+  background: var(--surface);
   border-radius: 10px;
   padding: 8px 12px;
   font-weight: 800;
   cursor: pointer;
   font-size: 12px;
-  color: #111827;
+  color: var(--text);
 }
-.tab-btn:hover { border-color: rgba(37,99,235,0.35); }
+.tab-btn:hover { border-color: rgba(10, 42, 102, 0.35); background: var(--disney-blue-soft); }
 .tab-btn.active {
-  background: #111827;
+  background: var(--disney-blue);
   color: #fff;
-  border-color: #111827;
+  border-color: var(--disney-blue);
 }
 
 .tab-panel { display: none; }
@@ -236,7 +231,7 @@ background: linear-gradient(
 .kpi-card {
   border-radius: 14px;
   padding: 14px;
-  background: white;
+  background: var(--surface);
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
   cursor: pointer;
@@ -246,7 +241,7 @@ background: linear-gradient(
 
 .kpi-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 20px rgba(10, 42, 102, 0.1);
 }
 
 .kpi-card:active {
@@ -255,7 +250,7 @@ background: linear-gradient(
 
 .kpi-title { 
   font-weight: 900; 
-  color: #111827; 
+  color: var(--text); 
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -312,11 +307,11 @@ background: linear-gradient(
   font-weight: 800;
   font-size: 12px;
 }
-.heatmap th { background: #fafafa; text-align: left; }
+.heatmap th { background: var(--disney-blue-soft); text-align: left; color: var(--text); }
 .cell-green { background: #dcfce7; color: #166534; }
 .cell-amber { background: #fef3c7; color: #92400e; }
 .cell-red   { background: #fee2e2; color: #991b1b; }
-.cell-na    { background: #f3f4f6; color: #6b7280; font-weight: 700; }
+.cell-na    { background: rgba(232, 240, 250, 0.7); color: var(--text2); font-weight: 700; }
 
 /* Clickable heatmap cells */
 .clickable-cell {
@@ -348,7 +343,7 @@ background: linear-gradient(
   margin: 0 0 10px;
   font-size: 13px;
   font-weight: 900;
-  color: #111827;
+  color: var(--text);
 }
 
 .control-buttons {
@@ -361,8 +356,8 @@ background: linear-gradient(
 .btn {
   appearance: none;
   border: 1px solid var(--border);
-  background: #fff;
-  color: #111827;
+  background: var(--surface);
+  color: var(--text);
   border-radius: 12px;
   padding: 10px 12px;
   font-weight: 900;
@@ -371,24 +366,24 @@ background: linear-gradient(
   align-items: center;
   gap: 8px;
   cursor: pointer;
-  box-shadow: 0 1px 8px rgba(0,0,0,0.04);
+  box-shadow: var(--shadow);
 }
 .btn:hover {
-  border-color: rgba(37,99,235,0.35);
-  box-shadow: 0 4px 16px rgba(37,99,235,0.10);
+  border-color: rgba(10, 42, 102, 0.35);
+  box-shadow: 0 4px 16px rgba(10, 42, 102, 0.1);
   transform: translateY(-1px);
   transition: 120ms ease;
 }
 
 .btn-secondary {
-  background: rgba(37,99,235,0.08);
-  border-color: rgba(37,99,235,0.20);
-  color: #111827;
+  background: var(--disney-blue-soft);
+  border-color: rgba(10, 42, 102, 0.2);
+  color: var(--text);
 }
 
 .btn-outline {
-  background: #fff;
-  border-color: rgba(17,24,39,0.18);
+  background: var(--surface);
+  border-color: var(--border);
 }
 
 /* ---------- Diagram Section ---------- */
@@ -451,7 +446,7 @@ background: linear-gradient(
   gap: 10px;
   font-weight: 800;
   font-size: 12px;
-  color: #111827;
+  color: var(--text);
 }
 
 .legend-color {
@@ -489,7 +484,7 @@ background: linear-gradient(
   right: -420px;
   width: 420px;
   height: 100vh;
-  background: #fff;
+  background: var(--surface);
   z-index: 100;
   box-shadow: var(--shadow-strong);
   transition: right 0.25s ease;
@@ -518,7 +513,7 @@ background: linear-gradient(
   background: transparent;
   font-size: 26px;
   cursor: pointer;
-  color: #111827;
+  color: var(--text);
   line-height: 1;
 }
 
@@ -543,7 +538,7 @@ background: linear-gradient(
 
 .drawer-list {
   margin: 8px 0 0 16px;
-  color: #111827;
+  color: var(--text);
   font-weight: 700;
   font-size: 12px;
   line-height: 1.4;
@@ -559,54 +554,54 @@ background: linear-gradient(
 }
 .drawer-links a:hover { text-decoration: underline; }
 
-/* ---------- SVG Styles (Phase boxes, arrows, tooltips) ---------- */
+/* ---------- SVG Styles (Phase boxes, arrows, tooltips) — Disney blue-soft ---------- */
 .phase-box {
-  stroke: rgba(17,24,39,0.12);
+  stroke: rgba(10,42,102,0.15);
   stroke-width: 1.5;
-  fill: #ffffff;
+  fill: #E8F0FA;
 }
 
-.content-platform { fill: #eff6ff; }
-.media-platform   { fill: #f5f3ff; }
-.data-layer       { fill: #ecfdf5; }
-.streaming        { fill: #fffbeb; }
-.qa-layer         { fill: #fff1f2; }
+.content-platform { fill: #E8F0FA; }
+.media-platform   { fill: #E8E6FA; }
+.data-layer       { fill: #E0F2EC; }
+.streaming        { fill: #FEF9E8; }
+.qa-layer         { fill: #FFEEF0; }
 
 .phase-title {
   font-size: 16px;
   font-weight: 900;
-  fill: #111827;
+  fill: #0A2A66;
   text-anchor: middle;
 }
 
 .step-box {
-  fill: #ffffff;
-  stroke: rgba(17,24,39,0.10);
+  fill: #E8F0FA;
+  stroke: rgba(10,42,102,0.12);
   stroke-width: 1.2;
 }
 
 .step-text {
   font-size: 12px;
   font-weight: 800;
-  fill: #111827;
+  fill: #0A2A66;
   text-anchor: middle;
 }
 
 .detail-box {
-  fill: rgba(17,24,39,0.04);
-  stroke: rgba(17,24,39,0.08);
+  fill: rgba(10,42,102,0.06);
+  stroke: rgba(10,42,102,0.1);
   stroke-width: 1;
 }
 
 .detail-text {
   font-size: 10px;
   font-weight: 800;
-  fill: #374151;
+  fill: #3B5278;
   text-anchor: middle;
 }
 
 .flow-arrow {
-  stroke: #6b7280;
+  stroke: #3B5278;
   stroke-width: 2;
 }
 
@@ -617,61 +612,61 @@ background: linear-gradient(
 
 .arrow-label {
   font-size: 10px;
-  fill: #6b7280;
+  fill: #3B5278;
   font-weight: 900;
 }
 
 .feedback-label { fill: #ef4444; }
 
 .qa-box {
-  fill: #ffffff;
-  stroke: rgba(17,24,39,0.10);
+  fill: #E8F0FA;
+  stroke: rgba(10,42,102,0.12);
   stroke-width: 1.2;
 }
 
 .qa-text {
   font-size: 12px;
   font-weight: 900;
-  fill: #111827;
+  fill: #0A2A66;
   text-anchor: middle;
 }
 
 .test-box {
-  fill: rgba(37,99,235,0.06);
-  stroke: rgba(37,99,235,0.18);
+  fill: rgba(10,42,102,0.08);
+  stroke: rgba(10,42,102,0.2);
   stroke-width: 1.2;
 }
 
 .test-text {
   font-size: 12px;
   font-weight: 900;
-  fill: #111827;
+  fill: #0A2A66;
   text-anchor: middle;
 }
 
 .execution-box {
-  fill: #ffffff;
-  stroke: rgba(17,24,39,0.10);
+  fill: #E8F0FA;
+  stroke: rgba(10,42,102,0.12);
   stroke-width: 1.2;
 }
 
 .execution-title {
   font-size: 12px;
   font-weight: 950;
-  fill: #111827;
+  fill: #0A2A66;
   text-anchor: middle;
 }
 
 .execution-detail {
   font-size: 10px;
   font-weight: 800;
-  fill: #374151;
+  fill: #3B5278;
   text-anchor: middle;
 }
 
 /* Hover zone cursor hint (transparent rects) */
 .integration-hover-zone:hover {
-  outline: 2px dashed rgba(37,99,235,0.35);
+  outline: 2px dashed rgba(10,42,102,0.4);
 }
 
 /* Tooltip visuals */
@@ -690,19 +685,19 @@ background: linear-gradient(
 .tooltip-title {
   font-size: 12px;
   font-weight: 950;
-  fill: #111827;
+  fill: #0A2A66;
 }
 
 .tooltip-text {
   font-size: 10px;
   font-weight: 800;
-  fill: #374151;
+  fill: #3B5278;
 }
 
 .tooltip-small {
   font-size: 10px;
   font-weight: 800;
-  fill: #6b7280;
+  fill: #3B5278;
 }
 
 .tooltip-link {
