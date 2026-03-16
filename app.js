@@ -1,3 +1,6 @@
+// Integration test sheet URL (Run tests / View Test Details)
+const TEST_SHEET_URL = "https://docs.google.com/spreadsheets/d/1twFm_Jmv2j6sVVkD2WOp2fv3AMEHJGDLqqlO9654u3Y/edit?pli=1&gid=1024354782#gid=1024354782";
+
 const phaseData = {
   content: {
     title: "Content Platform Phase",
@@ -429,7 +432,7 @@ function setupTooltips(drawerApi) {
           setTimeout(() => {
             if (!tooltip.classList.contains("show")) tooltip.style.display = "none";
           }, 250);
-        }, 100);
+        }, 400);
       });
 
       tooltip.addEventListener("mouseenter", () => {
@@ -465,20 +468,18 @@ function setupTooltips(drawerApi) {
     });
   });
 
-  // Keep your Google Sheet open behavior for Content→Media tooltip
+  // Open test sheet: Content→Media tooltip (View Test Details)
   const contentMediaTooltip = document.getElementById("tooltip-content-media");
   if (contentMediaTooltip) {
-    const clickArea = contentMediaTooltip.querySelector(".tooltip-click-area");
-    const url = "https://docs.google.com/spreadsheets/d/1twFm_Jmv2j6sVVkD2WOp2fv3AMEHJGDLqqlO9654u3Y/edit?pli=1&gid=1024354782#gid=1024354782";
-
-    const openLink = (e) => {
+    const openTestSheet = (e) => {
       e.preventDefault();
       e.stopPropagation();
-      window.open(url, "_blank");
+      window.open(TEST_SHEET_URL, "_blank");
     };
-
-    contentMediaTooltip.addEventListener("click", openLink);
-    if (clickArea) clickArea.addEventListener("click", openLink);
+    contentMediaTooltip.addEventListener("click", openTestSheet);
+    contentMediaTooltip.querySelectorAll(".tooltip-click-area, .tooltip-link").forEach(el => {
+      el.addEventListener("click", openTestSheet);
+    });
   }
 
   // Clicking Media→Data or Data→Streaming tooltip opens drawer too
@@ -662,12 +663,23 @@ function setupPhases(drawerApi) {
   });
 }
 
+// ===== Run tests button =====
+function setupRunTestsButton() {
+  const btn = document.getElementById("runTestsBtn");
+  if (btn) {
+    btn.addEventListener("click", () => {
+      window.open(TEST_SHEET_URL, "_blank");
+    });
+  }
+}
+
 // ===== App init =====
 document.addEventListener("DOMContentLoaded", () => {
   setupTabs();
   renderHeatmap();
   renderEvidence();
-  setupKPICards(); // Add KPI card interactivity
+  setupKPICards();
+  setupRunTestsButton();
 
   const drawerApi = setupDrawer();
   setupPhases(drawerApi);
