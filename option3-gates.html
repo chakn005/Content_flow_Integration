@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Option 3: Testing Gates - E2E Integration Console</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    :root {
+      --disney-blue: #0A2A66;
+      --disney-blue-soft: #E8F0FA;
+    }
+    .brand-icon { background: var(--disney-blue); }
+    .header { background: rgba(232, 240, 250, 0.95); border-bottom: 1px solid rgba(10, 42, 102, 0.12); }
+    .header::after { content: ""; display: block; height: 3px; background: linear-gradient(to right, var(--disney-blue), #1F80E0, #3B82F6); }
+    
+    /* Option 3 Specific Styles */
+    .qa-gate { fill: #FEF3C7; stroke: #F59E0B; stroke-width: 3; }
+    .gate-passed { fill: #DCFCE7; stroke: #16A34A; stroke-width: 3; }
+    .gate-failed { fill: #FEE2E2; stroke: #DC2626; stroke-width: 3; }
+    .test-results { fill: #F1F5F9; stroke: #64748B; stroke-width: 1; }
+    .gate-connection { stroke: #F59E0B; stroke-width: 3; }
+    .results-connection { stroke: #64748B; stroke-width: 2; stroke-dasharray: 4,2; }
+  </style>
+</head>
+<body>
+<div class="app">
+  <header class="header" role="banner">
+    <div class="header-container">
+      <div class="header-brand">
+        <div class="brand-icon" style="background: transparent; box-shadow: none;">
+          <svg width="40" height="32" viewBox="0 0 64 48" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="32" cy="28" r="14" fill="#0A2A66"/>
+            <circle cx="18" cy="14" r="10" fill="#0A2A66"/>
+            <circle cx="46" cy="14" r="10" fill="#0A2A66"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>Option 3: Testing Gates</h1>
+          <p class="brand-subtitle">Quality gates between phases with pass/fail validation</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="diagram-section">
+      <div class="diagram-header">
+        <h2>Option 3: Testing Gates Between Phases</h2>
+        <p class="diagram-description">Each phase must pass quality gates before proceeding</p>
+      </div>
+
+      <div class="diagram-container">
+        <svg viewBox="0 0 1600 700" aria-label="Testing gates flow">
+          <defs>
+            <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+              <polygon points="0 0, 10 3, 0 6" fill="#6b7280" />
+            </marker>
+            <marker id="gateArrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+              <polygon points="0 0, 10 3, 0 6" fill="#F59E0B" />
+            </marker>
+            <filter id="dropshadow" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.1"/>
+            </filter>
+          </defs>
+
+          <!-- Content Platform -->
+          <rect x="50" y="100" width="200" height="120" rx="12" class="phase-box content-platform" filter="url(#dropshadow)"/>
+          <text x="150" y="130" class="phase-title">Content Platform</text>
+          <text x="150" y="155" class="step-text">Content Ingestion</text>
+          <text x="150" y="175" class="step-text">Metadata Creation</text>
+          <text x="150" y="195" class="step-text">Asset Processing</text>
+
+          <!-- QA Gate 1 -->
+          <rect x="300" y="120" width="80" height="80" rx="8" class="gate-passed" filter="url(#dropshadow)"/>
+          <text x="340" y="145" class="phase-title" style="font-size: 12px;">QA</text>
+          <text x="340" y="160" class="phase-title" style="font-size: 12px;">Gate 1</text>
+          <text x="340" y="180" class="step-text" style="font-size: 10px;">✓ PASSED</text>
+          <text x="340" y="195" class="detail-text" style="font-size: 9px;">Content Valid</text>
+
+          <!-- Media Platform -->
+          <rect x="430" y="100" width="200" height="120" rx="12" class="phase-box media-platform" filter="url(#dropshadow)"/>
+          <text x="530" y="130" class="phase-title">Media Platform</text>
+          <text x="530" y="155" class="step-text">Transformation</text>
+          <text x="530" y="175" class="step-text">Encoding</text>
+          <text x="530" y="195" class="step-text">DRM Application</text>
+
+          <!-- QA Gate 2 -->
+          <rect x="680" y="120" width="80" height="80" rx="8" class="qa-gate" filter="url(#dropshadow)"/>
+          <text x="720" y="145" class="phase-title" style="font-size: 12px;">QA</text>
+          <text x="720" y="160" class="phase-title" style="font-size: 12px;">Gate 2</text>
+          <text x="720" y="180" class="step-text" style="font-size: 10px;">⏳ TESTING</text>
+          <text x="720" y="195" class="detail-text" style="font-size: 9px;">Media QC</text>
+
+          <!-- Data Layer -->
+          <rect x="810" y="100" width="200" height="120" rx="12" class="phase-box data-layer" filter="url(#dropshadow)"/>
+          <text x="910" y="130" class="phase-title">Data Layer</text>
+          <text x="910" y="155" class="step-text">Aggregation</text>
+          <text x="910" y="175" class="step-text">Catalog Sync</text>
+          <text x="910" y="195" class="step-text">API Gateway</text>
+
+          <!-- QA Gate 3 -->
+          <rect x="1060" y="120" width="80" height="80" rx="8" class="gate-failed" filter="url(#dropshadow)"/>
+          <text x="1100" y="145" class="phase-title" style="font-size: 12px;">QA</text>
+          <text x="1100" y="160" class="phase-title" style="font-size: 12px;">Gate 3</text>
+          <text x="1100" y="180" class="step-text" style="font-size: 10px;">✗ FAILED</text>
+          <text x="1100" y="195" class="detail-text" style="font-size: 9px;">API Issues</text>
+
+          <!-- Streaming -->
+          <rect x="1190" y="100" width="200" height="120" rx="12" class="phase-box streaming" filter="url(#dropshadow)" opacity="0.5"/>
+          <text x="1290" y="130" class="phase-title" style="opacity: 0.5;">Streaming</text>
+          <text x="1290" y="155" class="step-text" style="opacity: 0.5;">Discovery</text>
+          <text x="1290" y="175" class="step-text" style="opacity: 0.5;">Playback</text>
+          <text x="1290" y="195" class="step-text" style="opacity: 0.5;">Analytics</text>
+          <text x="1290" y="240" class="detail-text" style="font-size: 11px; fill: #DC2626;">BLOCKED</text>
+
+          <!-- Flow Arrows -->
+          <line x1="250" y1="160" x2="300" y2="160" class="flow-arrow" marker-end="url(#arrowhead)"/>
+          <line x1="380" y1="160" x2="430" y2="160" class="gate-connection" marker-end="url(#gateArrow)"/>
+          <line x1="630" y1="160" x2="680" y2="160" class="flow-arrow" marker-end="url(#arrowhead)"/>
+          <line x1="760" y1="160" x2="810" y2="160" class="gate-connection" marker-end="url(#gateArrow)"/>
+          <line x1="1010" y1="160" x2="1060" y2="160" class="flow-arrow" marker-end="url(#arrowhead)"/>
+          
+          <!-- Blocked connection -->
+          <line x1="1140" y1="160" x2="1190" y2="160" class="gate-connection" marker-end="url(#gateArrow)" stroke="#DC2626" stroke-dasharray="8,4"/>
+
+          <!-- Test Results Boxes -->
+          <!-- Results 1 -->
+          <rect x="280" y="280" width="120" height="100" rx="8" class="test-results" filter="url(#dropshadow)"/>
+          <text x="340" y="305" class="phase-title" style="font-size: 12px;">Test Results 1</text>
+          <text x="340" y="325" class="step-text" style="font-size: 10px;">✓ Format Valid</text>
+          <text x="340" y="340" class="step-text" style="font-size: 10px;">✓ Metadata OK</text>
+          <text x="340" y="355" class="step-text" style="font-size: 10px;">✓ Rights Clear</text>
+          <text x="340" y="370" class="detail-text" style="font-size: 9px;">Coverage: 98%</text>
+
+          <!-- Results 2 -->
+          <rect x="660" y="280" width="120" height="100" rx="8" class="test-results" filter="url(#dropshadow)"/>
+          <text x="720" y="305" class="phase-title" style="font-size: 12px;">Test Results 2</text>
+          <text x="720" y="325" class="step-text" style="font-size: 10px;">⏳ Encoding QC</text>
+          <text x="720" y="340" class="step-text" style="font-size: 10px;">⏳ DRM Check</text>
+          <text x="720" y="355" class="step-text" style="font-size: 10px;">⏳ Package Test</text>
+          <text x="720" y="370" class="detail-text" style="font-size: 9px;">Progress: 65%</text>
+
+          <!-- Results 3 -->
+          <rect x="1040" y="280" width="120" height="100" rx="8" class="test-results" filter="url(#dropshadow)"/>
+          <text x="1100" y="305" class="phase-title" style="font-size: 12px;">Test Results 3</text>
+          <text x="1100" y="325" class="step-text" style="font-size: 10px;">✓ Data Sync</text>
+          <text x="1100" y="340" class="step-text" style="font-size: 10px;">✗ API Timeout</text>
+          <text x="1100" y="355" class="step-text" style="font-size: 10px;">✗ Index Error</text>
+          <text x="1100" y="370" class="detail-text" style="font-size: 9px; fill: #DC2626;">2 Failures</text>
+
+          <!-- Connections to results -->
+          <line x1="340" y1="200" x2="340" y2="280" class="results-connection"/>
+          <line x1="720" y1="200" x2="720" y2="280" class="results-connection"/>
+          <line x1="1100" y1="200" x2="1100" y2="280" class="results-connection"/>
+
+          <!-- Gate Status Legend -->
+          <rect x="50" y="450" width="600" height="150" rx="8" class="test-results" filter="url(#dropshadow)"/>
+          <text x="350" y="480" class="phase-title">Quality Gate Status</text>
+          
+          <rect x="80" y="500" width="30" height="20" rx="4" class="gate-passed"/>
+          <text x="120" y="515" class="step-text" style="font-size: 12px;">PASSED - All tests successful, phase can proceed</text>
+          
+          <rect x="80" y="530" width="30" height="20" rx="4" class="qa-gate"/>
+          <text x="120" y="545" class="step-text" style="font-size: 12px;">TESTING - Quality checks in progress</text>
+          
+          <rect x="80" y="560" width="30" height="20" rx="4" class="gate-failed"/>
+          <text x="120" y="575" class="step-text" style="font-size: 12px;">FAILED - Critical issues found, phase blocked</text>
+
+          <!-- Gate Criteria -->
+          <rect x="700" y="450" width="600" height="150" rx="8" class="test-results" filter="url(#dropshadow)"/>
+          <text x="1000" y="480" class="phase-title">Gate Criteria</text>
+          <text x="720" y="505" class="step-text" style="font-size: 11px;">Gate 1: Content format validation, metadata integrity, rights verification</text>
+          <text x="720" y="525" class="step-text" style="font-size: 11px;">Gate 2: Encoding quality, DRM application, package integrity</text>
+          <text x="720" y="545" class="step-text" style="font-size: 11px;">Gate 3: API contracts, data consistency, catalog synchronization</text>
+          <text x="720" y="565" class="step-text" style="font-size: 11px;">Gate 4: Playback quality, discovery UX, performance benchmarks</text>
+
+        </svg>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

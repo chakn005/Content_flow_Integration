@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Option B: Connection Nodes - Connection Styles</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    :root { --disney-blue: #0A2A66; --disney-blue-soft: #E8F0FA; }
+    .brand-icon { background: var(--disney-blue); }
+    .header { background: rgba(232, 240, 250, 0.95); border-bottom: 1px solid rgba(10, 42, 102, 0.12); }
+    .header::after { content: ""; display: block; height: 3px; background: linear-gradient(to right, var(--disney-blue), #1F80E0, #3B82F6); }
+    .phase-testing { fill: #F0F9FF; stroke: #0EA5E9; stroke-width: 2; }
+    .integration-hub { fill: #FEF3C7; stroke: #F59E0B; stroke-width: 2; }
+    .connection-node { fill: #3B82F6; stroke: #1E40AF; stroke-width: 2; }
+    .node-line { stroke: #94A3B8; stroke-width: 2; }
+  </style>
+</head>
+<body>
+<div class="app">
+  <header class="header">
+    <div class="header-container">
+      <div class="header-brand">
+        <div class="brand-icon" style="background: transparent; box-shadow: none;">
+          <svg width="40" height="32" viewBox="0 0 64 48" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="32" cy="28" r="14" fill="#0A2A66"/>
+            <circle cx="18" cy="14" r="10" fill="#0A2A66"/>
+            <circle cx="46" cy="14" r="10" fill="#0A2A66"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>Option B: Connection Nodes</h1>
+          <p class="brand-subtitle">Circular nodes with connecting lines</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="diagram-section">
+      <div class="diagram-container">
+        <svg viewBox="0 0 1400 650" aria-label="Connection nodes style">
+          <defs>
+            <filter id="dropshadow" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.1"/>
+            </filter>
+          </defs>
+
+          <!-- Main Phases Row -->
+          <rect x="50" y="50" width="250" height="120" rx="12" class="phase-box content-platform" filter="url(#dropshadow)"/>
+          <text x="175" y="110" class="phase-title">Content Platform</text>
+
+          <rect x="350" y="50" width="250" height="120" rx="12" class="phase-box media-platform" filter="url(#dropshadow)"/>
+          <text x="475" y="110" class="phase-title">Media Platform</text>
+
+          <rect x="650" y="50" width="250" height="120" rx="12" class="phase-box data-layer" filter="url(#dropshadow)"/>
+          <text x="775" y="110" class="phase-title">Data Layer</text>
+
+          <rect x="950" y="50" width="250" height="120" rx="12" class="phase-box streaming" filter="url(#dropshadow)"/>
+          <text x="1075" y="110" class="phase-title">Streaming/Client</text>
+
+          <!-- Integration Testing -->
+          <a href="https://jira.disney.com/browse/CPTR-68465" target="_blank" rel="noopener noreferrer">
+            <rect x="400" y="220" width="600" height="100" rx="12" class="integration-hub" filter="url(#dropshadow)" style="cursor: pointer;"/>
+            <text x="700" y="250" class="phase-title" style="cursor: pointer;">Integration Testing</text>
+            <text x="700" y="275" class="step-text" style="cursor: pointer;">Cross-Phase Contract Testing • API Integration • Data Flow Validation</text>
+            <text x="700" y="295" class="step-text" style="cursor: pointer;">Performance Testing • Security Validation • Compatibility Checks</text>
+          </a>
+
+          <!-- Phase Testing Boxes -->
+          <rect x="50" y="370" width="250" height="80" rx="8" class="phase-testing" filter="url(#dropshadow)"/>
+          <text x="175" y="395" class="phase-title" style="font-size: 14px;">Content Tests</text>
+          <text x="175" y="415" class="step-text" style="font-size: 11px;">• Format Validation</text>
+          <text x="175" y="430" class="step-text" style="font-size: 11px;">• Metadata Integrity</text>
+
+          <rect x="350" y="370" width="250" height="80" rx="8" class="phase-testing" filter="url(#dropshadow)"/>
+          <text x="475" y="395" class="phase-title" style="font-size: 14px;">Media Tests</text>
+          <text x="475" y="415" class="step-text" style="font-size: 11px;">• Encoding Quality</text>
+          <text x="475" y="430" class="step-text" style="font-size: 11px;">• DRM Validation</text>
+
+          <rect x="650" y="370" width="250" height="80" rx="8" class="phase-testing" filter="url(#dropshadow)"/>
+          <text x="775" y="395" class="phase-title" style="font-size: 14px;">Data Tests</text>
+          <text x="775" y="415" class="step-text" style="font-size: 11px;">• API Contract</text>
+          <text x="775" y="430" class="step-text" style="font-size: 11px;">• Catalog Sync</text>
+
+          <rect x="950" y="370" width="250" height="80" rx="8" class="phase-testing" filter="url(#dropshadow)"/>
+          <text x="1075" y="395" class="phase-title" style="font-size: 14px;">Streaming Tests</text>
+          <text x="1075" y="415" class="step-text" style="font-size: 11px;">• Playback Quality</text>
+          <text x="1075" y="430" class="step-text" style="font-size: 11px;">• Discovery UX</text>
+
+          <!-- Connection Nodes and Lines: Phases to Integration -->
+          <line x1="175" y1="170" x2="175" y2="190" class="node-line"/>
+          <circle cx="175" cy="195" r="6" class="connection-node"/>
+          <line x1="175" y1="200" x2="450" y2="220" class="node-line"/>
+
+          <line x1="475" y1="170" x2="475" y2="190" class="node-line"/>
+          <circle cx="475" cy="195" r="6" class="connection-node"/>
+          <line x1="475" y1="200" x2="550" y2="220" class="node-line"/>
+
+          <line x1="775" y1="170" x2="775" y2="190" class="node-line"/>
+          <circle cx="775" cy="195" r="6" class="connection-node"/>
+          <line x1="775" y1="200" x2="850" y2="220" class="node-line"/>
+
+          <line x1="1075" y1="170" x2="1075" y2="190" class="node-line"/>
+          <circle cx="1075" cy="195" r="6" class="connection-node"/>
+          <line x1="1075" y1="200" x2="950" y2="220" class="node-line"/>
+
+          <!-- Connection Nodes and Lines: Integration to Phase Tests -->
+          <line x1="450" y1="320" x2="450" y2="340" class="node-line"/>
+          <circle cx="450" cy="345" r="6" class="connection-node"/>
+          <line x1="450" y1="350" x2="175" y2="370" class="node-line"/>
+
+          <line x1="550" y1="320" x2="550" y2="340" class="node-line"/>
+          <circle cx="550" cy="345" r="6" class="connection-node"/>
+          <line x1="550" y1="350" x2="475" y2="370" class="node-line"/>
+
+          <line x1="850" y1="320" x2="850" y2="340" class="node-line"/>
+          <circle cx="850" cy="345" r="6" class="connection-node"/>
+          <line x1="850" y1="350" x2="775" y2="370" class="node-line"/>
+
+          <line x1="950" y1="320" x2="950" y2="340" class="node-line"/>
+          <circle cx="950" cy="345" r="6" class="connection-node"/>
+          <line x1="950" y1="350" x2="1075" y2="370" class="node-line"/>
+
+          <!-- Horizontal connections between phase tests with nodes -->
+          <line x1="300" y1="410" x2="325" y2="410" class="node-line"/>
+          <circle cx="325" cy="410" r="5" class="connection-node"/>
+          <line x1="325" y1="410" x2="350" y2="410" class="node-line"/>
+
+          <line x1="600" y1="410" x2="625" y2="410" class="node-line"/>
+          <circle cx="625" cy="410" r="5" class="connection-node"/>
+          <line x1="625" y1="410" x2="650" y2="410" class="node-line"/>
+
+          <line x1="900" y1="410" x2="925" y2="410" class="node-line"/>
+          <circle cx="925" cy="410" r="5" class="connection-node"/>
+          <line x1="925" y1="410" x2="950" y2="410" class="node-line"/>
+
+        </svg>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>
