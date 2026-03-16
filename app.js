@@ -285,7 +285,27 @@ function setupHeatmapCells() {
     { class: 'cell-na', text: '—' }
   ];
   
+  // Load saved states from localStorage
+  const savedHeatmapStates = JSON.parse(localStorage.getItem('heatmapCellStates') || '{}');
+  
   cells.forEach(cell => {
+    // Create unique identifier for each cell
+    const alliance = cell.dataset.alliance;
+    const milestone = cell.dataset.milestone;
+    const cellId = `${alliance}-${milestone}`;
+    
+    // Check if we have a saved state for this cell
+    if (savedHeatmapStates[cellId] !== undefined) {
+      const savedIndex = savedHeatmapStates[cellId];
+      const savedStatus = statusCycle[savedIndex];
+      
+      // Remove all status classes
+      statusCycle.forEach(status => cell.classList.remove(status.class));
+      // Apply saved status
+      cell.classList.add(savedStatus.class);
+      cell.textContent = savedStatus.text;
+    }
+    
     cell.addEventListener('click', () => {
       // Find current status
       let currentIndex = 0;
@@ -306,6 +326,10 @@ function setupHeatmapCells() {
       cell.classList.add(newStatus.class);
       cell.textContent = newStatus.text;
       
+      // Save state to localStorage
+      savedHeatmapStates[cellId] = nextIndex;
+      localStorage.setItem('heatmapCellStates', JSON.stringify(savedHeatmapStates));
+      
       // Add visual feedback
       cell.style.transform = 'scale(0.95)';
       setTimeout(() => {
@@ -319,7 +343,7 @@ function setupHeatmapCells() {
   });
 }
 
-// ===== KPI Card Status Cycling =====
+// ===== KPI Card Status Cycling with Persistence =====
 function setupKPICards() {
   const kpiCards = document.querySelectorAll('.kpi-card');
   
@@ -330,13 +354,27 @@ function setupKPICards() {
     { class: 'rag-red', circle: 'red', color: '#dc2626' }
   ];
   
-  kpiCards.forEach(card => {
+  // Load saved states from localStorage
+  const savedStates = JSON.parse(localStorage.getItem('kpiCardStates') || '{}');
+  
+  kpiCards.forEach((card, index) => {
+    // Create unique identifier for each card
+    const cardId = card.querySelector('.kpi-title')?.textContent?.trim() || `card-${index}`;
+    
     let currentStatusIndex = 0;
     
-    // Initialize with current status (Green by default)
-    const currentClass = card.classList.contains('rag-amber') ? 1 : 
-                        card.classList.contains('rag-red') ? 2 : 0;
-    currentStatusIndex = currentClass;
+    // Check if we have a saved state for this card
+    if (savedStates[cardId] !== undefined) {
+      currentStatusIndex = savedStates[cardId];
+    } else {
+      // Initialize with current status (Green by default)
+      const currentClass = card.classList.contains('rag-amber') ? 1 : 
+                          card.classList.contains('rag-red') ? 2 : 0;
+      currentStatusIndex = currentClass;
+    }
+    
+    // Apply the current status
+    applyCardStatus(card, statusCycle[currentStatusIndex]);
     
     card.addEventListener('click', () => {
       // Remove current status class
@@ -347,16 +385,11 @@ function setupKPICards() {
       const newStatus = statusCycle[currentStatusIndex];
       
       // Apply new status
-      card.classList.add(newStatus.class);
+      applyCardStatus(card, newStatus);
       
-      // Update the circle color
-      const circleEl = card.querySelector('.status-circle');
-      if (circleEl) {
-        // Remove all circle classes
-        circleEl.classList.remove('green', 'amber', 'red');
-        // Add new circle class
-        circleEl.classList.add(newStatus.circle);
-      }
+      // Save state to localStorage
+      savedStates[cardId] = currentStatusIndex;
+      localStorage.setItem('kpiCardStates', JSON.stringify(savedStates));
       
       // Add visual feedback
       card.style.transform = 'scale(0.98)';
@@ -379,6 +412,21 @@ function setupKPICards() {
       card.style.boxShadow = 'var(--shadow)';
     });
   });
+}
+
+// Helper function to apply card status
+function applyCardStatus(card, status) {
+  // Apply new status class
+  card.classList.add(status.class);
+  
+  // Update the circle color
+  const circleEl = card.querySelector('.status-circle');
+  if (circleEl) {
+    // Remove all circle classes
+    circleEl.classList.remove('green', 'amber', 'red');
+    // Add new circle class
+    circleEl.classList.add(status.circle);
+  }
 }
 // ===== Evidence tab =====
 function renderEvidence() {

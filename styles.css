@@ -566,8 +566,8 @@ a { color: inherit; }
 .media-platform   { fill: #E8E6FA; }
 .data-layer       { fill: #E0F2EC; }
 .streaming        { fill: #FEF9E8; }
-.integration-hub  { fill: #FEF3C7; }
-.phase-testing    { fill: #F0F9FF; }
+.integration-hub  { fill: #FEF3C7; stroke: rgba(10,42,102,0.15); stroke-width: 1.5; }
+.phase-testing    { fill: #F0F9FF; stroke: rgba(10,42,102,0.15); stroke-width: 1.5; }
 
 .phase-title {
   font-size: 16px;
