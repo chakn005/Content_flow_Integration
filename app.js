@@ -244,14 +244,99 @@ function setupDrawer() {
     drawer.classList.add("open");
     drawer.setAttribute("aria-hidden", "false");
 
-    // Optional: update small in-page info box if present
-    const phaseInfo = document.getElementById("phaseInfo");
-    if (phaseInfo) {
-      phaseInfo.innerHTML = `
-        <p><strong>${payload.title || "Selection"}</strong></p>
-        <p class="muted">Owner: ${payload.owner || "—"}</p>
-        <p class="muted">Validations: ${(payload.validations || []).length} • Evidence: ${(payload.evidence || []).length}</p>
-      `;
+    // Update dynamic context based on selection
+    const dynamicContext = document.getElementById("dynamicContext");
+    if (dynamicContext) {
+      if (payload.phaseType) {
+        // Phase-specific context
+        const phaseContexts = {
+          content: {
+            icon: "📥",
+            focus: "Source Content Ingestion",
+            critical: "Metadata completeness and rights validation are critical for downstream processing.",
+            dependencies: "No upstream dependencies. Sets foundation for entire pipeline."
+          },
+          media: {
+            icon: "🎬",
+            focus: "Content Transformation & Encoding",
+            critical: "DRM application and multi-bitrate encoding quality directly impact streaming experience.",
+            dependencies: "Depends on Content Platform metadata and asset availability."
+          },
+          data: {
+            icon: "🗄️",
+            focus: "Catalog Management & API Exposure",
+            critical: "Search indexing and API consistency enable content discovery and recommendations.",
+            dependencies: "Requires Media Platform processed assets and metadata synchronization."
+          },
+          localization: {
+            icon: "🌍",
+            focus: "Regional Adaptation & Language Processing",
+            critical: "Cultural compliance and subtitle accuracy are essential for global content delivery.",
+            dependencies: "Needs Data Layer catalog sync and regional metadata routing."
+          },
+          streaming: {
+            icon: "📺",
+            focus: "Content Delivery & Playback",
+            critical: "Multi-device compatibility and CDN optimization ensure optimal user experience.",
+            dependencies: "Requires Localization processing and content discovery integration."
+          }
+        };
+        
+        const context = phaseContexts[payload.phaseType];
+        if (context) {
+          dynamicContext.innerHTML = `
+            <div style="margin-bottom: 12px;">
+              <div style="font-weight: 700; color: #1e40af; margin-bottom: 6px;">
+                ${context.icon} ${context.focus}
+              </div>
+              <p style="margin: 0 0 8px; color: #374151; font-size: 12px; line-height: 1.4;">
+                ${context.critical}
+              </p>
+              <p style="margin: 0; color: #6b7280; font-size: 11px; font-style: italic;">
+                <strong>Dependencies:</strong> ${context.dependencies}
+              </p>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px;">
+              <span style="color: #059669; font-weight: 500;">
+                ✓ Validations: ${(payload.validations || []).length}
+              </span>
+              <span style="color: #2563eb; font-weight: 500;">
+                📋 Evidence: ${(payload.evidence || []).length}
+              </span>
+              <span style="color: #dc2626; font-weight: 500;">
+                ⚠ Risks: ${(payload.risks || []).length}
+              </span>
+            </div>
+          `;
+        }
+      } else {
+        // Handshake-specific context
+        dynamicContext.innerHTML = `
+          <div style="margin-bottom: 12px;">
+            <div style="font-weight: 700; color: #1e40af; margin-bottom: 6px;">
+              🔗 Integration Handshake: ${payload.title}
+            </div>
+            <p style="margin: 0 0 8px; color: #374151; font-size: 12px; line-height: 1.4;">
+              Critical integration point requiring contract validation, data consistency checks, and ownership clarity.
+              Failure at this handshake can cascade downstream and impact migration success.
+            </p>
+            <p style="margin: 0; color: #6b7280; font-size: 11px; font-style: italic;">
+              <strong>Owner:</strong> ${payload.owner || "—"}
+            </p>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px;">
+            <span style="color: #059669; font-weight: 500;">
+              ✓ Validations: ${(payload.validations || []).length}
+            </span>
+            <span style="color: #2563eb; font-weight: 500;">
+              📋 Evidence: ${(payload.evidence || []).length}
+            </span>
+            <span style="color: #dc2626; font-weight: 500;">
+              ⚠ Risks: ${(payload.risks || []).length}
+            </span>
+          </div>
+        `;
+      }
     }
   }
 
@@ -729,6 +814,7 @@ function setupPhases(drawerApi) {
       drawerApi.openDrawer({
         title: data.title,
         owner,
+        phaseType: phaseType,
         validations: data.testPoints || [],
         evidence: [
           { label: "Epic CPTR‑68587", url: "https://jira.disney.com/browse/CPTR-68587" }

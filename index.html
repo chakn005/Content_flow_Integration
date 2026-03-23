@@ -81,7 +81,7 @@
         <div class="brand-text">
           <h1>Cross‑Alliance E2E Integration Console</h1>
           <p class="brand-subtitle">
-            Hotstar Migration • Content → Media → Data → Streaming
+            Content Migration Readiness • E2E Integration Validation • Cross-Alliance Coordination
           </p>
         </div>
       </div>
@@ -224,9 +224,9 @@
       <!-- Diagram -->
       <div class="diagram-section">
         <div class="diagram-header">
-          <h2>End‑to‑End Integration Flow</h2>
+          <h2>Content Migration E2E Integration Flow</h2>
           <p class="diagram-description">
-            Content Platform → Media Platform → Data → Localization → Streaming → QA
+            Content Platform → Media Platform → Data → Localization → Streaming → Migration Complete
           </p>
         </div>
 
@@ -437,17 +437,55 @@
 
         <div class="card info-card">
           <div class="card-header">
-            <h3 class="card-title">Context</h3>
+            <h3 class="card-title">Content Migration Readiness Context</h3>
           </div>
           <div class="card-content">
-            <p class="muted">
-              This console provides a single source of truth for
-              cross‑alliance E2E integration readiness and ownership.
-            </p>
             <div id="phaseInfo">
-              <p class="info-placeholder">
-                Select a phase or handshake to view details.
-              </p>
+              <div style="margin-bottom: 16px;">
+                <h4 style="margin: 0 0 8px; font-weight: 700; color: #0A2A66;">E2E Integration Overview</h4>
+                <p style="margin: 0 0 12px; color: #6b7280; font-size: 13px; line-height: 1.5;">
+                  Content migration requires seamless integration across five critical phases. Each phase must validate handoffs, 
+                  ensure data integrity, and maintain content quality throughout the pipeline.
+                </p>
+              </div>
+
+              <div style="margin-bottom: 16px;">
+                <h5 style="margin: 0 0 8px; font-weight: 700; color: #111827;">Integration Dependencies</h5>
+                <ul style="margin: 0; padding-left: 16px; color: #374151; font-size: 12px; line-height: 1.4;">
+                  <li style="margin-bottom: 4px;"><strong>Content → Media:</strong> Metadata transfer & format validation</li>
+                  <li style="margin-bottom: 4px;"><strong>Media → Data:</strong> Catalog sync & entity reconciliation</li>
+                  <li style="margin-bottom: 4px;"><strong>Data → Localization:</strong> Regional metadata & content routing</li>
+                  <li style="margin-bottom: 4px;"><strong>Localization → Streaming:</strong> Language delivery & discovery</li>
+                </ul>
+              </div>
+
+              <div style="margin-bottom: 16px;">
+                <h5 style="margin: 0 0 8px; font-weight: 700; color: #111827;">Migration Readiness Criteria</h5>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 12px;">
+                  <div>
+                    <div style="font-weight: 700; color: #059669; margin-bottom: 4px;">✓ Ready Indicators</div>
+                    <ul style="margin: 0; padding-left: 12px; color: #374151;">
+                      <li>Contract validation complete</li>
+                      <li>Data flow tested end-to-end</li>
+                      <li>Handoff ownership confirmed</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <div style="font-weight: 700; color: #dc2626; margin-bottom: 4px;">⚠ Risk Indicators</div>
+                    <ul style="margin: 0; padding-left: 12px; color: #374151;">
+                      <li>Missing integration evidence</li>
+                      <li>Unvalidated phase boundaries</li>
+                      <li>Incomplete test coverage</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div id="dynamicContext" style="padding: 12px; background: #f8fafc; border-radius: 8px; border-left: 4px solid #3b82f6;">
+                <p style="margin: 0; color: #1e40af; font-weight: 500; font-size: 12px;">
+                  💡 Click on any phase or integration point above to view specific readiness details and validation requirements.
+                </p>
+              </div>
             </div>
           </div>
         </div>
