@@ -54,6 +54,26 @@ const phaseData = {
       "Cache invalidation and refresh cycles"
     ]
   },
+  localization: {
+    title: "Localization Phase",
+    description: "Regional adaptation and language processing",
+    steps: [
+      "Regional Adaptation: Customize content for specific geographic markets",
+      "Language Processing: Translate metadata, descriptions, and UI elements",
+      "Cultural Compliance: Ensure content meets local cultural and regulatory standards",
+      "Subtitle Management: Process and validate subtitle files for accuracy and timing",
+      "Audio Dubbing: Coordinate and validate dubbed audio tracks",
+      "Regional Metadata: Adapt content metadata for local market requirements"
+    ],
+    testPoints: [
+      "Validate subtitle accuracy and synchronization",
+      "Test audio dubbing quality and lip-sync",
+      "Verify cultural compliance and content ratings",
+      "Check regional metadata completeness",
+      "Test language switching functionality",
+      "Validate localized UI elements"
+    ]
+  },
   streaming: {
     title: "Streaming/Client Phase",
     description: "End-user content delivery and playback",
@@ -129,6 +149,38 @@ const handshakeData = {
     risks: [
       "Lower-env flow enablement required by upstream teams",
       "Avoid reliance on DMC media IDs"
+    ]
+  },
+  "data-localization": {
+    title: "Handshake: Data → Localization",
+    owner: "Localization Alliance",
+    validations: [
+      "Content metadata transfer for localization",
+      "Regional availability rules validation",
+      "Language-specific content routing"
+    ],
+    evidence: [
+      { label: "Epic CPTR‑68587", url: "https://jira.disney.com/browse/CPTR-68587" }
+    ],
+    risks: [
+      "Metadata completeness for localization workflows",
+      "Regional content availability conflicts"
+    ]
+  },
+  "localization-streaming": {
+    title: "Handshake: Localization → Streaming",
+    owner: "Streaming / Client QA",
+    validations: [
+      "Localized content delivery validation",
+      "Language switching functionality",
+      "Regional content discovery"
+    ],
+    evidence: [
+      { label: "Epic CPTR‑68587", url: "https://jira.disney.com/browse/CPTR-68587" }
+    ],
+    risks: [
+      "Localized content caching issues",
+      "Language preference persistence"
     ]
   },
   "data-streaming": {
@@ -238,15 +290,16 @@ function renderHeatmap() {
   if (!el) return;
 
   // Simple, static heatmap placeholder
-  const alliances = ["Content", "Media", "Data", "Streaming"];
+  const alliances = ["Content", "Media", "Data", "Localization", "Streaming"];
   const milestones = ["Metadata/Artwork", "Avails/Rights", "AV Assets", "Experience"];
 
   // Minimal placeholder statuses
   const grid = {
-    Content:   ["cell-green", "cell-amber", "cell-amber", "cell-na"],
-    Media:     ["cell-amber", "cell-amber", "cell-amber", "cell-na"],
-    Data:      ["cell-amber", "cell-amber", "cell-na",    "cell-na"],
-    Streaming: ["cell-na",    "cell-na",    "cell-amber", "cell-amber"]
+    Content:      ["cell-green", "cell-amber", "cell-amber", "cell-na"],
+    Media:        ["cell-amber", "cell-amber", "cell-amber", "cell-na"],
+    Data:         ["cell-amber", "cell-amber", "cell-na",    "cell-na"],
+    Localization: ["cell-na",    "cell-amber", "cell-amber", "cell-na"],
+    Streaming:    ["cell-na",    "cell-na",    "cell-amber", "cell-amber"]
   };
 
   let html = `<table><thead><tr><th>Alliance \\ Milestone</th>`;
@@ -665,6 +718,7 @@ function setupPhases(drawerApi) {
         phaseType === "content" ? "Content Platform Alliance" :
         phaseType === "media" ? "Media Platform Alliance" :
         phaseType === "data" ? "Data Alliance" :
+        phaseType === "localization" ? "Localization Alliance" :
         phaseType === "streaming" ? "Streaming / Client QA" :
         "Cross‑Fleet QA";
 

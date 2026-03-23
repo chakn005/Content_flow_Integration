@@ -224,7 +224,7 @@ a { color: inherit; }
 
 .kpi-row {
   display: grid;
-  grid-template-columns: repeat(4, minmax(180px, 1fr));
+  grid-template-columns: repeat(5, minmax(160px, 1fr));
   gap: 12px;
 }
 
@@ -421,7 +421,7 @@ a { color: inherit; }
 #flowchart {
   width: 100%;
   height: auto;
-  min-width: 980px;
+  min-width: 1200px;
 }
 
 /* ---------- Two Column Layout (Legend + Info) ---------- */
@@ -459,6 +459,7 @@ a { color: inherit; }
 .legend-color.content-platform { background: linear-gradient(135deg, #60a5fa, #2563eb); }
 .legend-color.media-platform   { background: linear-gradient(135deg, #a78bfa, #7c3aed); }
 .legend-color.data-layer       { background: linear-gradient(135deg, #34d399, #059669); }
+.legend-color.localization     { background: linear-gradient(135deg, #fb7185, #e11d48); }
 .legend-color.streaming        { background: linear-gradient(135deg, #fbbf24, #f59e0b); }
 .legend-color.integration-hub  { background: linear-gradient(135deg, #fbbf24, #f59e0b); }
 .legend-color.phase-testing    { background: linear-gradient(135deg, #60a5fa, #3b82f6); }
@@ -565,6 +566,7 @@ a { color: inherit; }
 .content-platform { fill: #E8F0FA; }
 .media-platform   { fill: #E8E6FA; }
 .data-layer       { fill: #E0F2EC; }
+.localization     { fill: #FEE2E2; }
 .streaming        { fill: #FEF9E8; }
 .integration-hub  { fill: #FEF3C7; stroke: rgba(10,42,102,0.15); stroke-width: 1.5; }
 .phase-testing    { fill: #F0F9FF; stroke: rgba(10,42,102,0.15); stroke-width: 1.5; }
@@ -721,9 +723,9 @@ a { color: inherit; }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 980px) {
-  .kpi-row { grid-template-columns: 1fr 1fr; }
+  .kpi-row { grid-template-columns: repeat(3, 1fr); }
   .content-grid { grid-template-columns: 1fr; }
-  #flowchart { min-width: 860px; }
+  #flowchart { min-width: 1100px; }
 }
 
 @media (max-width: 520px) {

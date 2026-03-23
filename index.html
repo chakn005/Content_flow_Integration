@@ -158,6 +158,15 @@
 
           <div class="kpi-card rag-amber" title="Click to change status">
             <div class="kpi-title">
+              Localization
+              <div class="status-circle amber"></div>
+            </div>
+            <div class="kpi-value"></div>
+            <div class="kpi-sub">Language processing & cultural compliance</div>
+          </div>
+
+          <div class="kpi-card rag-amber" title="Click to change status">
+            <div class="kpi-title">
               Streaming / Client
               <div class="status-circle amber"></div>
             </div>
@@ -217,12 +226,12 @@
         <div class="diagram-header">
           <h2>End‑to‑End Integration Flow</h2>
           <p class="diagram-description">
-            Content Platform → Media Platform → Data → Streaming → QA
+            Content Platform → Media Platform → Data → Localization → Streaming → QA
           </p>
         </div>
 
         <div class="diagram-container">
-          <svg id="flowchart" viewBox="0 0 1400 650" aria-label="Content integration flow diagram">
+          <svg id="flowchart" viewBox="0 0 1500 650" aria-label="Content integration flow diagram">
             <defs>
               <linearGradient id="bgGradient" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%" style="stop-color:#fafbfc;stop-opacity:1" />
@@ -261,77 +270,97 @@
 
             <!-- Data Layer -->
             <g class="phase" data-phase="data">
-              <rect x="650" y="50" width="250" height="120" rx="12" class="phase-box data-layer" filter="url(#dropshadow)"/>
-              <text x="775" y="80" class="phase-title">Data Layer</text>
-              <text x="775" y="105" class="step-text">Data Aggregation</text>
-              <text x="775" y="125" class="step-text">Catalog Sync</text>
-              <text x="775" y="145" class="step-text">API Gateway</text>
-              <text x="775" y="165" class="detail-text">Search, Recommendations</text>
+              <rect x="550" y="50" width="200" height="120" rx="12" class="phase-box data-layer" filter="url(#dropshadow)"/>
+              <text x="650" y="80" class="phase-title">Data Layer</text>
+              <text x="650" y="105" class="step-text">Data Aggregation</text>
+              <text x="650" y="125" class="step-text">Catalog Sync</text>
+              <text x="650" y="145" class="step-text">API Gateway</text>
+              <text x="650" y="165" class="detail-text">Search, Recommendations</text>
+            </g>
+
+            <!-- Localization -->
+            <g class="phase" data-phase="localization">
+              <rect x="780" y="50" width="200" height="120" rx="12" class="phase-box localization" filter="url(#dropshadow)"/>
+              <text x="880" y="80" class="phase-title">Localization</text>
+              <text x="880" y="105" class="step-text">Regional Adaptation</text>
+              <text x="880" y="125" class="step-text">Language Processing</text>
+              <text x="880" y="145" class="step-text">Cultural Compliance</text>
+              <text x="880" y="165" class="detail-text">Subtitles, Dubbing, Metadata</text>
             </g>
 
             <!-- Streaming -->
             <g class="phase" data-phase="streaming">
-              <rect x="950" y="50" width="250" height="120" rx="12" class="phase-box streaming" filter="url(#dropshadow)"/>
-              <text x="1075" y="80" class="phase-title">Streaming/Client</text>
-              <text x="1075" y="105" class="step-text">Content Discovery</text>
-              <text x="1075" y="125" class="step-text">Playback Engine</text>
-              <text x="1075" y="145" class="step-text">Analytics</text>
-              <text x="1075" y="165" class="detail-text">Multi-device, CDN</text>
+              <rect x="1010" y="50" width="200" height="120" rx="12" class="phase-box streaming" filter="url(#dropshadow)"/>
+              <text x="1110" y="80" class="phase-title">Streaming/Client</text>
+              <text x="1110" y="105" class="step-text">Content Discovery</text>
+              <text x="1110" y="125" class="step-text">Playback Engine</text>
+              <text x="1110" y="145" class="step-text">Analytics</text>
+              <text x="1110" y="165" class="detail-text">Multi-device, CDN</text>
             </g>
 
             <!-- Integration Testing (2nd Row) -->
             <a href="https://jira.disney.com/browse/CPTR-68465" target="_blank" rel="noopener noreferrer">
-              <rect x="400" y="220" width="600" height="100" rx="12" class="phase-box integration-hub" filter="url(#dropshadow)" style="cursor: pointer;"/>
+              <rect x="350" y="220" width="700" height="100" rx="12" class="phase-box integration-hub" filter="url(#dropshadow)" style="cursor: pointer;"/>
               <text x="700" y="250" class="phase-title" style="cursor: pointer;">Integration Testing</text>
               <text x="700" y="275" class="step-text" style="cursor: pointer;">Cross-Phase Contract Testing • API Integration • Data Flow Validation</text>
               <text x="700" y="295" class="step-text" style="cursor: pointer;">Performance Testing • Security Validation • Compatibility Checks</text>
             </a>
 
             <!-- Connections from phases to Integration Hub -->
-            <line x1="175" y1="170" x2="450" y2="220" class="flow-arrow" marker-end="url(#arrowhead)"/>
-            <line x1="475" y1="170" x2="550" y2="220" class="flow-arrow" marker-end="url(#arrowhead)"/>
-            <line x1="775" y1="170" x2="850" y2="220" class="flow-arrow" marker-end="url(#arrowhead)"/>
-            <line x1="1075" y1="170" x2="950" y2="220" class="flow-arrow" marker-end="url(#arrowhead)"/>
+            <line x1="175" y1="170" x2="400" y2="220" class="flow-arrow" marker-end="url(#arrowhead)"/>
+            <line x1="475" y1="170" x2="500" y2="220" class="flow-arrow" marker-end="url(#arrowhead)"/>
+            <line x1="650" y1="170" x2="650" y2="220" class="flow-arrow" marker-end="url(#arrowhead)"/>
+            <line x1="880" y1="170" x2="800" y2="220" class="flow-arrow" marker-end="url(#arrowhead)"/>
+            <line x1="1110" y1="170" x2="1000" y2="220" class="flow-arrow" marker-end="url(#arrowhead)"/>
 
             <!-- Phase Testing Boxes (3rd Row) -->
             <!-- Content Tests -->
-            <rect x="50" y="370" width="250" height="80" rx="8" class="phase-box phase-testing" filter="url(#dropshadow)"/>
-            <text x="175" y="395" class="phase-title" style="font-size: 14px;">Content Tests</text>
-            <text x="175" y="415" class="step-text" style="font-size: 11px;">• Format Validation</text>
-            <text x="175" y="430" class="step-text" style="font-size: 11px;">• Metadata Integrity</text>
-            <text x="175" y="445" class="step-text" style="font-size: 11px;">• Rights Verification</text>
+            <rect x="50" y="370" width="200" height="80" rx="8" class="phase-box phase-testing" filter="url(#dropshadow)"/>
+            <text x="150" y="395" class="phase-title" style="font-size: 14px;">Content Tests</text>
+            <text x="150" y="415" class="step-text" style="font-size: 11px;">• Format Validation</text>
+            <text x="150" y="430" class="step-text" style="font-size: 11px;">• Metadata Integrity</text>
+            <text x="150" y="445" class="step-text" style="font-size: 11px;">• Rights Verification</text>
 
             <!-- Media Tests -->
-            <rect x="350" y="370" width="250" height="80" rx="8" class="phase-box phase-testing" filter="url(#dropshadow)"/>
-            <text x="475" y="395" class="phase-title" style="font-size: 14px;">Media Tests</text>
-            <text x="475" y="415" class="step-text" style="font-size: 11px;">• Encoding Quality</text>
-            <text x="475" y="430" class="step-text" style="font-size: 11px;">• DRM Validation</text>
-            <text x="475" y="445" class="step-text" style="font-size: 11px;">• Package Integrity</text>
+            <rect x="280" y="370" width="200" height="80" rx="8" class="phase-box phase-testing" filter="url(#dropshadow)"/>
+            <text x="380" y="395" class="phase-title" style="font-size: 14px;">Media Tests</text>
+            <text x="380" y="415" class="step-text" style="font-size: 11px;">• Encoding Quality</text>
+            <text x="380" y="430" class="step-text" style="font-size: 11px;">• DRM Validation</text>
+            <text x="380" y="445" class="step-text" style="font-size: 11px;">• Package Integrity</text>
 
             <!-- Data Tests -->
-            <rect x="650" y="370" width="250" height="80" rx="8" class="phase-box phase-testing" filter="url(#dropshadow)"/>
-            <text x="775" y="395" class="phase-title" style="font-size: 14px;">Data Tests</text>
-            <text x="775" y="415" class="step-text" style="font-size: 11px;">• API Contract</text>
-            <text x="775" y="430" class="step-text" style="font-size: 11px;">• Catalog Sync</text>
-            <text x="775" y="445" class="step-text" style="font-size: 11px;">• Search Index</text>
+            <rect x="510" y="370" width="200" height="80" rx="8" class="phase-box phase-testing" filter="url(#dropshadow)"/>
+            <text x="610" y="395" class="phase-title" style="font-size: 14px;">Data Tests</text>
+            <text x="610" y="415" class="step-text" style="font-size: 11px;">• API Contract</text>
+            <text x="610" y="430" class="step-text" style="font-size: 11px;">• Catalog Sync</text>
+            <text x="610" y="445" class="step-text" style="font-size: 11px;">• Search Index</text>
+
+            <!-- Localization Tests -->
+            <rect x="740" y="370" width="200" height="80" rx="8" class="phase-box phase-testing" filter="url(#dropshadow)"/>
+            <text x="840" y="395" class="phase-title" style="font-size: 14px;">Localization Tests</text>
+            <text x="840" y="415" class="step-text" style="font-size: 11px;">• Language Quality</text>
+            <text x="840" y="430" class="step-text" style="font-size: 11px;">• Cultural Compliance</text>
+            <text x="840" y="445" class="step-text" style="font-size: 11px;">• Regional Metadata</text>
 
             <!-- Streaming Tests -->
-            <rect x="950" y="370" width="250" height="80" rx="8" class="phase-box phase-testing" filter="url(#dropshadow)"/>
-            <text x="1075" y="395" class="phase-title" style="font-size: 14px;">Streaming Tests</text>
-            <text x="1075" y="415" class="step-text" style="font-size: 11px;">• Playback Quality</text>
-            <text x="1075" y="430" class="step-text" style="font-size: 11px;">• Discovery UX</text>
-            <text x="1075" y="445" class="step-text" style="font-size: 11px;">• Performance</text>
+            <rect x="970" y="370" width="200" height="80" rx="8" class="phase-box phase-testing" filter="url(#dropshadow)"/>
+            <text x="1070" y="395" class="phase-title" style="font-size: 14px;">Streaming Tests</text>
+            <text x="1070" y="415" class="step-text" style="font-size: 11px;">• Playback Quality</text>
+            <text x="1070" y="430" class="step-text" style="font-size: 11px;">• Discovery UX</text>
+            <text x="1070" y="445" class="step-text" style="font-size: 11px;">• Performance</text>
 
             <!-- Connections from Integration Hub to phase tests -->
-            <line x1="450" y1="320" x2="175" y2="370" class="flow-arrow" marker-end="url(#arrowhead)"/>
-            <line x1="550" y1="320" x2="475" y2="370" class="flow-arrow" marker-end="url(#arrowhead)"/>
-            <line x1="850" y1="320" x2="775" y2="370" class="flow-arrow" marker-end="url(#arrowhead)"/>
-            <line x1="950" y1="320" x2="1075" y2="370" class="flow-arrow" marker-end="url(#arrowhead)"/>
+            <line x1="400" y1="320" x2="150" y2="370" class="flow-arrow" marker-end="url(#arrowhead)"/>
+            <line x1="500" y1="320" x2="380" y2="370" class="flow-arrow" marker-end="url(#arrowhead)"/>
+            <line x1="650" y1="320" x2="610" y2="370" class="flow-arrow" marker-end="url(#arrowhead)"/>
+            <line x1="800" y1="320" x2="840" y2="370" class="flow-arrow" marker-end="url(#arrowhead)"/>
+            <line x1="1000" y1="320" x2="1070" y2="370" class="flow-arrow" marker-end="url(#arrowhead)"/>
 
             <!-- Arrows between 3rd row blocks (phase tests) -->
-            <line x1="300" y1="410" x2="350" y2="410" class="flow-arrow" marker-end="url(#arrowhead)"/>
-            <line x1="600" y1="410" x2="650" y2="410" class="flow-arrow" marker-end="url(#arrowhead)"/>
-            <line x1="900" y1="410" x2="950" y2="410" class="flow-arrow" marker-end="url(#arrowhead)"/>
+            <line x1="250" y1="410" x2="280" y2="410" class="flow-arrow" marker-end="url(#arrowhead)"/>
+            <line x1="480" y1="410" x2="510" y2="410" class="flow-arrow" marker-end="url(#arrowhead)"/>
+            <line x1="710" y1="410" x2="740" y2="410" class="flow-arrow" marker-end="url(#arrowhead)"/>
+            <line x1="940" y1="410" x2="970" y2="410" class="flow-arrow" marker-end="url(#arrowhead)"/>
 
             <!-- Tooltips -->
             <g class="integration-tooltip" id="tooltip-content-media" style="display: none;">
@@ -386,6 +415,9 @@
               </div>
               <div class="legend-item">
                 <div class="legend-color data-layer"></div>Data Layer
+              </div>
+              <div class="legend-item">
+                <div class="legend-color localization"></div>Localization
               </div>
               <div class="legend-item">
                 <div class="legend-color streaming"></div>Streaming / Client
