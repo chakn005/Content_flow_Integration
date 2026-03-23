@@ -97,10 +97,10 @@ const phaseData = {
     title: "QA & Testing Layer",
     description: "Comprehensive testing across ALL phases with continuous feedback loops",
     steps: [
-      "Content Validation: Verify source content meets specifications at ingestion",
-      "Media Quality Check: Automated and manual QA during transformation",
-      "Integration Testing: Contract testing + API testing across services",
-      "E2E Playback Testing: Full user journey validation across clients",
+      "Content Platform Testing: Source content validation and metadata handoff verification",
+      "Media Platform Testing: Encoding quality checks and package integrity validation",
+      "Data Layer Testing: Catalog synchronization and search index validation",
+      "Localization Testing: Language processing accuracy and cultural compliance checks",
       "Regression Testing: Ensure changes don’t break existing functionality",
       "Security Testing: Vulnerability scanning and penetration testing",
       "Accessibility Testing: WCAG compliance and assistive technology support"
