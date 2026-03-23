@@ -82,7 +82,6 @@ const phaseData = {
       "Playback Engine: Video player with adaptive bitrate streaming",
       "Multi-device Support: Web, mobile, TV, gaming consoles",
       "Offline Playback: Download and local playback capabilities",
-      "Analytics & Monitoring: Real-time playback quality and error tracking",
       "CDN Integration: Optimized content delivery from edge locations"
     ],
     testPoints: [
