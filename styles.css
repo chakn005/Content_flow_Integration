@@ -254,6 +254,7 @@ a { color: inherit; }
   display: flex;
   align-items: center;
   justify-content: space-between;
+  font-size: 14px;
 }
 .kpi-value { 
   font-size: 22px; 
@@ -287,7 +288,7 @@ a { color: inherit; }
 .status-circle.red {
   background: var(--red);
 }
-.kpi-sub { font-size: 12px; color: var(--text2); margin-top: 6px; font-weight: 500; }
+.kpi-sub { font-size: 12px; color: var(--text2); margin-top: 6px; font-weight: 400; }
 
 .rag-green { border-left: 6px solid var(--green); }
 .rag-amber { border-left: 6px solid var(--amber); }
@@ -304,14 +305,29 @@ a { color: inherit; }
   border: 1px solid var(--border);
   padding: 10px;
   text-align: center;
-  font-weight: 800;
+  font-weight: 500;
   font-size: 12px;
 }
-.heatmap th { background: var(--disney-blue-soft); text-align: left; color: var(--text); }
+.heatmap th { background: var(--disney-blue-soft); text-align: left; color: var(--text); font-weight: 700; }
 .cell-green { background: #dcfce7; color: #166534; }
 .cell-amber { background: #fef3c7; color: #92400e; }
 .cell-red   { background: #fee2e2; color: #991b1b; }
-.cell-na    { background: rgba(232, 240, 250, 0.7); color: var(--text2); font-weight: 700; }
+.cell-na    { background: rgba(232, 240, 250, 0.7); color: var(--text2); font-weight: 500; }
+
+/* Risk list styling for Overview tab */
+#riskList {
+  margin: 0;
+  padding-left: 20px;
+  color: var(--text);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+#riskList li {
+  margin-bottom: 8px;
+  color: var(--text);
+}
 
 /* Clickable heatmap cells */
 .clickable-cell {
@@ -342,7 +358,7 @@ a { color: inherit; }
 .control-title {
   margin: 0 0 10px;
   font-size: 13px;
-  font-weight: 900;
+  font-weight: 700;
   color: var(--text);
 }
 
@@ -360,7 +376,7 @@ a { color: inherit; }
   color: var(--text);
   border-radius: 12px;
   padding: 10px 12px;
-  font-weight: 900;
+  font-weight: 700;
   font-size: 12px;
   display: inline-flex;
   align-items: center;
@@ -402,13 +418,13 @@ a { color: inherit; }
 .diagram-header h2 {
   margin: 0;
   font-size: 16px;
-  font-weight: 950;
+  font-weight: 700;
 }
 
 .diagram-description {
   margin: 6px 0 12px;
   color: var(--text2);
-  font-weight: 700;
+  font-weight: 500;
   font-size: 12px;
 }
 
@@ -444,7 +460,7 @@ a { color: inherit; }
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  font-weight: 800;
+  font-weight: 500;
   font-size: 12px;
   color: var(--text);
 }
@@ -507,7 +523,7 @@ a { color: inherit; }
 .drawer-header h3 {
   margin: 0;
   font-size: 14px;
-  font-weight: 950;
+  font-weight: 700;
 }
 
 .drawer-close {
@@ -529,19 +545,19 @@ a { color: inherit; }
 .drawer-label {
   font-size: 12px;
   color: var(--text2);
-  font-weight: 950;
+  font-weight: 700;
 }
 
 .drawer-value {
   font-size: 13px;
-  font-weight: 950;
+  font-weight: 700;
   margin-top: 4px;
 }
 
 .drawer-list {
   margin: 8px 0 0 16px;
   color: var(--text);
-  font-weight: 700;
+  font-weight: 400;
   font-size: 12px;
   line-height: 1.4;
 }
@@ -551,7 +567,7 @@ a { color: inherit; }
   margin-top: 8px;
   color: var(--blue);
   text-decoration: none;
-  font-weight: 950;
+  font-weight: 700;
   font-size: 12px;
 }
 .drawer-links a:hover { text-decoration: underline; }
@@ -573,7 +589,7 @@ a { color: inherit; }
 
 .phase-title {
   font-size: 16px;
-  font-weight: 900;
+  font-weight: 700;
   fill: #0A2A66;
   text-anchor: middle;
 }
@@ -586,7 +602,7 @@ a { color: inherit; }
 
 .step-text {
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 500;
   fill: #0A2A66;
   text-anchor: middle;
 }
@@ -599,7 +615,7 @@ a { color: inherit; }
 
 .detail-text {
   font-size: 10px;
-  font-weight: 800;
+  font-weight: 500;
   fill: #3B5278;
   text-anchor: middle;
 }
@@ -617,7 +633,7 @@ a { color: inherit; }
 .arrow-label {
   font-size: 10px;
   fill: #3B5278;
-  font-weight: 900;
+  font-weight: 500;
 }
 
 .feedback-label { fill: #ef4444; }
@@ -630,7 +646,7 @@ a { color: inherit; }
 
 .qa-text {
   font-size: 12px;
-  font-weight: 900;
+  font-weight: 700;
   fill: #0A2A66;
   text-anchor: middle;
 }
@@ -643,7 +659,7 @@ a { color: inherit; }
 
 .test-text {
   font-size: 12px;
-  font-weight: 900;
+  font-weight: 700;
   fill: #0A2A66;
   text-anchor: middle;
 }
@@ -656,14 +672,14 @@ a { color: inherit; }
 
 .execution-title {
   font-size: 12px;
-  font-weight: 950;
+  font-weight: 700;
   fill: #0A2A66;
   text-anchor: middle;
 }
 
 .execution-detail {
   font-size: 10px;
-  font-weight: 800;
+  font-weight: 500;
   fill: #3B5278;
   text-anchor: middle;
 }
@@ -688,25 +704,25 @@ a { color: inherit; }
 
 .tooltip-title {
   font-size: 12px;
-  font-weight: 950;
+  font-weight: 700;
   fill: #0A2A66;
 }
 
 .tooltip-text {
   font-size: 10px;
-  font-weight: 800;
+  font-weight: 500;
   fill: #3B5278;
 }
 
 .tooltip-small {
   font-size: 10px;
-  font-weight: 800;
+  font-weight: 500;
   fill: #3B5278;
 }
 
 .tooltip-link {
   font-size: 10px;
-  font-weight: 950;
+  font-weight: 700;
   fill: var(--blue);
   cursor: pointer;
 }
