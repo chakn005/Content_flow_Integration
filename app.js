@@ -95,21 +95,21 @@ const phaseData = {
   },
   qa: {
     title: "QA & Testing Layer",
-    description: "Comprehensive testing across ALL phases with continuous feedback loops",
+    description: "Team-specific integration testing with continuous feedback loops",
     steps: [
       "Content Platform Testing: Source content validation and metadata handoff verification",
       "Media Platform Testing: Encoding quality checks and package integrity validation",
       "Data Layer Testing: Catalog synchronization and search index validation",
       "Localization Testing: Language processing accuracy and cultural compliance checks",
-      "Regression Testing: Ensure changes don’t break existing functionality",
-      "Security Testing: Vulnerability scanning and penetration testing",
-      "Accessibility Testing: WCAG compliance and assistive technology support"
+      "Streaming/Client Testing: Playback integration and multi-device compatibility",
+      "Cross-Team Integration: Contract testing between phase handoffs",
+      "End-to-End Validation: Complete user journey testing across all phases"
     ],
     testPoints: [
-      "Functional & Integration test coverage completeness",
-      "Execution evidence attached to traceability plan",
-      "Defect attribution by phase + handshake",
-      "Release sign-off readiness checks"
+      "Team-specific integration test coverage by phase",
+      "Handoff validation between consecutive phases",
+      "Cross-team contract adherence verification",
+      "End-to-end flow validation and traceability"
     ]
   }
 };
