@@ -598,6 +598,8 @@ function setupTooltips(drawerApi) {
 // ===== Update Coverage and Risks tabs =====
 function updateCoverageTab(data, type = 'phase') {
   const coverageEl = document.getElementById('coverageDetails');
+  console.log("updateCoverageTab called with:", data.title, "type:", type, "element found:", !!coverageEl);
+  
   if (!coverageEl) return;
 
   if (type === 'phase') {
@@ -711,6 +713,9 @@ function setupPhases(drawerApi) {
     phase.addEventListener("click", () => {
       const phaseType = phase.getAttribute("data-phase");
       const data = phaseData[phaseType];
+      
+      console.log("Phase clicked:", phaseType, "Data found:", !!data);
+      
       if (!data) return;
 
       const owner =
@@ -722,6 +727,7 @@ function setupPhases(drawerApi) {
         "Cross‑Fleet QA";
 
       // Update Coverage and Risks tabs
+      console.log("Updating Coverage and Risks tabs for:", phaseType);
       updateCoverageTab(data, 'phase');
       updateRisksTab(data, 'phase');
 

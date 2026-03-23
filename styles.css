@@ -8,7 +8,7 @@
 html, body { height: 100%; }
 body {
   margin: 0;
-  font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-family: "Roboto", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
   color: var(--text);
   background: var(--disney-blue-bg);
   background-attachment: fixed;
@@ -108,14 +108,14 @@ a { color: inherit; }
   margin: 0;
   font-size: 16px;
   line-height: 1.2;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .brand-subtitle {
   margin: 2px 0 0;
   font-size: 12px;
   color: var(--text2);
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .header-actions {
@@ -134,7 +134,7 @@ a { color: inherit; }
   border: 1px solid var(--border);
   background: var(--surface);
   text-decoration: none;
-  font-weight: 800;
+  font-weight: 700;
   font-size: 12px;
   color: var(--text);
   box-shadow: var(--shadow);
@@ -161,7 +161,7 @@ a { color: inherit; }
   background: var(--surface);
   border-radius: 10px;
   padding: 8px 12px;
-  font-weight: 800;
+  font-weight: 700;
   cursor: pointer;
   font-size: 12px;
   color: var(--text);
@@ -201,7 +201,7 @@ a { color: inherit; }
 .card-title {
   margin: 0;
   font-size: 14px;
-  font-weight: 900;
+  font-weight: 700;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -249,7 +249,7 @@ a { color: inherit; }
 }
 
 .kpi-title { 
-  font-weight: 900; 
+  font-weight: 700; 
   color: var(--text); 
   display: flex;
   align-items: center;
@@ -257,7 +257,7 @@ a { color: inherit; }
 }
 .kpi-value { 
   font-size: 22px; 
-  font-weight: 900; 
+  font-weight: 700; 
   margin-top: 6px; 
   display: flex;
   justify-content: center;
@@ -287,7 +287,7 @@ a { color: inherit; }
 .status-circle.red {
   background: var(--red);
 }
-.kpi-sub { font-size: 12px; color: var(--text2); margin-top: 6px; font-weight: 700; }
+.kpi-sub { font-size: 12px; color: var(--text2); margin-top: 6px; font-weight: 500; }
 
 .rag-green { border-left: 6px solid var(--green); }
 .rag-amber { border-left: 6px solid var(--amber); }
