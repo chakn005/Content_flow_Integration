@@ -1,4 +1,55 @@
 
+// Test case configuration - teams can update these values
+const testCaseConfig = {
+  "CPTR-68701": { // Content Platform
+    completed: 34,
+    total: 37,
+    integrationPoints: { completed: 5, total: 5 }
+  },
+  "CPTR-68702": { // Media Platform
+    completed: 28,
+    total: 33,
+    integrationPoints: { completed: 4, total: 5 }
+  },
+  "CPTR-68703": { // Data Alliance
+    completed: 26,
+    total: 32,
+    integrationPoints: { completed: 4, total: 6 }
+  },
+  "CPTR-68704": { // Localization
+    completed: 21,
+    total: 27,
+    integrationPoints: { completed: 3, total: 4 }
+  },
+  "CPTR-68705": { // Streaming/Client
+    completed: 31,
+    total: 33,
+    integrationPoints: { completed: 5, total: 5 }
+  }
+};
+
+// Calculate overall metrics
+function calculateOverallMetrics() {
+  let totalCompleted = 0;
+  let totalTests = 0;
+  let totalIntegrationPoints = 0;
+  
+  Object.values(testCaseConfig).forEach(config => {
+    totalCompleted += config.completed;
+    totalTests += config.total;
+    totalIntegrationPoints += config.integrationPoints.total;
+  });
+  
+  const overallCoverage = Math.round((totalCompleted / totalTests) * 100);
+  
+  return {
+    coverage: overallCoverage,
+    totalTests: totalTests,
+    completedTests: totalCompleted,
+    integrationPoints: totalIntegrationPoints
+  };
+}
+
 const phaseData = {
   content: {
     title: "Content Platform Phase",
@@ -350,6 +401,43 @@ function setupDrawer() {
   closeBtn.addEventListener("click", closeDrawer);
 
   return { openDrawer, closeDrawer };
+}
+
+// ===== Update Coverage Display =====
+function updateCoverageDisplay() {
+  const metrics = calculateOverallMetrics();
+  
+  // Update overview metrics
+  const coverageElements = document.querySelectorAll('[data-metric="coverage"]');
+  const testCaseElements = document.querySelectorAll('[data-metric="testcases"]');
+  const integrationElements = document.querySelectorAll('[data-metric="integration"]');
+  
+  coverageElements.forEach(el => el.textContent = `${metrics.coverage}%`);
+  testCaseElements.forEach(el => el.textContent = metrics.totalTests);
+  integrationElements.forEach(el => el.textContent = metrics.integrationPoints);
+  
+  // Update team-specific counts
+  Object.entries(testCaseConfig).forEach(([jiraId, config]) => {
+    const testCaseEl = document.querySelector(`[data-jira="${jiraId}"] .test-cases`);
+    const integrationEl = document.querySelector(`[data-jira="${jiraId}"] .integration-points`);
+    const percentageEl = document.querySelector(`[data-jira="${jiraId}"] .completion-percentage`);
+    
+    if (testCaseEl) {
+      testCaseEl.textContent = `${config.completed}/${config.total}`;
+    }
+    if (integrationEl) {
+      integrationEl.textContent = `${config.integrationPoints.completed}/${config.integrationPoints.total}`;
+    }
+    if (percentageEl) {
+      const percentage = Math.round((config.completed / config.total) * 100);
+      percentageEl.textContent = `${percentage}% Complete`;
+      
+      // Update status badge color based on percentage
+      percentageEl.className = percentage >= 90 ? 'status-badge status-green' :
+                              percentage >= 80 ? 'status-badge status-amber' :
+                              'status-badge status-red';
+    }
+  });
 }
 
 // ===== Tabs =====
@@ -801,6 +889,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderHeatmap();
   renderEvidence();
   setupKPICards();
+  updateCoverageDisplay(); // Update coverage with dynamic data
 
   const drawerApi = setupDrawer();
   setupPhases(drawerApi);
