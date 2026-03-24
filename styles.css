@@ -33,7 +33,7 @@ body::before {
 }
 
 a { color: inherit; }
-.muted { color: #6b7280; font-size: 12px; }
+.muted { color: #6b7280; font-size: 12px; font-weight: 400; }
 
 :root{
   /* Disney blue-soft theme */
@@ -57,6 +57,23 @@ a { color: inherit; }
 
   --text: #0A2A66;
   --text2: #3B5278;
+  
+  /* Standardized Font Hierarchy */
+  --font-size-xs: 10px;
+  --font-size-sm: 11px;
+  --font-size-base: 12px;
+  --font-size-md: 13px;
+  --font-size-lg: 14px;
+  --font-size-xl: 16px;
+  --font-size-2xl: 18px;
+  --font-size-3xl: 22px;
+  --font-size-4xl: 26px;
+  
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 700;
+  --font-weight-bold: 900;
 }
 
 /* ---------- App Shell ---------- */
@@ -106,16 +123,16 @@ a { color: inherit; }
 
 .brand-text h1 {
   margin: 0;
-  font-size: 16px;
+  font-size: var(--font-size-xl);
   line-height: 1.2;
-  font-weight: 700;
+  font-weight: var(--font-weight-semibold);
 }
 
 .brand-subtitle {
   margin: 2px 0 0;
-  font-size: 12px;
+  font-size: var(--font-size-base);
   color: var(--text2);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
 }
 
 .header-actions {
@@ -134,8 +151,8 @@ a { color: inherit; }
   border: 1px solid var(--border);
   background: var(--surface);
   text-decoration: none;
-  font-weight: 700;
-  font-size: 12px;
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-base);
   color: var(--text);
   box-shadow: var(--shadow);
 }
@@ -161,9 +178,9 @@ a { color: inherit; }
   background: var(--surface);
   border-radius: 10px;
   padding: 8px 12px;
-  font-weight: 700;
+  font-weight: var(--font-weight-semibold);
   cursor: pointer;
-  font-size: 12px;
+  font-size: var(--font-size-base);
   color: var(--text);
 }
 .tab-btn:hover { border-color: rgba(10, 42, 102, 0.35); background: var(--disney-blue-soft); }
@@ -200,8 +217,8 @@ a { color: inherit; }
 
 .card-title {
   margin: 0;
-  font-size: 14px;
-  font-weight: 700;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -249,16 +266,16 @@ a { color: inherit; }
 }
 
 .kpi-title { 
-  font-weight: 700; 
+  font-weight: var(--font-weight-semibold); 
   color: var(--text); 
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 14px;
+  font-size: var(--font-size-lg);
 }
 .kpi-value { 
-  font-size: 22px; 
-  font-weight: 700; 
+  font-size: var(--font-size-3xl); 
+  font-weight: var(--font-weight-semibold); 
   margin-top: 6px; 
   display: flex;
   justify-content: center;
@@ -288,7 +305,12 @@ a { color: inherit; }
 .status-circle.red {
   background: var(--red);
 }
-.kpi-sub { font-size: 12px; color: var(--text2); margin-top: 6px; font-weight: 400; }
+.kpi-sub { 
+  font-size: var(--font-size-base); 
+  color: var(--text2); 
+  margin-top: 6px; 
+  font-weight: var(--font-weight-normal); 
+}
 
 .rag-green { border-left: 6px solid var(--green); }
 .rag-amber { border-left: 6px solid var(--amber); }
@@ -305,22 +327,31 @@ a { color: inherit; }
   border: 1px solid var(--border);
   padding: 10px;
   text-align: center;
-  font-weight: 500;
-  font-size: 12px;
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-base);
 }
-.heatmap th { background: var(--disney-blue-soft); text-align: left; color: var(--text); font-weight: 700; }
+.heatmap th { 
+  background: var(--disney-blue-soft); 
+  text-align: left; 
+  color: var(--text); 
+  font-weight: var(--font-weight-semibold); 
+}
 .cell-green { background: #dcfce7; color: #166534; }
 .cell-amber { background: #fef3c7; color: #92400e; }
 .cell-red   { background: #fee2e2; color: #991b1b; }
-.cell-na    { background: rgba(232, 240, 250, 0.7); color: var(--text2); font-weight: 500; }
+.cell-na    { 
+  background: rgba(232, 240, 250, 0.7); 
+  color: var(--text2); 
+  font-weight: var(--font-weight-medium); 
+}
 
 /* Risk list styling for Overview tab */
 #riskList {
   margin: 0;
   padding-left: 20px;
   color: var(--text);
-  font-weight: 400;
-  font-size: 12px;
+  font-weight: var(--font-weight-normal);
+  font-size: var(--font-size-base);
   line-height: 1.5;
 }
 
@@ -357,8 +388,8 @@ a { color: inherit; }
 
 .control-title {
   margin: 0 0 10px;
-  font-size: 13px;
-  font-weight: 700;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
   color: var(--text);
 }
 
@@ -376,8 +407,8 @@ a { color: inherit; }
   color: var(--text);
   border-radius: 12px;
   padding: 10px 12px;
-  font-weight: 700;
-  font-size: 12px;
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-base);
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -417,15 +448,15 @@ a { color: inherit; }
 
 .diagram-header h2 {
   margin: 0;
-  font-size: 16px;
-  font-weight: 700;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
 }
 
 .diagram-description {
   margin: 6px 0 12px;
   color: var(--text2);
-  font-weight: 500;
-  font-size: 12px;
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-base);
 }
 
 .diagram-container {
@@ -460,8 +491,8 @@ a { color: inherit; }
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  font-weight: 500;
-  font-size: 12px;
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-base);
   color: var(--text);
 }
 
@@ -484,8 +515,8 @@ a { color: inherit; }
 .phase-info .info-placeholder {
   margin: 0;
   color: var(--text2);
-  font-weight: 700;
-  font-size: 12px;
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-base);
 }
 
 /* ---------- Drawer ---------- */
@@ -522,14 +553,14 @@ a { color: inherit; }
 
 .drawer-header h3 {
   margin: 0;
-  font-size: 14px;
-  font-weight: 700;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
 }
 
 .drawer-close {
   border: none;
   background: transparent;
-  font-size: 26px;
+  font-size: var(--font-size-4xl);
   cursor: pointer;
   color: var(--text);
   line-height: 1;
@@ -543,22 +574,22 @@ a { color: inherit; }
 .drawer-section { margin-bottom: 14px; }
 
 .drawer-label {
-  font-size: 12px;
+  font-size: var(--font-size-base);
   color: var(--text2);
-  font-weight: 700;
+  font-weight: var(--font-weight-semibold);
 }
 
 .drawer-value {
-  font-size: 13px;
-  font-weight: 700;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
   margin-top: 4px;
 }
 
 .drawer-list {
   margin: 8px 0 0 16px;
   color: var(--text);
-  font-weight: 400;
-  font-size: 12px;
+  font-weight: var(--font-weight-normal);
+  font-size: var(--font-size-base);
   line-height: 1.4;
 }
 
@@ -567,8 +598,8 @@ a { color: inherit; }
   margin-top: 8px;
   color: var(--blue);
   text-decoration: none;
-  font-weight: 700;
-  font-size: 12px;
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-base);
 }
 .drawer-links a:hover { text-decoration: underline; }
 
@@ -588,8 +619,8 @@ a { color: inherit; }
 .phase-testing    { fill: #F0F9FF; stroke: rgba(10,42,102,0.15); stroke-width: 1.5; }
 
 .phase-title {
-  font-size: 16px;
-  font-weight: 700;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
   fill: #0A2A66;
   text-anchor: middle;
 }
@@ -601,8 +632,8 @@ a { color: inherit; }
 }
 
 .step-text {
-  font-size: 12px;
-  font-weight: 500;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
   fill: #0A2A66;
   text-anchor: middle;
 }
@@ -614,8 +645,8 @@ a { color: inherit; }
 }
 
 .detail-text {
-  font-size: 10px;
-  font-weight: 500;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
   fill: #3B5278;
   text-anchor: middle;
 }
@@ -631,9 +662,9 @@ a { color: inherit; }
 }
 
 .arrow-label {
-  font-size: 10px;
+  font-size: var(--font-size-xs);
   fill: #3B5278;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
 }
 
 .feedback-label { fill: #ef4444; }
@@ -645,8 +676,8 @@ a { color: inherit; }
 }
 
 .qa-text {
-  font-size: 12px;
-  font-weight: 700;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
   fill: #0A2A66;
   text-anchor: middle;
 }
@@ -658,8 +689,8 @@ a { color: inherit; }
 }
 
 .test-text {
-  font-size: 12px;
-  font-weight: 700;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
   fill: #0A2A66;
   text-anchor: middle;
 }
@@ -671,15 +702,15 @@ a { color: inherit; }
 }
 
 .execution-title {
-  font-size: 12px;
-  font-weight: 700;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
   fill: #0A2A66;
   text-anchor: middle;
 }
 
 .execution-detail {
-  font-size: 10px;
-  font-weight: 500;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
   fill: #3B5278;
   text-anchor: middle;
 }
@@ -703,26 +734,26 @@ a { color: inherit; }
 }
 
 .tooltip-title {
-  font-size: 12px;
-  font-weight: 700;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
   fill: #0A2A66;
 }
 
 .tooltip-text {
-  font-size: 10px;
-  font-weight: 500;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
   fill: #3B5278;
 }
 
 .tooltip-small {
-  font-size: 10px;
-  font-weight: 500;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
   fill: #3B5278;
 }
 
 .tooltip-link {
-  font-size: 10px;
-  font-weight: 700;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
   fill: var(--blue);
   cursor: pointer;
 }

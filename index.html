@@ -442,15 +442,15 @@
           <div class="card-content">
             <div id="phaseInfo">
               <div style="margin-bottom: 16px;">
-                <h4 style="margin: 0 0 8px; font-weight: 700; color: #0A2A66;">E2E Integration Overview</h4>
-                <p style="margin: 0 0 12px; color: #6b7280; font-size: 13px; line-height: 1.5;">
+                <h4 style="margin: 0 0 8px; font-weight: 700; color: #0A2A66; font-size: 14px;">E2E Integration Overview</h4>
+                <p style="margin: 0 0 12px; color: #6b7280; font-size: 12px; line-height: 1.5;">
                   Content migration requires seamless integration across five critical phases. Each phase must validate handoffs, 
                   ensure data integrity, and maintain content quality throughout the pipeline.
                 </p>
               </div>
 
               <div style="margin-bottom: 16px;">
-                <h5 style="margin: 0 0 8px; font-weight: 700; color: #111827;">Integration Dependencies</h5>
+                <h5 style="margin: 0 0 8px; font-weight: 700; color: #111827; font-size: 13px;">Integration Dependencies</h5>
                 <ul style="margin: 0; padding-left: 16px; color: #374151; font-size: 12px; line-height: 1.4;">
                   <li style="margin-bottom: 4px;"><strong>Content → Media:</strong> Metadata transfer & format validation</li>
                   <li style="margin-bottom: 4px;"><strong>Media → Data:</strong> Catalog sync & entity reconciliation</li>
@@ -460,19 +460,19 @@
               </div>
 
               <div style="margin-bottom: 16px;">
-                <h5 style="margin: 0 0 8px; font-weight: 700; color: #111827;">Migration Readiness Criteria</h5>
+                <h5 style="margin: 0 0 8px; font-weight: 700; color: #111827; font-size: 13px;">Migration Readiness Criteria</h5>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 12px;">
                   <div>
-                    <div style="font-weight: 700; color: #059669; margin-bottom: 4px;">✓ Ready Indicators</div>
-                    <ul style="margin: 0; padding-left: 12px; color: #374151;">
+                    <div style="font-weight: 700; color: #059669; margin-bottom: 4px; font-size: 12px;">✓ Ready Indicators</div>
+                    <ul style="margin: 0; padding-left: 12px; color: #374151; font-size: 12px;">
                       <li>Contract validation complete</li>
                       <li>Data flow tested end-to-end</li>
                       <li>Handoff ownership confirmed</li>
                     </ul>
                   </div>
                   <div>
-                    <div style="font-weight: 700; color: #dc2626; margin-bottom: 4px;">⚠ Risk Indicators</div>
-                    <ul style="margin: 0; padding-left: 12px; color: #374151;">
+                    <div style="font-weight: 700; color: #dc2626; margin-bottom: 4px; font-size: 12px;">⚠ Risk Indicators</div>
+                    <ul style="margin: 0; padding-left: 12px; color: #374151; font-size: 12px;">
                       <li>Missing integration evidence</li>
                       <li>Unvalidated phase boundaries</li>
                       <li>Incomplete test coverage</li>
@@ -502,30 +502,16 @@
         </div>
         <div class="card-content" id="coverageDetails">
           
-          <!-- Coverage Overview -->
-          <div style="margin-bottom: 24px;">
-            <h4 style="margin: 0 0 12px; font-weight: 700; color: #0A2A66;">Content Migration E2E Test Coverage</h4>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
-              <div style="text-align: center; padding: 12px; background: #f0f9ff; border-radius: 8px;">
-                <div style="font-size: 24px; font-weight: 700; color: #059669;">87%</div>
-                <div style="font-size: 12px; color: #6b7280;">Overall Coverage</div>
-              </div>
-              <div style="text-align: center; padding: 12px; background: #f0f9ff; border-radius: 8px;">
-                <div style="font-size: 24px; font-weight: 700; color: #f59e0b;">23</div>
-                <div style="font-size: 12px; color: #6b7280;">Integration Points</div>
-              </div>
-            </div>
-          </div>
+
 
           <!-- Team Coverage Breakdown -->
           <div style="margin-bottom: 24px;">
-            <h5 style="margin: 0 0 16px; font-weight: 700; color: #111827;">Team Coverage Breakdown</h5>
+            <h5 style="margin: 0 0 16px; font-weight: 700; color: #111827; font-size: 14px;">Team Coverage Breakdown</h5>
             
             <!-- Content Platform Team -->
             <div style="margin-bottom: 16px; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px;">
               <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 12px;">
-                <h6 style="margin: 0; font-weight: 700; color: #059669;">Content Platform Alliance</h6>
-                <span style="background: #dcfce7; color: #166534; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 700;">92% Complete</span>
+                <h6 style="margin: 0; font-weight: 700; color: #059669; font-size: 13px;">Content Platform Alliance</h6>
               </div>
               <div style="margin-bottom: 8px;">
                 <strong style="font-size: 12px;">Test Areas:</strong>
@@ -537,16 +523,12 @@
                   <li>Handoff to Media Platform (contract testing)</li>
                 </ul>
               </div>
-              <div style="font-size: 11px; color: #6b7280;">
-                <strong>Test Plan:</strong> <a href="https://jira.disney.com/browse/CPTR-68701" target="_blank" style="color: #2563eb;">CPTR-68701</a>
-              </div>
             </div>
 
             <!-- Media Platform Team -->
             <div style="margin-bottom: 16px; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px;">
               <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 12px;">
-                <h6 style="margin: 0; font-weight: 700; color: #7c3aed;">Media Platform Alliance</h6>
-                <span style="background: #fef3c7; color: #92400e; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 700;">85% Complete</span>
+                <h6 style="margin: 0; font-weight: 700; color: #7c3aed; font-size: 13px;">Media Platform Alliance</h6>
               </div>
               <div style="margin-bottom: 8px;">
                 <strong style="font-size: 12px;">Test Areas:</strong>
@@ -558,16 +540,12 @@
                   <li>CDN preparation and handoff to Data Layer</li>
                 </ul>
               </div>
-              <div style="font-size: 11px; color: #6b7280;">
-                <strong>Test Plan:</strong> <a href="https://jira.disney.com/browse/CPTR-68702" target="_blank" style="color: #2563eb;">CPTR-68702</a>
-              </div>
             </div>
 
             <!-- Data Alliance Team -->
             <div style="margin-bottom: 16px; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px;">
               <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 12px;">
-                <h6 style="margin: 0; font-weight: 700; color: #059669;">Data Alliance</h6>
-                <span style="background: #fef3c7; color: #92400e; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 700;">81% Complete</span>
+                <h6 style="margin: 0; font-weight: 700; color: #059669; font-size: 13px;">Data Alliance</h6>
               </div>
               <div style="margin-bottom: 8px;">
                 <strong style="font-size: 12px;">Test Areas:</strong>
@@ -579,16 +557,12 @@
                   <li>Regional metadata routing to Localization</li>
                 </ul>
               </div>
-              <div style="font-size: 11px; color: #6b7280;">
-                <strong>Test Plan:</strong> <a href="https://jira.disney.com/browse/CPTR-68703" target="_blank" style="color: #2563eb;">CPTR-68703</a>
-              </div>
             </div>
 
             <!-- Localization Alliance Team -->
             <div style="margin-bottom: 16px; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px;">
               <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 12px;">
-                <h6 style="margin: 0; font-weight: 700; color: #e11d48;">Localization Alliance</h6>
-                <span style="background: #fef3c7; color: #92400e; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 700;">78% Complete</span>
+                <h6 style="margin: 0; font-weight: 700; color: #e11d48; font-size: 13px;">Localization Alliance</h6>
               </div>
               <div style="margin-bottom: 8px;">
                 <strong style="font-size: 12px;">Test Areas:</strong>
@@ -600,16 +574,12 @@
                   <li>Localized content delivery to Streaming</li>
                 </ul>
               </div>
-              <div style="font-size: 11px; color: #6b7280;">
-                <strong>Test Plan:</strong> <a href="https://jira.disney.com/browse/CPTR-68704" target="_blank" style="color: #2563eb;">CPTR-68704</a>
-              </div>
             </div>
 
             <!-- Streaming/Client QA Team -->
             <div style="margin-bottom: 16px; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px;">
               <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 12px;">
-                <h6 style="margin: 0; font-weight: 700; color: #f59e0b;">Streaming / Client QA</h6>
-                <span style="background: #dcfce7; color: #166534; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 700;">94% Complete</span>
+                <h6 style="margin: 0; font-weight: 700; color: #f59e0b; font-size: 13px;">Streaming / Client QA</h6>
               </div>
               <div style="margin-bottom: 8px;">
                 <strong style="font-size: 12px;">Test Areas:</strong>
@@ -621,160 +591,14 @@
                   <li>Performance metrics and error handling</li>
                 </ul>
               </div>
-              <div style="font-size: 11px; color: #6b7280;">
-                <strong>Test Plan:</strong> <a href="https://jira.disney.com/browse/CPTR-68705" target="_blank" style="color: #2563eb;">CPTR-68705</a>
-              </div>
             </div>
           </div>
 
-          <!-- Critical Integration Points -->
-          <div style="margin-bottom: 24px;">
-            <h5 style="margin: 0 0 16px; font-weight: 700; color: #111827;">Critical Integration Points Coverage</h5>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-              
-              <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px;">
-                <h6 style="margin: 0 0 8px; font-weight: 700; color: #2563eb;">Content → Media Handshake</h6>
-                <div style="font-size: 12px; margin-bottom: 8px;">
-                  <div style="margin-bottom: 4px;">✅ Metadata transfer validation</div>
-                  <div style="margin-bottom: 4px;">✅ Format integrity checks</div>
-                  <div style="margin-bottom: 4px;">⚠️ API contract testing (in progress)</div>
-                </div>
-                <div style="font-size: 11px; color: #6b7280;">Owner: Media Platform Alliance</div>
-              </div>
 
-              <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px;">
-                <h6 style="margin: 0 0 8px; font-weight: 700; color: #2563eb;">Media → Data Handshake</h6>
-                <div style="font-size: 12px; margin-bottom: 8px;">
-                  <div style="margin-bottom: 4px;">✅ Catalog synchronization</div>
-                  <div style="margin-bottom: 4px;">⚠️ Ava entity reconciliation (in progress)</div>
-                  <div style="margin-bottom: 4px;">⚠️ Search index updates (pending)</div>
-                </div>
-                <div style="font-size: 11px; color: #6b7280;">Owner: Data Alliance</div>
-              </div>
 
-              <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px;">
-                <h6 style="margin: 0 0 8px; font-weight: 700; color: #2563eb;">Data → Localization Handshake</h6>
-                <div style="font-size: 12px; margin-bottom: 8px;">
-                  <div style="margin-bottom: 4px;">⚠️ Regional metadata routing (in progress)</div>
-                  <div style="margin-bottom: 4px;">⚠️ Language-specific content flow (pending)</div>
-                  <div style="margin-bottom: 4px;">❌ Cultural compliance validation (not started)</div>
-                </div>
-                <div style="font-size: 11px; color: #6b7280;">Owner: Localization Alliance</div>
-              </div>
 
-              <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px;">
-                <h6 style="margin: 0 0 8px; font-weight: 700; color: #2563eb;">Localization → Streaming Handshake</h6>
-                <div style="font-size: 12px; margin-bottom: 8px;">
-                  <div style="margin-bottom: 4px;">✅ Localized content delivery</div>
-                  <div style="margin-bottom: 4px;">✅ Language switching functionality</div>
-                  <div style="margin-bottom: 4px;">⚠️ Regional discovery testing (in progress)</div>
-                </div>
-                <div style="font-size: 11px; color: #6b7280;">Owner: Streaming / Client QA</div>
-              </div>
-            </div>
-          </div>
 
-          <!-- Test Plan References -->
-          <div style="margin-bottom: 24px;">
-            <h5 style="margin: 0 0 12px; font-weight: 700; color: #111827;">Integration Points Calculation</h5>
-            <div style="background: #f8fafc; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
-              <p style="margin: 0 0 12px; font-size: 12px; color: #374151;">
-                <strong>Integration Points</strong> represent critical handoff/interface points where one team's output becomes another team's input. Each point requires validation, contract testing, and ownership clarity.
-              </p>
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; font-size: 11px;">
-                <div>
-                  <strong style="color: #059669;">Content Platform (5 points):</strong>
-                  <ul style="margin: 4px 0 0 12px; line-height: 1.3;">
-                    <li>Metadata handoff to Media Platform</li>
-                    <li>Asset delivery to Media Platform</li>
-                    <li>Rights data to Data Layer</li>
-                    <li>Localization assets handoff</li>
-                    <li>Quality gates validation</li>
-                  </ul>
-                  
-                  <strong style="color: #7c3aed;">Media Platform (5 points):</strong>
-                  <ul style="margin: 4px 0 0 12px; line-height: 1.3;">
-                    <li>Content intake from Content Platform</li>
-                    <li>Encoded content to Data Layer</li>
-                    <li>DRM keys to Data Layer</li>
-                    <li>CDN preparation handoff</li>
-                    <li>Quality validation feedback</li>
-                  </ul>
 
-                  <strong style="color: #059669;">Data Alliance (6 points):</strong>
-                  <ul style="margin: 4px 0 0 12px; line-height: 1.3;">
-                    <li>Media intake from Media Platform</li>
-                    <li>Catalog sync coordination</li>
-                    <li>API exposure to Localization</li>
-                    <li>API exposure to Streaming</li>
-                    <li>Search index to Streaming</li>
-                    <li>Recommendation data flow</li>
-                  </ul>
-                </div>
-                <div>
-                  <strong style="color: #e11d48;">Localization (4 points):</strong>
-                  <ul style="margin: 4px 0 0 12px; line-height: 1.3;">
-                    <li>Content metadata from Data Layer</li>
-                    <li>Regional content processing</li>
-                    <li>Localized content to Streaming</li>
-                    <li>Cultural compliance validation</li>
-                  </ul>
-
-                  <strong style="color: #f59e0b;">Streaming/Client (5 points):</strong>
-                  <ul style="margin: 4px 0 0 12px; line-height: 1.3;">
-                    <li>Catalog intake from Data Layer</li>
-                    <li>Localized content from Localization</li>
-                    <li>CDN integration</li>
-                    <li>Client API consumption</li>
-                    <li>User experience validation</li>
-                  </ul>
-
-                  <div style="margin-top: 12px; padding: 8px; background: #e0f2fe; border-radius: 4px;">
-                    <strong style="color: #0369a1;">Total: 25 Integration Points</strong><br>
-                    <span style="font-size: 10px; color: #0369a1;">Each point requires contract testing, validation, and clear ownership</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Test Plan References -->
-          <div>
-            <h5 style="margin: 0 0 12px; font-weight: 700; color: #111827;">Jira Test Plan References & Validation</h5>
-            <div style="background: #f8fafc; border-radius: 8px; padding: 16px;">
-              <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; font-size: 12px;">
-                <div>
-                  <strong style="color: #374151;">Epic & Test Plans:</strong>
-                  <ul style="margin: 4px 0 0 16px; line-height: 1.4;">
-                    <li><a href="https://jira.disney.com/browse/CPTR-68587" target="_blank" style="color: #2563eb;">CPTR-68587 - E2E Integration Epic</a></li>
-                    <li><a href="https://jira.disney.com/browse/CPTR-68701" target="_blank" style="color: #2563eb;">CPTR-68701 - Content Platform Tests</a></li>
-                    <li><a href="https://jira.disney.com/browse/CPTR-68702" target="_blank" style="color: #2563eb;">CPTR-68702 - Media Platform Tests</a></li>
-                    <li><a href="https://jira.disney.com/browse/CPTR-68703" target="_blank" style="color: #2563eb;">CPTR-68703 - Data Alliance Tests</a></li>
-                    <li><a href="https://jira.disney.com/browse/CPTR-68704" target="_blank" style="color: #2563eb;">CPTR-68704 - Localization Tests</a></li>
-                    <li><a href="https://jira.disney.com/browse/CPTR-68705" target="_blank" style="color: #2563eb;">CPTR-68705 - Streaming/Client Tests</a></li>
-                  </ul>
-                </div>
-                <div>
-                  <strong style="color: #374151;">Test Plan Validation:</strong>
-                  <ul style="margin: 4px 0 0 16px; line-height: 1.4;">
-                    <li>Test execution tracked in Jira tickets</li>
-                    <li>Integration points mapped to Epic requirements</li>
-                    <li>Coverage validation from test results</li>
-                    <li>All test plans linked to parent Epic CPTR-68587</li>
-                  </ul>
-                </div>
-                <div>
-                  <strong style="color: #374151;">Traceability Matrix:</strong>
-                  <ul style="margin: 4px 0 0 16px; line-height: 1.4;">
-                    <li>Epic Requirements → Test Plan Tickets</li>
-                    <li>Integration Points → Contract Validation</li>
-                    <li>Test Execution → Evidence Documentation</li>
-                    <li>Team Ownership → Jira Assignees</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
 
         </div>
       </div>
