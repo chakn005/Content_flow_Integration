@@ -437,7 +437,7 @@ a { color: inherit; }
 #flowchart {
   width: 100%;
   height: auto;
-  min-width: 1200px;
+  min-width: 1300px;
 }
 
 /* ---------- Two Column Layout (Legend + Info) ---------- */
@@ -741,7 +741,7 @@ a { color: inherit; }
 @media (max-width: 980px) {
   .kpi-row { grid-template-columns: repeat(3, 1fr); }
   .content-grid { grid-template-columns: 1fr; }
-  #flowchart { min-width: 1100px; }
+  #flowchart { min-width: 1200px; }
 }
 
 @media (max-width: 520px) {
