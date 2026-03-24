@@ -637,8 +637,7 @@ function setupTooltips(drawerApi) {
       const h = handshakeData[integrationId];
       if (!h) return;
       
-      // Update Coverage and Risks tabs for handshake
-      updateCoverageTab(h, 'handshake');
+      // Update Risks tab only (Coverage tab maintains comprehensive E2E view)
       updateRisksTab(h, 'handshake');
       
       drawerApi.openDrawer({
@@ -665,8 +664,7 @@ function setupTooltips(drawerApi) {
       const h = handshakeData[integrationId];
       if (!h) return;
       
-      // Update Coverage and Risks tabs for handshake
-      updateCoverageTab(h, 'handshake');
+      // Update Risks tab only (Coverage tab maintains comprehensive E2E view)
       updateRisksTab(h, 'handshake');
       
       drawerApi.openDrawer({
@@ -682,51 +680,10 @@ function setupTooltips(drawerApi) {
 
 // ===== Update Coverage and Risks tabs =====
 function updateCoverageTab(data, type = 'phase') {
-  const coverageEl = document.getElementById('coverageDetails');
-  if (!coverageEl) return;
-
-  if (type === 'phase') {
-    coverageEl.innerHTML = `
-      <div style="margin-bottom: 16px;">
-        <h4 style="margin: 0 0 8px; font-weight: 800;">${data.title}</h4>
-        <p style="color: #6b7280; margin: 0 0 16px;">${data.description}</p>
-      </div>
-      
-      <div style="margin-bottom: 20px;">
-        <h5 style="margin: 0 0 12px; font-weight: 800; color: #111827;">Process Steps</h5>
-        <ul style="margin: 0; padding-left: 20px; line-height: 1.6;">
-          ${data.steps.map(step => `<li style="margin-bottom: 8px; font-weight: 600;">${step}</li>`).join('')}
-        </ul>
-      </div>
-      
-      <div>
-        <h5 style="margin: 0 0 12px; font-weight: 800; color: #111827;">Test Coverage Points</h5>
-        <ul style="margin: 0; padding-left: 20px; line-height: 1.6;">
-          ${data.testPoints.map(point => `<li style="margin-bottom: 8px; color: #2563eb; font-weight: 600;">${point}</li>`).join('')}
-        </ul>
-      </div>
-    `;
-  } else {
-    // Handshake coverage
-    coverageEl.innerHTML = `
-      <div style="margin-bottom: 16px;">
-        <h4 style="margin: 0 0 8px; font-weight: 800;">${data.title}</h4>
-        <p style="color: #6b7280; margin: 0 0 16px;">Integration point validation and testing</p>
-      </div>
-      
-      <div style="margin-bottom: 20px;">
-        <h5 style="margin: 0 0 12px; font-weight: 800; color: #111827;">Owner</h5>
-        <p style="margin: 0; font-weight: 600; color: #059669;">${data.owner}</p>
-      </div>
-      
-      <div>
-        <h5 style="margin: 0 0 12px; font-weight: 800; color: #111827;">Validation Requirements</h5>
-        <ul style="margin: 0; padding-left: 20px; line-height: 1.6;">
-          ${data.validations.map(validation => `<li style="margin-bottom: 8px; color: #2563eb; font-weight: 600;">${validation}</li>`).join('')}
-        </ul>
-      </div>
-    `;
-  }
+  // Coverage tab now shows comprehensive E2E coverage by default
+  // Individual phase/handshake details are shown in the drawer and context
+  console.log("Coverage tab maintains comprehensive E2E view - details shown in drawer");
+  return;
 }
 
 function updateRisksTab(data, type = 'phase') {
@@ -807,8 +764,7 @@ function setupPhases(drawerApi) {
         phaseType === "streaming" ? "Streaming / Client QA" :
         "Cross‑Fleet QA";
 
-      // Update Coverage and Risks tabs
-      updateCoverageTab(data, 'phase');
+      // Update Risks tab only (Coverage tab maintains comprehensive E2E view)
       updateRisksTab(data, 'phase');
 
       drawerApi.openDrawer({
