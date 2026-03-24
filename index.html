@@ -542,7 +542,7 @@
                 </ul>
               </div>
               <div style="font-size: 11px; color: #6b7280;">
-                <strong>Test Cases:</strong> 34/37 • <strong>Integration Points:</strong> 5/5 • <strong>Evidence:</strong> <a href="https://jira.disney.com/browse/CPTR-68587" target="_blank" style="color: #2563eb;">CPTR-68587</a>
+                <strong>Test Cases:</strong> 34/37 • <strong>Integration Points:</strong> 5/5 • <strong>Test Plan:</strong> <a href="https://confluence.disney.com/display/CPTR/Content-Platform-Test-Plan" target="_blank" style="color: #2563eb;">CP-E2E-TestPlan-v2.1</a>
               </div>
             </div>
 
@@ -563,7 +563,7 @@
                 </ul>
               </div>
               <div style="font-size: 11px; color: #6b7280;">
-                <strong>Test Cases:</strong> 28/33 • <strong>Integration Points:</strong> 4/5 • <strong>Evidence:</strong> <a href="https://jira.disney.com/browse/CPTR-68587" target="_blank" style="color: #2563eb;">CPTR-68587</a>
+                <strong>Test Cases:</strong> 28/33 • <strong>Integration Points:</strong> 4/5 • <strong>Test Plan:</strong> <a href="https://confluence.disney.com/display/CPTR/Media-Platform-Test-Plan" target="_blank" style="color: #2563eb;">MP-E2E-TestPlan-v1.8</a>
               </div>
             </div>
 
@@ -584,7 +584,7 @@
                 </ul>
               </div>
               <div style="font-size: 11px; color: #6b7280;">
-                <strong>Test Cases:</strong> 26/32 • <strong>Integration Points:</strong> 4/6 • <strong>Evidence:</strong> <a href="https://jira.disney.com/browse/CPTR-68587" target="_blank" style="color: #2563eb;">CPTR-68587</a>
+                <strong>Test Cases:</strong> 26/32 • <strong>Integration Points:</strong> 4/6 • <strong>Test Plan:</strong> <a href="https://confluence.disney.com/display/CPTR/Data-Alliance-Test-Plan" target="_blank" style="color: #2563eb;">DA-E2E-TestPlan-v2.3</a>
               </div>
             </div>
 
@@ -605,7 +605,7 @@
                 </ul>
               </div>
               <div style="font-size: 11px; color: #6b7280;">
-                <strong>Test Cases:</strong> 21/27 • <strong>Integration Points:</strong> 3/4 • <strong>Evidence:</strong> <a href="https://jira.disney.com/browse/CPTR-68587" target="_blank" style="color: #2563eb;">CPTR-68587</a>
+                <strong>Test Cases:</strong> 21/27 • <strong>Integration Points:</strong> 3/4 • <strong>Test Plan:</strong> <a href="https://confluence.disney.com/display/CPTR/Localization-Test-Plan" target="_blank" style="color: #2563eb;">LOC-E2E-TestPlan-v1.5</a>
               </div>
             </div>
 
@@ -626,7 +626,7 @@
                 </ul>
               </div>
               <div style="font-size: 11px; color: #6b7280;">
-                <strong>Test Cases:</strong> 31/33 • <strong>Integration Points:</strong> 5/5 • <strong>Evidence:</strong> <a href="https://jira.disney.com/browse/CPTR-68587" target="_blank" style="color: #2563eb;">CPTR-68587</a>
+                <strong>Test Cases:</strong> 31/33 • <strong>Integration Points:</strong> 5/5 • <strong>Test Plan:</strong> <a href="https://confluence.disney.com/display/CPTR/Streaming-Client-Test-Plan" target="_blank" style="color: #2563eb;">SC-E2E-TestPlan-v2.0</a>
               </div>
             </div>
           </div>
@@ -679,8 +679,72 @@
           </div>
 
           <!-- Test Plan References -->
+          <div style="margin-bottom: 24px;">
+            <h5 style="margin: 0 0 12px; font-weight: 700; color: #111827;">Integration Points Calculation</h5>
+            <div style="background: #f8fafc; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+              <p style="margin: 0 0 12px; font-size: 12px; color: #374151;">
+                <strong>Integration Points</strong> represent critical handoff/interface points where one team's output becomes another team's input. Each point requires validation, contract testing, and ownership clarity.
+              </p>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; font-size: 11px;">
+                <div>
+                  <strong style="color: #059669;">Content Platform (5 points):</strong>
+                  <ul style="margin: 4px 0 0 12px; line-height: 1.3;">
+                    <li>Metadata handoff to Media Platform</li>
+                    <li>Asset delivery to Media Platform</li>
+                    <li>Rights data to Data Layer</li>
+                    <li>Localization assets handoff</li>
+                    <li>Quality gates validation</li>
+                  </ul>
+                  
+                  <strong style="color: #7c3aed;">Media Platform (5 points):</strong>
+                  <ul style="margin: 4px 0 0 12px; line-height: 1.3;">
+                    <li>Content intake from Content Platform</li>
+                    <li>Encoded content to Data Layer</li>
+                    <li>DRM keys to Data Layer</li>
+                    <li>CDN preparation handoff</li>
+                    <li>Quality validation feedback</li>
+                  </ul>
+
+                  <strong style="color: #059669;">Data Alliance (6 points):</strong>
+                  <ul style="margin: 4px 0 0 12px; line-height: 1.3;">
+                    <li>Media intake from Media Platform</li>
+                    <li>Catalog sync coordination</li>
+                    <li>API exposure to Localization</li>
+                    <li>API exposure to Streaming</li>
+                    <li>Search index to Streaming</li>
+                    <li>Recommendation data flow</li>
+                  </ul>
+                </div>
+                <div>
+                  <strong style="color: #e11d48;">Localization (4 points):</strong>
+                  <ul style="margin: 4px 0 0 12px; line-height: 1.3;">
+                    <li>Content metadata from Data Layer</li>
+                    <li>Regional content processing</li>
+                    <li>Localized content to Streaming</li>
+                    <li>Cultural compliance validation</li>
+                  </ul>
+
+                  <strong style="color: #f59e0b;">Streaming/Client (5 points):</strong>
+                  <ul style="margin: 4px 0 0 12px; line-height: 1.3;">
+                    <li>Catalog intake from Data Layer</li>
+                    <li>Localized content from Localization</li>
+                    <li>CDN integration</li>
+                    <li>Client API consumption</li>
+                    <li>User experience validation</li>
+                  </ul>
+
+                  <div style="margin-top: 12px; padding: 8px; background: #e0f2fe; border-radius: 4px;">
+                    <strong style="color: #0369a1;">Total: 25 Integration Points</strong><br>
+                    <span style="font-size: 10px; color: #0369a1;">Each point requires contract testing, validation, and clear ownership</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Test Plan References -->
           <div>
-            <h5 style="margin: 0 0 12px; font-weight: 700; color: #111827;">Test Plan References</h5>
+            <h5 style="margin: 0 0 12px; font-weight: 700; color: #111827;">Test Plan References & Validation</h5>
             <div style="background: #f8fafc; border-radius: 8px; padding: 16px;">
               <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; font-size: 12px;">
                 <div>
@@ -691,18 +755,18 @@
                   </ul>
                 </div>
                 <div>
-                  <strong style="color: #374151;">Test Execution:</strong>
+                  <strong style="color: #374151;">Test Plan Validation:</strong>
                   <ul style="margin: 4px 0 0 16px; line-height: 1.4;">
-                    <li>Automated regression suite</li>
-                    <li>Manual integration validation</li>
-                    <li>Performance benchmarking</li>
+                    <li>Test case counts verified in Confluence</li>
+                    <li>Integration points mapped to contracts</li>
+                    <li>Coverage percentages from test execution</li>
                   </ul>
                 </div>
                 <div>
-                  <strong style="color: #374151;">Traceability:</strong>
+                  <strong style="color: #374151;">Traceability Matrix:</strong>
                   <ul style="margin: 4px 0 0 16px; line-height: 1.4;">
                     <li>Requirements → Test Cases</li>
-                    <li>Defects → Integration Points</li>
+                    <li>Integration Points → Contracts</li>
                     <li>Evidence → Team Ownership</li>
                   </ul>
                 </div>
