@@ -692,6 +692,10 @@ a { color: inherit; }
   font-family: inherit;
 }
 
+.contact-grid .contact-item--data-nudge {
+  padding-left: 14px;
+}
+
 .control-buttons {
   display: flex;
   flex-wrap: wrap;
@@ -956,6 +960,37 @@ a { color: inherit; }
   fill: #3B5278;
   text-anchor: middle;
   font-family: inherit;
+}
+
+/* E2E Flow — top row: shared rhythm (all phase rects use same height in SVG) */
+#flowchart .phase .phase-title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+}
+#flowchart .phase .step-text {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-medium);
+}
+#flowchart .phase .detail-text {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
+}
+
+/* E2E Flow — bottom test row: one type scale for every block */
+#flowchart .phase-testing-block .phase-title {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+}
+#flowchart .phase-testing-block .step-text,
+#flowchart .phase-testing-block .detail-text {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Integration hub — long lines stay readable without dominating */
+#flowchart .integration-hub-line {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
 }
 
 .flow-arrow {

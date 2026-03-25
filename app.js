@@ -106,23 +106,19 @@ const phaseData = {
     ]
   },
   localization: {
-    title: "Localization Phase",
-    description: "Regional adaptation and language processing",
+    title: "UI Localization Phase",
+    description: "UI strings, terminology, and language asset management",
     steps: [
-      "Regional Adaptation: Customize content for specific geographic markets",
-      "Language Processing: Translate metadata, descriptions, and UI elements",
-      "Cultural Compliance: Ensure content meets local cultural and regulatory standards",
-      "Subtitle Management: Process and validate subtitle files for accuracy and timing",
-      "Audio Dubbing: Coordinate and validate dubbed audio tracks",
-      "Regional Metadata: Adapt content metadata for local market requirements"
+      "Language Processing: Translate and adapt in-product UI copy",
+      "Regional Adaptation: Market-specific presentation of UI strings",
+      "Terminology & Language Asset Management: Glossaries, TMS, and string lifecycle",
+      "Scope: UI strings only (excludes subtitles, dubbing, and metadata pipelines)"
     ],
     testPoints: [
-      "Validate subtitle accuracy and synchronization",
-      "Test audio dubbing quality and lip-sync",
-      "Verify cultural compliance and content ratings",
-      "Check regional metadata completeness",
-      "Test language switching functionality",
-      "Validate localized UI elements"
+      "String coverage and context accuracy in product UI",
+      "Terminology consistency across client surfaces",
+      "Language switching and locale behavior",
+      "Regression checks for UI string updates"
     ]
   },
   streaming: {
@@ -151,7 +147,7 @@ const phaseData = {
       "Content Platform Testing: Source content validation and metadata handoff verification",
       "Media Platform Testing: Encoding quality checks and package integrity validation",
       "Data Layer Testing: Catalog synchronization and search index validation",
-      "Localization Testing: Language processing accuracy and cultural compliance checks",
+      "UI Localization Testing: UI string, terminology, and language-asset checks",
       "Streaming/Client Testing: Playback integration and multi-device compatibility",
       "Cross-Team Integration: Contract testing between phase handoffs",
       "End-to-End Validation: Complete user journey testing across all phases"
@@ -202,8 +198,8 @@ const handshakeData = {
     ]
   },
   "data-localization": {
-    title: "Handshake: Data → Localization",
-    owner: "Localization Alliance",
+    title: "Handshake: Data → UI Localization",
+    owner: "UI Localization Alliance",
     validations: [
       "Content metadata transfer for localization",
       "Regional availability rules validation",
@@ -218,7 +214,7 @@ const handshakeData = {
     ]
   },
   "localization-streaming": {
-    title: "Handshake: Localization → Streaming",
+    title: "Handshake: UI Localization → Streaming",
     owner: "Streaming / Client QA",
     validations: [
       "Localized content delivery validation",
@@ -362,15 +358,15 @@ function setupDrawer() {
           },
           localization: {
             icon: "🌍",
-            focus: "Regional Adaptation & Language Processing",
-            critical: "Cultural compliance and subtitle accuracy are essential for global content delivery.",
+            focus: "UI Strings & Language Asset Management",
+            critical: "Accurate UI copy, terminology, and language assets drive consistent in-app experiences.",
             dependencies: "Needs Data Layer catalog sync and regional metadata routing."
           },
           streaming: {
             icon: "📺",
             focus: "Content Delivery & Playback",
             critical: "Multi-device compatibility and CDN optimization ensure optimal user experience.",
-            dependencies: "Requires Localization processing and content discovery integration."
+            dependencies: "Requires UI Localization processing and content discovery integration."
           }
         };
         
@@ -445,7 +441,7 @@ function renderHeatmap() {
   if (!el) return;
 
   // Simple, static heatmap placeholder
-  const alliances = ["Content", "Media", "Data", "Localization", "Streaming"];
+  const alliances = ["Content", "Media", "Data", "UI Localization", "Streaming"];
   const milestones = ["Metadata/Artwork", "Avails/Rights", "AV Assets", "Title Planning & Exp.", "Live & Linear"];
 
   // Minimal placeholder statuses
@@ -453,7 +449,7 @@ function renderHeatmap() {
     Content:      ["cell-green", "cell-amber", "cell-amber", "cell-na", "cell-na"],
     Media:        ["cell-amber", "cell-amber", "cell-amber", "cell-na", "cell-na"],
     Data:         ["cell-amber", "cell-amber", "cell-na",    "cell-na", "cell-na"],
-    Localization: ["cell-na",    "cell-amber", "cell-amber", "cell-na", "cell-na"],
+    "UI Localization": ["cell-na",    "cell-amber", "cell-amber", "cell-na", "cell-na"],
     Streaming:    ["cell-na",    "cell-na",    "cell-amber", "cell-na", "cell-amber"]
   };
 
@@ -497,7 +493,7 @@ function setupHeatmapCells() {
   ];
   
   // v2: grid includes "Title Planning & Exp." column; prior keys would mis-align cells
-  const savedHeatmapStates = JSON.parse(localStorage.getItem("heatmapCellStates-v2") || "{}");
+  const savedHeatmapStates = JSON.parse(localStorage.getItem("heatmapCellStates-v3") || "{}");
   
   cells.forEach(cell => {
     // Create unique identifier for each cell
@@ -539,7 +535,7 @@ function setupHeatmapCells() {
       
       // Save state to localStorage
       savedHeatmapStates[cellId] = nextIndex;
-      localStorage.setItem("heatmapCellStates-v2", JSON.stringify(savedHeatmapStates));
+      localStorage.setItem("heatmapCellStates-v3", JSON.stringify(savedHeatmapStates));
       
       // Add visual feedback
       cell.style.transform = 'scale(0.95)';
@@ -793,7 +789,7 @@ function setupPhases(drawerApi) {
         phaseType === "content" ? "Content Platform Alliance" :
         phaseType === "media" ? "Media Platform Alliance" :
         phaseType === "data" ? "Data Alliance" :
-        phaseType === "localization" ? "Localization Alliance" :
+        phaseType === "localization" ? "UI Localization Alliance" :
         phaseType === "streaming" ? "Streaming / Client QA" :
         "Cross‑Fleet QA";
 
