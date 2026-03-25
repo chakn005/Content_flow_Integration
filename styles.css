@@ -387,6 +387,109 @@ a { color: inherit; }
   text-decoration: underline;
 }
 
+/* Evidence tab — epic + categorized test plans */
+.evidence-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-family: inherit;
+}
+.evidence-epic {
+  padding: 16px 18px;
+  background: var(--disney-blue-soft);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  border-left: 4px solid var(--disney-blue);
+}
+.evidence-epic-label {
+  margin: 0 0 6px;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.evidence-epic-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--blue);
+  text-decoration: none;
+}
+.evidence-epic-link:hover {
+  text-decoration: underline;
+}
+.evidence-epic-hint {
+  margin: 10px 0 0;
+  max-width: 52rem;
+}
+.evidence-categories {
+  display: grid;
+  gap: 14px;
+}
+@media (min-width: 900px) {
+  .evidence-categories {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .evidence-category-wide {
+    grid-column: 1 / -1;
+  }
+}
+.evidence-category {
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+.evidence-category-title {
+  margin: 0 0 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text);
+  font-family: inherit;
+}
+.evidence-plan-list {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.evidence-plan-list li {
+  margin: 0;
+}
+.evidence-plan-list a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--blue);
+  text-decoration: none;
+  padding: 8px 10px;
+  margin: 0 -10px;
+  border-radius: 8px;
+  transition: background 0.12s ease;
+}
+.evidence-plan-list a:hover {
+  background: var(--disney-blue-soft);
+  text-decoration: none;
+}
+.evidence-plan-list a::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--disney-blue);
+  flex-shrink: 0;
+}
+
 /* optional effects used in your HTML */
 .floating { }
 .sparkle { }

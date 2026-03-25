@@ -251,6 +251,47 @@ const handshakeData = {
   }
 };
 
+// Evidence tab — test plans under program epic (Jira)
+const EVIDENCE_PROGRAM_EPIC = {
+  key: "CPTR-68587",
+  url: "https://jira.disney.com/browse/CPTR-68587",
+  label: "Epic CPTR‑68587"
+};
+
+const evidenceTestPlanCategories = [
+  {
+    title: "Content Platform",
+    wide: true,
+    issues: [
+      { key: "DMEDNINJA-16594", url: "https://jira.disney.com/browse/DMEDNINJA-16594" },
+      { key: "OMFG-18837", url: "https://jira.disney.com/browse/OMFG-18837" },
+      { key: "EXP-4184", url: "https://jira.disney.com/browse/EXP-4184" },
+      { key: "BOLTM-7048", url: "https://jira.disney.com/browse/BOLTM-7048" },
+      { key: "GPLBELLE-3971", url: "https://jira.disney.com/browse/GPLBELLE-3971" },
+      { key: "OMFG-19253", url: "https://jira.disney.com/browse/OMFG-19253" }
+    ]
+  },
+  {
+    title: "Media Platform",
+    issues: [
+      { key: "PRODREQ-88253", url: "https://jira.disney.com/browse/PRODREQ-88253" }
+    ]
+  },
+  {
+    title: "Streaming/Client QA",
+    issues: [
+      { key: "DPQA-6323", url: "https://jira.disney.com/browse/DPQA-6323" }
+    ]
+  },
+  {
+    title: "E2E Integration Traceability",
+    wide: true,
+    issues: [
+      { key: "CPTR-68465", url: "https://jira.disney.com/browse/CPTR-68465" }
+    ]
+  }
+];
+
 // ===== Drawer helpers =====
 function setupDrawer() {
   const drawer = document.getElementById("drawer");
@@ -603,21 +644,45 @@ function renderEvidence() {
   const el = document.getElementById("evidenceList");
   if (!el) return;
 
-  const items = Object.keys(handshakeData).map(key => {
-    const h = handshakeData[key];
-    const links = (h.evidence || [])
-      .map(l => `<a href="${l.url}" target="_blank" rel="noreferrer">${l.label}</a>`)
-      .join("");
-    return `
-      <div class="evidence-item">
-        <div class="evidence-item-title">${h.title}</div>
-        <div class="muted">Owner: ${h.owner}</div>
-        <div class="evidence-item-body">${links || "<span class='muted'>No links yet</span>"}</div>
-      </div>
-    `;
-  });
+  const epic = EVIDENCE_PROGRAM_EPIC;
+  const categoryBlocks = evidenceTestPlanCategories
+    .map(cat => {
+      const wideClass = cat.wide ? " evidence-category-wide" : "";
+      const listItems = cat.issues
+        .map(
+          iss => `
+        <li>
+          <a href="${iss.url}" target="_blank" rel="noopener noreferrer">${iss.key}</a>
+        </li>`
+        )
+        .join("");
+      return `
+      <section class="evidence-category${wideClass}" aria-labelledby="evidence-cat-${slugifyEvidenceTitle(cat.title)}">
+        <h4 class="evidence-category-title" id="evidence-cat-${slugifyEvidenceTitle(cat.title)}">${cat.title}</h4>
+        <ul class="evidence-plan-list">${listItems}</ul>
+      </section>`;
+    })
+    .join("");
 
-  el.innerHTML = items.join("");
+  el.innerHTML = `
+    <div class="evidence-layout">
+      <div class="evidence-epic">
+        <p class="evidence-epic-label">Program epic</p>
+        <a class="evidence-epic-link" href="${epic.url}" target="_blank" rel="noopener noreferrer">${epic.label}</a>
+        <p class="muted evidence-epic-hint">All test plans below roll up to this epic for cross‑alliance content migration readiness.</p>
+      </div>
+      <div class="evidence-categories">
+        ${categoryBlocks}
+      </div>
+    </div>
+  `;
+}
+
+function slugifyEvidenceTitle(title) {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
 }
 
 // ===== Tooltip hover + click =====
