@@ -429,16 +429,19 @@ function renderHeatmap() {
 
   // Simple, static heatmap placeholder
   const alliances = ["Content", "Media", "Data", "Localization", "Streaming"];
-  const milestones = ["Metadata/Artwork", "Avails/Rights", "AV Assets", "Experience"];
+  const milestones = ["Metadata/Artwork", "Avails/Rights", "AV Assets", "Title Planning & Exp.", "Experience"];
 
   // Minimal placeholder statuses
   const grid = {
-    Content:      ["cell-green", "cell-amber", "cell-amber", "cell-na"],
-    Media:        ["cell-amber", "cell-amber", "cell-amber", "cell-na"],
-    Data:         ["cell-amber", "cell-amber", "cell-na",    "cell-na"],
-    Localization: ["cell-na",    "cell-amber", "cell-amber", "cell-na"],
-    Streaming:    ["cell-na",    "cell-na",    "cell-amber", "cell-amber"]
+    Content:      ["cell-green", "cell-amber", "cell-amber", "cell-na", "cell-na"],
+    Media:        ["cell-amber", "cell-amber", "cell-amber", "cell-na", "cell-na"],
+    Data:         ["cell-amber", "cell-amber", "cell-na",    "cell-na", "cell-na"],
+    Localization: ["cell-na",    "cell-amber", "cell-amber", "cell-na", "cell-na"],
+    Streaming:    ["cell-na",    "cell-na",    "cell-amber", "cell-na", "cell-amber"]
   };
+
+  const heatmapCellTitle =
+    "Click to cycle: GOOD → IN‑PROGRESS → RISK → N/A";
 
   let html = `<table><thead><tr><th>Alliance \\ Milestone</th>`;
   milestones.forEach(m => html += `<th>${m}</th>`);
@@ -451,8 +454,8 @@ function renderHeatmap() {
         cls === "cell-green" ? "GOOD" :
         cls === "cell-amber" ? "IN‑PROGRESS" :
         cls === "cell-red"   ? "RISK" :
-        "—";
-      html += `<td class="${cls} clickable-cell" data-alliance="${a}" data-milestone="${i}" title="Click to change status">${text}</td>`;
+        "N/A";
+      html += `<td class="${cls} clickable-cell" data-alliance="${a}" data-milestone="${i}" title="${heatmapCellTitle}">${text}</td>`;
     });
     html += `</tr>`;
   });
@@ -473,11 +476,11 @@ function setupHeatmapCells() {
     { class: 'cell-green', text: 'GOOD' },
     { class: 'cell-amber', text: 'IN‑PROGRESS' },
     { class: 'cell-red', text: 'RISK' },
-    { class: 'cell-na', text: '—' }
+    { class: 'cell-na', text: 'N/A' }
   ];
   
-  // Load saved states from localStorage
-  const savedHeatmapStates = JSON.parse(localStorage.getItem('heatmapCellStates') || '{}');
+  // v2: grid includes "Title Planning & Exp." column; prior keys would mis-align cells
+  const savedHeatmapStates = JSON.parse(localStorage.getItem("heatmapCellStates-v2") || "{}");
   
   cells.forEach(cell => {
     // Create unique identifier for each cell
@@ -519,7 +522,7 @@ function setupHeatmapCells() {
       
       // Save state to localStorage
       savedHeatmapStates[cellId] = nextIndex;
-      localStorage.setItem('heatmapCellStates', JSON.stringify(savedHeatmapStates));
+      localStorage.setItem("heatmapCellStates-v2", JSON.stringify(savedHeatmapStates));
       
       // Add visual feedback
       cell.style.transform = 'scale(0.95)';
