@@ -336,55 +336,31 @@ function setupDrawer() {
         const context = phaseContexts[payload.phaseType];
         if (context) {
           dynamicContext.innerHTML = `
-            <div style="margin-bottom: 12px;">
-              <div style="font-weight: 700; color: #1e40af; margin-bottom: 6px;">
-                ${context.icon} ${context.focus}
-              </div>
-              <p style="margin: 0 0 8px; color: #374151; font-size: 12px; line-height: 1.4;">
-                ${context.critical}
-              </p>
-              <p style="margin: 0; color: #6b7280; font-size: 11px; font-style: italic;">
-                <strong>Dependencies:</strong> ${context.dependencies}
-              </p>
+            <div class="flow-dyn-block">
+              <div class="flow-dyn-title">${context.icon} ${context.focus}</div>
+              <p class="flow-dyn-text">${context.critical}</p>
+              <p class="flow-dyn-meta"><strong>Dependencies:</strong> ${context.dependencies}</p>
             </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px;">
-              <span style="color: #059669; font-weight: 500;">
-                ✓ Validations: ${(payload.validations || []).length}
-              </span>
-              <span style="color: #2563eb; font-weight: 500;">
-                📋 Evidence: ${(payload.evidence || []).length}
-              </span>
-              <span style="color: #dc2626; font-weight: 500;">
-                ⚠ Risks: ${(payload.risks || []).length}
-              </span>
+            <div class="flow-dyn-stats">
+              <span class="stat-ok">✓ Validations: ${(payload.validations || []).length}</span>
+              <span class="stat-info">📋 Evidence: ${(payload.evidence || []).length}</span>
+              <span class="stat-risk">⚠ Risks: ${(payload.risks || []).length}</span>
             </div>
           `;
         }
       } else {
         // Handshake-specific context
         dynamicContext.innerHTML = `
-          <div style="margin-bottom: 12px;">
-            <div style="font-weight: 700; color: #1e40af; margin-bottom: 6px;">
-              🔗 Integration Handshake: ${payload.title}
-            </div>
-            <p style="margin: 0 0 8px; color: #374151; font-size: 12px; line-height: 1.4;">
-              Critical integration point requiring contract validation, data consistency checks, and ownership clarity.
-              Failure at this handshake can cascade downstream and impact migration success.
-            </p>
-            <p style="margin: 0; color: #6b7280; font-size: 11px; font-style: italic;">
-              <strong>Owner:</strong> ${payload.owner || "—"}
-            </p>
+          <div class="flow-dyn-block">
+            <div class="flow-dyn-title">🔗 Integration Handshake: ${payload.title}</div>
+            <p class="flow-dyn-text">Critical integration point requiring contract validation, data consistency checks, and ownership clarity.
+              Failure at this handshake can cascade downstream and impact migration success.</p>
+            <p class="flow-dyn-meta"><strong>Owner:</strong> ${payload.owner || "—"}</p>
           </div>
-          <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px;">
-            <span style="color: #059669; font-weight: 500;">
-              ✓ Validations: ${(payload.validations || []).length}
-            </span>
-            <span style="color: #2563eb; font-weight: 500;">
-              📋 Evidence: ${(payload.evidence || []).length}
-            </span>
-            <span style="color: #dc2626; font-weight: 500;">
-              ⚠ Risks: ${(payload.risks || []).length}
-            </span>
+          <div class="flow-dyn-stats">
+            <span class="stat-ok">✓ Validations: ${(payload.validations || []).length}</span>
+            <span class="stat-info">📋 Evidence: ${(payload.evidence || []).length}</span>
+            <span class="stat-risk">⚠ Risks: ${(payload.risks || []).length}</span>
           </div>
         `;
       }
@@ -429,7 +405,7 @@ function renderHeatmap() {
 
   // Simple, static heatmap placeholder
   const alliances = ["Content", "Media", "Data", "Localization", "Streaming"];
-  const milestones = ["Metadata/Artwork", "Avails/Rights", "AV Assets", "Title Planning & Exp.", "Experience"];
+  const milestones = ["Metadata/Artwork", "Avails/Rights", "AV Assets", "Title Planning & Exp.", "Live & Linear"];
 
   // Minimal placeholder statuses
   const grid = {
@@ -633,10 +609,10 @@ function renderEvidence() {
       .map(l => `<a href="${l.url}" target="_blank" rel="noreferrer">${l.label}</a>`)
       .join("");
     return `
-      <div style="padding:12px;border:1px solid rgba(0,0,0,.08);border-radius:12px;margin-bottom:10px;background:#fff;">
-        <div style="font-weight:800;">${h.title}</div>
+      <div class="evidence-item">
+        <div class="evidence-item-title">${h.title}</div>
         <div class="muted">Owner: ${h.owner}</div>
-        <div style="margin-top:8px;">${links || "<span class='muted'>No links yet</span>"}</div>
+        <div class="evidence-item-body">${links || "<span class='muted'>No links yet</span>"}</div>
       </div>
     `;
   });

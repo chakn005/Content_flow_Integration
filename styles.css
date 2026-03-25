@@ -33,7 +33,13 @@ body::before {
 }
 
 a { color: inherit; }
-.muted { color: #6b7280; font-size: 12px; font-weight: 400; }
+.muted {
+  color: #6b7280;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+  font-family: inherit;
+  line-height: 1.5;
+}
 
 :root{
   /* Disney blue-soft theme */
@@ -222,10 +228,163 @@ a { color: inherit; }
   display: flex;
   align-items: center;
   gap: 8px;
+  color: var(--text);
+  font-family: inherit;
 }
 
 .card-content {
   padding: 12px 14px 14px;
+}
+
+/* E2E Flow — Content Migration Readiness (matches Overview body typography) */
+.flow-info-block {
+  margin-bottom: 16px;
+}
+.flow-info-heading {
+  margin: 0 0 8px;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text);
+  font-family: inherit;
+}
+.flow-info-subheading {
+  margin: 0 0 8px;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text);
+  font-family: inherit;
+}
+.flow-info-p {
+  margin: 0 0 12px;
+  color: #6b7280;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+  line-height: 1.5;
+  font-family: inherit;
+}
+.flow-info-list {
+  margin: 0;
+  padding-left: 16px;
+  color: var(--text);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+  line-height: 1.4;
+  font-family: inherit;
+}
+.flow-info-list li {
+  margin-bottom: 4px;
+}
+.flow-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  font-size: var(--font-size-base);
+  font-family: inherit;
+}
+.flow-info-list-title {
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: 4px;
+  font-size: var(--font-size-base);
+  font-family: inherit;
+}
+.flow-info-list-title--ok { color: #059669; }
+.flow-info-list-title--risk { color: #dc2626; }
+.flow-info-list--nested {
+  margin: 0;
+  padding-left: 12px;
+  color: var(--text);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+  line-height: 1.4;
+  font-family: inherit;
+}
+.flow-info-callout {
+  padding: 12px;
+  background: #f8fafc;
+  border-radius: 8px;
+  border-left: 4px solid #3b82f6;
+}
+.flow-info-callout p {
+  margin: 0;
+  color: var(--text);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-base);
+  line-height: 1.5;
+  font-family: inherit;
+}
+
+/* Dynamic context (E2E Flow) — same scale as Overview lists */
+.flow-dyn-block {
+  margin-bottom: 12px;
+}
+.flow-dyn-title {
+  font-weight: var(--font-weight-semibold);
+  color: var(--text);
+  margin-bottom: 6px;
+  font-size: var(--font-size-md);
+  font-family: inherit;
+}
+.flow-dyn-text {
+  margin: 0 0 8px;
+  color: var(--text);
+  font-size: var(--font-size-base);
+  line-height: 1.4;
+  font-weight: var(--font-weight-normal);
+  font-family: inherit;
+}
+.flow-dyn-meta {
+  margin: 0;
+  color: #6b7280;
+  font-size: var(--font-size-base);
+  font-style: italic;
+  font-weight: var(--font-weight-normal);
+  font-family: inherit;
+}
+.flow-dyn-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  font-family: inherit;
+}
+.flow-dyn-stats .stat-ok { color: #059669; }
+.flow-dyn-stats .stat-info { color: #2563eb; }
+.flow-dyn-stats .stat-risk { color: #dc2626; }
+
+/* Evidence tab — match Overview card body */
+.evidence-item {
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 10px;
+  background: var(--surface);
+  font-family: inherit;
+}
+.evidence-item-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text);
+  font-family: inherit;
+}
+.evidence-item .muted {
+  margin-top: 6px;
+}
+.evidence-item-body {
+  margin-top: 8px;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+  color: var(--text);
+  line-height: 1.5;
+  font-family: inherit;
+}
+.evidence-item-body a {
+  color: var(--blue);
+  font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+}
+.evidence-item-body a:hover {
+  text-decoration: underline;
 }
 
 /* optional effects used in your HTML */
@@ -404,16 +563,30 @@ a { color: inherit; }
 
 .control-title {
   margin: 0 0 10px;
-  font-size: var(--font-size-md);
+  font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
   color: var(--text);
+  font-family: inherit;
 }
 
+.contact-grid .contact-team {
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-base);
+  margin-bottom: 4px;
+  font-family: inherit;
+}
+.contact-team--cp { color: #059669; }
+.contact-team--mp { color: #7c3aed; }
+.contact-team--data { color: #059669; }
+.contact-team--loc { color: #e11d48; }
+.contact-team--stream { color: #f59e0b; }
+
 .contact-grid .contact-name {
-  font-size: 14px;
-  font-weight: 700;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
   color: var(--text);
   line-height: 1.35;
+  font-family: inherit;
 }
 
 .control-buttons {
@@ -471,15 +644,19 @@ a { color: inherit; }
 
 .diagram-header h2 {
   margin: 0;
-  font-size: var(--font-size-xl);
+  font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
+  color: var(--text);
+  font-family: inherit;
 }
 
 .diagram-description {
   margin: 6px 0 12px;
-  color: var(--text2);
-  font-weight: var(--font-weight-medium);
+  color: #6b7280;
+  font-weight: var(--font-weight-normal);
   font-size: var(--font-size-base);
+  font-family: inherit;
+  line-height: 1.5;
 }
 
 .diagram-container {
@@ -492,6 +669,7 @@ a { color: inherit; }
   width: 100%;
   height: auto;
   min-width: 1300px;
+  font-family: "Roboto", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
 }
 
 /* ---------- Two Column Layout (Legend + Info) ---------- */
@@ -642,10 +820,11 @@ a { color: inherit; }
 .phase-testing    { fill: #F0F9FF; stroke: rgba(10,42,102,0.15); stroke-width: 1.5; }
 
 .phase-title {
-  font-size: var(--font-size-xl);
+  font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
   fill: #0A2A66;
   text-anchor: middle;
+  font-family: inherit;
 }
 
 .step-box {
@@ -659,6 +838,7 @@ a { color: inherit; }
   font-weight: var(--font-weight-medium);
   fill: #0A2A66;
   text-anchor: middle;
+  font-family: inherit;
 }
 
 .detail-box {
@@ -668,10 +848,11 @@ a { color: inherit; }
 }
 
 .detail-text {
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-medium);
   fill: #3B5278;
   text-anchor: middle;
+  font-family: inherit;
 }
 
 .flow-arrow {
@@ -757,21 +938,24 @@ a { color: inherit; }
 }
 
 .tooltip-title {
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
   fill: #0A2A66;
+  font-family: inherit;
 }
 
 .tooltip-text {
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
   fill: #3B5278;
+  font-family: inherit;
 }
 
 .tooltip-small {
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-medium);
   fill: #3B5278;
+  font-family: inherit;
 }
 
 .tooltip-link {
