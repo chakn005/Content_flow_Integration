@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Readable, linear reference for the Cross-Alliance E2E Integration Console — alliances, flow, contacts, and Jira test plans." />
+  <title>Cross‑Alliance E2E Integration — Readable reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --text: #1a1f2e;
+      --muted: #4b5568;
+      --link: #0a4a9c;
+      --link-hover: #062d5c;
+      --border: #d8dee9;
+      --surface: #ffffff;
+      --page: #f4f6fa;
+      --accent: #0a2a66;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
+      font-size: 1.0625rem;
+      line-height: 1.65;
+      color: var(--text);
+      background: var(--page);
+    }
+    .wrap {
+      max-width: 44rem;
+      margin: 0 auto;
+      padding: 1.75rem 1.25rem 4rem;
+    }
+    @media (min-width: 640px) {
+      .wrap { padding: 2.5rem 2rem 5rem; }
+    }
+    .banner {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 1px 3px rgba(10, 42, 102, 0.06);
+    }
+    .banner p { margin: 0.35rem 0 0; font-size: 0.95rem; color: var(--muted); }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+    a {
+      color: var(--link);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+    a:hover { color: var(--link-hover); }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--accent);
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+    .btn-primary:hover { filter: brightness(1.08); color: #fff; }
+    h1 {
+      font-family: "Source Serif 4", Georgia, serif;
+      font-size: clamp(1.65rem, 4vw, 2.1rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin: 0 0 0.35rem;
+      color: var(--accent);
+      letter-spacing: -0.02em;
+    }
+    h2 {
+      font-family: "Source Serif 4", Georgia, serif;
+      font-size: 1.35rem;
+      font-weight: 600;
+      margin: 2.25rem 0 0.85rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid var(--border);
+      color: var(--accent);
+    }
+    h2:first-of-type { border-top: none; padding-top: 0; margin-top: 0; }
+    h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin: 1.5rem 0 0.5rem;
+      color: var(--text);
+    }
+    p { margin: 0 0 1rem; max-width: 65ch; }
+    ul, ol { margin: 0 0 1rem; padding-left: 1.35rem; max-width: 65ch; }
+    li { margin-bottom: 0.4rem; }
+    li::marker { color: var(--muted); }
+    .toc {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.25rem 1.1rem;
+      margin-bottom: 2rem;
+    }
+    .toc h2 {
+      font-family: "Source Sans 3", sans-serif;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      margin: 0 0 0.65rem;
+      border: none;
+      padding: 0;
+    }
+    .toc ul { list-style: none; padding: 0; margin: 0; max-width: none; }
+    .toc li { margin: 0.35rem 0; }
+    .toc a { font-weight: 500; }
+    .muted { color: var(--muted); font-size: 0.98rem; }
+    .phase-block {
+      margin: 1rem 0 1.5rem;
+      padding: 1rem 1.1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      border-left: 4px solid var(--accent);
+    }
+    .phase-block h3 { margin-top: 0; }
+    .phase-block ul { margin-bottom: 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.98rem;
+      margin: 1rem 0;
+    }
+    th, td {
+      text-align: left;
+      padding: 0.55rem 0.65rem;
+      border: 1px solid var(--border);
+      vertical-align: top;
+    }
+    th { background: #eef2f9; font-weight: 600; }
+    .issue-list { list-style: disc; }
+    footer {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+    @media print {
+      body { background: #fff; font-size: 11pt; }
+      .banner .actions { display: none; }
+      .wrap { max-width: none; padding: 0; }
+      a { color: #000; text-decoration: underline; }
+      .phase-block { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="banner">
+      <h1>Cross‑Alliance E2E Integration</h1>
+      <p>Read-only reference — same material as the interactive console, in one linear page for reading, search, and print. Does not load <code>app.js</code>; the deployed app is unchanged.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="index.html">Open interactive console</a>
+        <a class="btn" href="https://jira.disney.com/browse/CPTR-68587" target="_blank" rel="noopener noreferrer">Epic CPTR‑68587 (Jira)</a>
+      </div>
+    </header>
+
+    <nav class="toc" aria-label="On this page">
+      <h2>Contents</h2>
+      <ul>
+        <li><a href="#overview">Overview &amp; alliances</a></li>
+        <li><a href="#heatmap">Coverage heatmap (milestones)</a></li>
+        <li><a href="#risks">Risks &amp; dependencies</a></li>
+        <li><a href="#contacts">Alliance contacts</a></li>
+        <li><a href="#pipeline">E2E pipeline &amp; phases</a></li>
+        <li><a href="#handshakes">Integration handshakes</a></li>
+        <li><a href="#integration">Integration testing</a></li>
+        <li><a href="#phase-tests">Phase test focus</a></li>
+        <li><a href="#readiness">Migration readiness context</a></li>
+        <li><a href="#evidence">Evidence &amp; Jira test plans</a></li>
+      </ul>
+    </nav>
+
+    <main>
+      <h2 id="overview">Overview &amp; alliances</h2>
+      <p>Program focus: <strong>content migration readiness</strong>, <strong>end-to-end integration validation</strong>, and <strong>cross-alliance coordination</strong>. Alliance snapshots from the console overview:</p>
+      <ul>
+        <li><strong>Content Platform</strong> — Handshake complete • Evidence tracked</li>
+        <li><strong>Media Platform</strong> — Packaging &amp; DRM validation in progress</li>
+        <li><strong>Data</strong> — Ava ID &amp; regional metadata checks</li>
+        <li><strong>UI Localization</strong> — UI strings, terminology &amp; language assets</li>
+        <li><strong>Streaming / Client</strong> — Discovery &amp; experience parity</li>
+      </ul>
+
+      <h2 id="heatmap">Coverage heatmap (milestones)</h2>
+      <p class="muted">In the full console, the heatmap is interactive (click cells to cycle status). Milestone columns:</p>
+      <ol>
+        <li>Metadata/Artwork</li>
+        <li>Avails/Rights</li>
+        <li>AV Assets</li>
+        <li>Title Planning &amp; Exp.</li>
+        <li>Live &amp; Linear</li>
+      </ol>
+      <p class="muted">Rows: Content, Media, Data, UI Localization, Streaming. Status values: GOOD, IN‑PROGRESS, RISK, N/A.</p>
+
+      <h2 id="risks">Top risks / dependencies</h2>
+      <ul>
+        <li>Lower‑env testing depends on upstream flow enablement.</li>
+        <li>Ownership must remain explicit per handshake.</li>
+        <li>Identifier standardization: Ava entity / avail IDs.</li>
+      </ul>
+
+      <h2 id="contacts">Alliance contacts</h2>
+      <table>
+        <thead>
+          <tr><th>Alliance</th><th>Contact</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Content Platform</td><td>Niloy Chakraborty / Michael Yurch</td></tr>
+          <tr><td>Media Platform</td><td>Porpan Suestrong / Maheryar Hussain</td></tr>
+          <tr><td>Data Alliance</td><td>Sidra Javid</td></tr>
+          <tr><td>UI Localization</td><td>Mio Ukigai / Minal Ihihi</td></tr>
+          <tr><td>Streaming/Client</td><td>David Lang</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="pipeline">E2E pipeline &amp; phases</h2>
+      <p><strong>Pipeline:</strong> Content Platform → Media Platform → Data → UI Localization → Streaming → Migration Complete</p>
+
+      <div class="phase-block">
+        <h3>Content Platform</h3>
+        <ul>
+          <li>Content Ingestion</li>
+          <li>Metadata Creation</li>
+          <li>Asset Processing</li>
+        </ul>
+        <p class="muted" style="margin-bottom:0;"><em>Footer:</em> Assets, Rights, UI Localization</p>
+      </div>
+
+      <div class="phase-block">
+        <h3>Media Platform</h3>
+        <ul>
+          <li>Content Transformation</li>
+          <li>Encoding &amp; Packaging</li>
+          <li>DRM Application</li>
+        </ul>
+        <p class="muted" style="margin-bottom:0;"><em>Footer:</em> ABR, Subtitles, Audio</p>
+      </div>
+
+      <div class="phase-block">
+        <h3>Data Layer</h3>
+        <ul>
+          <li>Data Aggregation</li>
+          <li>Catalog Sync</li>
+          <li>API Gateway</li>
+        </ul>
+        <p class="muted" style="margin-bottom:0;"><em>Footer:</em> Search, Recommendations</p>
+      </div>
+
+      <div class="phase-block">
+        <h3>UI Localization</h3>
+        <ul>
+          <li>Language Processing</li>
+          <li>Regional Adaptation</li>
+          <li>Terminology &amp;</li>
+          <li>Language Asset Management</li>
+        </ul>
+        <p class="muted" style="margin-bottom:0;"><em>Scope:</em> UI strings only (excluding subtitles, dubbing, and metadata)</p>
+      </div>
+
+      <div class="phase-block">
+        <h3>Streaming/Client</h3>
+        <ul>
+          <li>Content Discovery</li>
+          <li>Playback Engine</li>
+          <li>Multi-device Support</li>
+        </ul>
+        <p class="muted" style="margin-bottom:0;"><em>Footer:</em> Multi-device, CDN</p>
+      </div>
+
+      <h2 id="handshakes">Integration handshakes</h2>
+      <p class="muted">Phase-to-phase contracts (same fields as the console detail drawer).</p>
+
+      <div class="phase-block">
+        <h3>Handshake: Content → Media</h3>
+        <p><strong>Owner:</strong> Media Platform Alliance</p>
+        <p><strong>Validations:</strong></p>
+        <ul>
+          <li>Metadata transfer completeness</li>
+          <li>Format &amp; integrity validation</li>
+          <li>API contract adherence</li>
+        </ul>
+        <p><strong>Evidence:</strong> <a href="https://jira.disney.com/browse/CPTR-68587" target="_blank" rel="noopener noreferrer">Epic CPTR‑68587</a> · <a href="https://docs.google.com/spreadsheets/d/1twFm_Jmv2j6sVVkD2WOp2fv3AMEHJGDLqqlO9654u3Y/edit?pli=1&amp;gid=1024354782#gid=1024354782" target="_blank" rel="noopener noreferrer">Integration Sheet (example)</a></p>
+        <p><strong>Risks / blockers:</strong></p>
+        <ul>
+          <li>Schema drift between CP and MP</li>
+          <li>Partial validation without evidence</li>
+        </ul>
+      </div>
+
+      <div class="phase-block">
+        <h3>Handshake: Media → Data</h3>
+        <p><strong>Owner:</strong> Data Alliance</p>
+        <p><strong>Validations:</strong></p>
+        <ul>
+          <li>Ava entity / avail ID availability</li>
+          <li>Entity merge &amp; reconciliation</li>
+          <li>Ratings &amp; localization propagation checks</li>
+        </ul>
+        <p><strong>Evidence:</strong> <a href="https://jira.disney.com/browse/CPTR-68587" target="_blank" rel="noopener noreferrer">Epic CPTR‑68587</a></p>
+        <p><strong>Risks / blockers:</strong></p>
+        <ul>
+          <li>Lower-env flow enablement required by upstream teams</li>
+          <li>Avoid reliance on DMC media IDs</li>
+        </ul>
+      </div>
+
+      <div class="phase-block">
+        <h3>Handshake: Data → UI Localization</h3>
+        <p><strong>Owner:</strong> UI Localization Alliance</p>
+        <p><strong>Validations:</strong></p>
+        <ul>
+          <li>Content metadata transfer for localization</li>
+          <li>Regional availability rules validation</li>
+          <li>Language-specific content routing</li>
+        </ul>
+        <p><strong>Evidence:</strong> <a href="https://jira.disney.com/browse/CPTR-68587" target="_blank" rel="noopener noreferrer">Epic CPTR‑68587</a></p>
+        <p><strong>Risks / blockers:</strong></p>
+        <ul>
+          <li>Metadata completeness for localization workflows</li>
+          <li>Regional content availability conflicts</li>
+        </ul>
+      </div>
+
+      <div class="phase-block">
+        <h3>Handshake: UI Localization → Streaming</h3>
+        <p><strong>Owner:</strong> Streaming / Client QA</p>
+        <p><strong>Validations:</strong></p>
+        <ul>
+          <li>Localized content delivery validation</li>
+          <li>Language switching functionality</li>
+          <li>Regional content discovery</li>
+        </ul>
+        <p><strong>Evidence:</strong> <a href="https://jira.disney.com/browse/CPTR-68587" target="_blank" rel="noopener noreferrer">Epic CPTR‑68587</a></p>
+        <p><strong>Risks / blockers:</strong></p>
+        <ul>
+          <li>Localized content caching issues</li>
+          <li>Language preference persistence</li>
+        </ul>
+      </div>
+
+      <div class="phase-block">
+        <h3>Handshake: Data → Streaming</h3>
+        <p><strong>Owner:</strong> Streaming / Client QA</p>
+        <p><strong>Validations:</strong></p>
+        <ul>
+          <li>Catalog/API response consistency</li>
+          <li>Search &amp; discovery correctness</li>
+          <li>Experience parity checks</li>
+        </ul>
+        <p><strong>Evidence:</strong> <a href="https://jira.disney.com/browse/CPTR-68587" target="_blank" rel="noopener noreferrer">Epic CPTR‑68587</a></p>
+        <p><strong>Risks / blockers:</strong></p>
+        <ul>
+          <li>Delayed propagation or caching can mask issues</li>
+          <li>Downstream observability gaps</li>
+        </ul>
+      </div>
+
+      <h2 id="integration">Integration testing</h2>
+      <p>Central integration track (see <a href="https://jira.disney.com/browse/CPTR-68465" target="_blank" rel="noopener noreferrer">CPTR‑68465</a> in Jira):</p>
+      <ul>
+        <li>Content Platform: Metadata Handoff • Media Platform: Encoding Validation • Data: Catalog Sync</li>
+        <li>UI Localization: Language Processing • Streaming/Client: Playback Integration • Cross-Team Contract Testing</li>
+      </ul>
+
+      <h2 id="phase-tests">Phase test focus</h2>
+      <h3>Content Tests</h3>
+      <ul>
+        <li>Format Validation</li>
+        <li>Metadata Integrity</li>
+        <li>Rights Verification</li>
+      </ul>
+      <h3>Media Tests</h3>
+      <ul>
+        <li>Encoding Quality</li>
+        <li>DRM Validation</li>
+        <li>Package Integrity</li>
+      </ul>
+      <h3>Data Tests</h3>
+      <ul>
+        <li>API Contract</li>
+        <li>Catalog Sync</li>
+        <li>Search Index</li>
+      </ul>
+      <h3>UI Localization Tests</h3>
+      <ul>
+        <li>Translation quality and accuracy <span class="muted">(UI strings only)</span></li>
+        <li>Font Rendering</li>
+        <li>UI Layout &amp; Text Display</li>
+      </ul>
+      <h3>Streaming Tests</h3>
+      <ul>
+        <li>Playback Quality</li>
+        <li>Discovery UX</li>
+        <li>Performance</li>
+      </ul>
+
+      <h2 id="readiness">Migration readiness context</h2>
+      <p>Content migration depends on five critical phases validating handoffs, data integrity, and quality through the pipeline.</p>
+      <h3>Integration dependencies</h3>
+      <ul>
+        <li><strong>Content → Media:</strong> Metadata transfer &amp; format validation</li>
+        <li><strong>Media → Data:</strong> Catalog sync &amp; entity reconciliation</li>
+        <li><strong>Data → UI Localization:</strong> Regional metadata &amp; content routing</li>
+        <li><strong>UI Localization → Streaming:</strong> Language delivery &amp; discovery</li>
+      </ul>
+      <h3>Ready indicators</h3>
+      <ul>
+        <li>Contract validation complete</li>
+        <li>Data flow tested end-to-end</li>
+        <li>Handoff ownership confirmed</li>
+      </ul>
+      <h3>Risk indicators</h3>
+      <ul>
+        <li>Missing integration evidence</li>
+        <li>Unvalidated phase boundaries</li>
+        <li>Incomplete test coverage</li>
+      </ul>
+
+      <h2 id="evidence">Evidence &amp; Jira test plans</h2>
+      <p>Test plans roll up to program epic <a href="https://jira.disney.com/browse/CPTR-68587" target="_blank" rel="noopener noreferrer">CPTR‑68587</a>.</p>
+
+      <h3>Content Platform</h3>
+      <ul class="issue-list">
+        <li><a href="https://jira.disney.com/browse/DMEDNINJA-16594" target="_blank" rel="noopener noreferrer">DMEDNINJA-16594</a></li>
+        <li><a href="https://jira.disney.com/browse/OMFG-18837" target="_blank" rel="noopener noreferrer">OMFG-18837</a></li>
+        <li><a href="https://jira.disney.com/browse/EXP-4184" target="_blank" rel="noopener noreferrer">EXP-4184</a></li>
+        <li><a href="https://jira.disney.com/browse/BOLTM-7048" target="_blank" rel="noopener noreferrer">BOLTM-7048</a></li>
+        <li><a href="https://jira.disney.com/browse/GPLBELLE-3971" target="_blank" rel="noopener noreferrer">GPLBELLE-3971</a></li>
+        <li><a href="https://jira.disney.com/browse/OMFG-19253" target="_blank" rel="noopener noreferrer">OMFG-19253</a></li>
+      </ul>
+
+      <h3>Media Platform</h3>
+      <ul class="issue-list">
+        <li><a href="https://jira.disney.com/browse/PRODREQ-88253" target="_blank" rel="noopener noreferrer">PRODREQ-88253</a></li>
+      </ul>
+
+      <h3>Streaming/Client QA</h3>
+      <ul class="issue-list">
+        <li><a href="https://jira.disney.com/browse/DPQA-6323" target="_blank" rel="noopener noreferrer">DPQA-6323</a></li>
+      </ul>
+
+      <h3>E2E Integration Traceability</h3>
+      <ul class="issue-list">
+        <li><a href="https://jira.disney.com/browse/CPTR-68465" target="_blank" rel="noopener noreferrer">CPTR‑68465</a></li>
+      </ul>
+    </main>
+
+    <footer>
+      <p>Cross‑Alliance E2E Integration — read-only reference. <a href="index.html">Open interactive console</a>.</p>
+    </footer>
+  </div>
+</body>
+</html>
