@@ -923,7 +923,7 @@ a { color: inherit; }
 .phase-testing    { fill: #F0F9FF; stroke: rgba(10,42,102,0.15); stroke-width: 1.5; }
 
 .phase-title {
-  font-size: var(--font-size-lg);
+  font-size: var(--font-size-xl);
   font-weight: var(--font-weight-semibold);
   fill: #0A2A66;
   text-anchor: middle;
@@ -937,7 +937,7 @@ a { color: inherit; }
 }
 
 .step-text {
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-lg);
   font-weight: var(--font-weight-medium);
   fill: #0A2A66;
   text-anchor: middle;
@@ -951,7 +951,7 @@ a { color: inherit; }
 }
 
 .detail-text {
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-md);
   font-weight: var(--font-weight-medium);
   fill: #3B5278;
   text-anchor: middle;
