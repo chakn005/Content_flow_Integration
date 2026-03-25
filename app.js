@@ -404,41 +404,7 @@ function setupDrawer() {
 }
 
 // ===== Update Coverage Display =====
-function updateCoverageDisplay() {
-  const metrics = calculateOverallMetrics();
-  
-  // Update overview metrics
-  const coverageElements = document.querySelectorAll('[data-metric="coverage"]');
-  const testCaseElements = document.querySelectorAll('[data-metric="testcases"]');
-  const integrationElements = document.querySelectorAll('[data-metric="integration"]');
-  
-  coverageElements.forEach(el => el.textContent = `${metrics.coverage}%`);
-  testCaseElements.forEach(el => el.textContent = metrics.totalTests);
-  integrationElements.forEach(el => el.textContent = metrics.integrationPoints);
-  
-  // Update team-specific counts
-  Object.entries(testCaseConfig).forEach(([jiraId, config]) => {
-    const testCaseEl = document.querySelector(`[data-jira="${jiraId}"] .test-cases`);
-    const integrationEl = document.querySelector(`[data-jira="${jiraId}"] .integration-points`);
-    const percentageEl = document.querySelector(`[data-jira="${jiraId}"] .completion-percentage`);
-    
-    if (testCaseEl) {
-      testCaseEl.textContent = `${config.completed}/${config.total}`;
-    }
-    if (integrationEl) {
-      integrationEl.textContent = `${config.integrationPoints.completed}/${config.integrationPoints.total}`;
-    }
-    if (percentageEl) {
-      const percentage = Math.round((config.completed / config.total) * 100);
-      percentageEl.textContent = `${percentage}% Complete`;
-      
-      // Update status badge color based on percentage
-      percentageEl.className = percentage >= 90 ? 'status-badge status-green' :
-                              percentage >= 80 ? 'status-badge status-amber' :
-                              'status-badge status-red';
-    }
-  });
-}
+// Coverage functionality removed - no longer needed
 
 // ===== Tabs =====
 function setupTabs() {
@@ -725,9 +691,6 @@ function setupTooltips(drawerApi) {
       const h = handshakeData[integrationId];
       if (!h) return;
       
-      // Update Risks tab only (Coverage tab maintains comprehensive E2E view)
-      updateRisksTab(h, 'handshake');
-      
       drawerApi.openDrawer({
         title: h.title,
         owner: h.owner,
@@ -752,9 +715,6 @@ function setupTooltips(drawerApi) {
       const h = handshakeData[integrationId];
       if (!h) return;
       
-      // Update Risks tab only (Coverage tab maintains comprehensive E2E view)
-      updateRisksTab(h, 'handshake');
-      
       drawerApi.openDrawer({
         title: h.title,
         owner: h.owner,
@@ -774,65 +734,6 @@ function updateCoverageTab(data, type = 'phase') {
   return;
 }
 
-function updateRisksTab(data, type = 'phase') {
-  const risksEl = document.getElementById('riskDetails');
-  if (!risksEl) return;
-
-  if (type === 'phase') {
-    const phaseRisks = [
-      "Ownership must remain explicit at the phase boundary",
-      "Attach evidence per execution for traceability", 
-      "Downstream validation depends on upstream readiness"
-    ];
-    
-    risksEl.innerHTML = `
-      <div style="margin-bottom: 16px;">
-        <h4 style="margin: 0 0 8px; font-weight: 800;">${data.title} - Risk Assessment</h4>
-        <p style="color: #6b7280; margin: 0 0 16px;">Potential risks and mitigation strategies</p>
-      </div>
-      
-      <div style="margin-bottom: 20px;">
-        <h5 style="margin: 0 0 12px; font-weight: 800; color: #dc2626;">Phase-Specific Risks</h5>
-        <ul style="margin: 0; padding-left: 20px; line-height: 1.6;">
-          ${phaseRisks.map(risk => `<li style="margin-bottom: 8px; color: #dc2626; font-weight: 600;">${risk}</li>`).join('')}
-        </ul>
-      </div>
-      
-      <div>
-        <h5 style="margin: 0 0 12px; font-weight: 800; color: #f59e0b;">Dependencies</h5>
-        <ul style="margin: 0; padding-left: 20px; line-height: 1.6;">
-          <li style="margin-bottom: 8px; color: #f59e0b; font-weight: 600;">Requires upstream phase completion</li>
-          <li style="margin-bottom: 8px; color: #f59e0b; font-weight: 600;">Test environment availability</li>
-          <li style="margin-bottom: 8px; color: #f59e0b; font-weight: 600;">Cross-team coordination needed</li>
-        </ul>
-      </div>
-    `;
-  } else {
-    // Handshake risks
-    risksEl.innerHTML = `
-      <div style="margin-bottom: 16px;">
-        <h4 style="margin: 0 0 8px; font-weight: 800;">${data.title} - Integration Risks</h4>
-        <p style="color: #6b7280; margin: 0 0 16px;">Handshake-specific risks and blockers</p>
-      </div>
-      
-      <div style="margin-bottom: 20px;">
-        <h5 style="margin: 0 0 12px; font-weight: 800; color: #dc2626;">Known Risks</h5>
-        <ul style="margin: 0; padding-left: 20px; line-height: 1.6;">
-          ${data.risks.map(risk => `<li style="margin-bottom: 8px; color: #dc2626; font-weight: 600;">${risk}</li>`).join('')}
-        </ul>
-      </div>
-      
-      <div>
-        <h5 style="margin: 0 0 12px; font-weight: 800; color: #f59e0b;">Mitigation Actions</h5>
-        <ul style="margin: 0; padding-left: 20px; line-height: 1.6;">
-          <li style="margin-bottom: 8px; color: #059669; font-weight: 600;">Establish clear ownership boundaries</li>
-          <li style="margin-bottom: 8px; color: #059669; font-weight: 600;">Implement contract testing</li>
-          <li style="margin-bottom: 8px; color: #059669; font-weight: 600;">Regular sync meetings between teams</li>
-        </ul>
-      </div>
-    `;
-  }
-}
 // ===== Phases =====
 function setupPhases(drawerApi) {
   const phases = document.querySelectorAll(".phase");
@@ -852,9 +753,7 @@ function setupPhases(drawerApi) {
         phaseType === "streaming" ? "Streaming / Client QA" :
         "Cross‑Fleet QA";
 
-      // Update Risks tab only (Coverage tab maintains comprehensive E2E view)
-      updateRisksTab(data, 'phase');
-
+      // Update drawer with phase details
       drawerApi.openDrawer({
         title: data.title,
         owner,
@@ -889,7 +788,6 @@ document.addEventListener("DOMContentLoaded", () => {
   renderHeatmap();
   renderEvidence();
   setupKPICards();
-  updateCoverageDisplay(); // Update coverage with dynamic data
 
   const drawerApi = setupDrawer();
   setupPhases(drawerApi);

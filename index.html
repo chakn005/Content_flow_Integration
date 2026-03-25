@@ -114,8 +114,6 @@
       <nav class="header-tabs" aria-label="Primary navigation">
         <button class="tab-btn active" data-tab="overview">Overview</button>
         <button class="tab-btn" data-tab="flow">E2E Flow</button>
-        <button class="tab-btn" data-tab="coverage">Coverage</button>
-        <button class="tab-btn" data-tab="risks">Risks</button>
         <button class="tab-btn" data-tab="evidence">Evidence</button>
       </nav>
     </div>
@@ -208,12 +206,33 @@
       <div class="control-panel">
 
         <div class="control-section">
-          <h3 class="control-title">Applications:</h3>
-          <div class="control-buttons">
-            <button id="ampBtn" class="btn btn-secondary">AMP</button>
-            <button id="sipBtn" class="btn btn-secondary">SIP</button>
-            <button id="availsBtn" class="btn btn-secondary">AVAILS</button>
-            <button id="rightsBtn" class="btn btn-outline">RIGHTS</button>
+          <h3 class="control-title">Alliance Contacts:</h3>
+          <div class="contact-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;">
+            <div class="contact-item">
+              <div class="contact-team" style="font-weight: 700; color: #059669; font-size: 12px; margin-bottom: 4px;">Content Platform</div>
+              <div class="contact-name" style="font-size: 11px; color: #374151;">Team Lead: [Name]</div>
+              <div class="contact-email" style="font-size: 10px; color: #6b7280;">contact@disney.com</div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-team" style="font-weight: 700; color: #7c3aed; font-size: 12px; margin-bottom: 4px;">Media Platform</div>
+              <div class="contact-name" style="font-size: 11px; color: #374151;">Team Lead: [Name]</div>
+              <div class="contact-email" style="font-size: 10px; color: #6b7280;">contact@disney.com</div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-team" style="font-weight: 700; color: #059669; font-size: 12px; margin-bottom: 4px;">Data Alliance</div>
+              <div class="contact-name" style="font-size: 11px; color: #374151;">Team Lead: [Name]</div>
+              <div class="contact-email" style="font-size: 10px; color: #6b7280;">contact@disney.com</div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-team" style="font-weight: 700; color: #e11d48; font-size: 12px; margin-bottom: 4px;">Localization</div>
+              <div class="contact-name" style="font-size: 11px; color: #374151;">Team Lead: [Name]</div>
+              <div class="contact-email" style="font-size: 10px; color: #6b7280;">contact@disney.com</div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-team" style="font-weight: 700; color: #f59e0b; font-size: 12px; margin-bottom: 4px;">Streaming/Client</div>
+              <div class="contact-name" style="font-size: 11px; color: #374151;">Team Lead: [Name]</div>
+              <div class="contact-email" style="font-size: 10px; color: #6b7280;">contact@disney.com</div>
+            </div>
           </div>
           <p class="muted" style="margin-top:8px;">
             Tip: Click a phase or handshake to open details.
@@ -491,129 +510,6 @@
         </div>
       </div>
 
-    </section>
-
-    <!-- ---------- COVERAGE ---------- -->
-    <section id="tab-coverage" class="tab-panel">
-      <div class="card">
-        <div class="card-header">
-          <h3 class="card-title">E2E Integration Coverage Matrix</h3>
-          <p class="muted">Comprehensive test coverage across all teams for Epic CPTR-68587</p>
-        </div>
-        <div class="card-content" id="coverageDetails">
-          
-
-
-          <!-- Team Coverage Breakdown -->
-          <div style="margin-bottom: 24px;">
-            <h5 style="margin: 0 0 16px; font-weight: 700; color: #111827; font-size: 14px;">Team Coverage Breakdown</h5>
-            
-            <!-- Content Platform Team -->
-            <div style="margin-bottom: 16px; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px;">
-              <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 12px;">
-                <h6 style="margin: 0; font-weight: 700; color: #059669; font-size: 13px;">Content Platform Alliance</h6>
-              </div>
-              <div style="margin-bottom: 8px;">
-                <strong style="font-size: 12px;">Test Areas:</strong>
-                <ul style="margin: 4px 0 0 16px; font-size: 12px; line-height: 1.4;">
-                  <li>Content ingestion validation (video, audio, images)</li>
-                  <li>Metadata schema compliance and completeness</li>
-                  <li>Rights management and geographic availability</li>
-                  <li>Asset processing and quality validation</li>
-                  <li>Handoff to Media Platform (contract testing)</li>
-                </ul>
-              </div>
-            </div>
-
-            <!-- Media Platform Team -->
-            <div style="margin-bottom: 16px; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px;">
-              <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 12px;">
-                <h6 style="margin: 0; font-weight: 700; color: #7c3aed; font-size: 13px;">Media Platform Alliance</h6>
-              </div>
-              <div style="margin-bottom: 8px;">
-                <strong style="font-size: 12px;">Test Areas:</strong>
-                <ul style="margin: 4px 0 0 16px; font-size: 12px; line-height: 1.4;">
-                  <li>Content transformation and encoding quality</li>
-                  <li>Multi-bitrate ABR packaging (HLS, DASH)</li>
-                  <li>DRM application (Widevine, PlayReady, FairPlay)</li>
-                  <li>Subtitle and audio track synchronization</li>
-                  <li>CDN preparation and handoff to Data Layer</li>
-                </ul>
-              </div>
-            </div>
-
-            <!-- Data Alliance Team -->
-            <div style="margin-bottom: 16px; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px;">
-              <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 12px;">
-                <h6 style="margin: 0; font-weight: 700; color: #059669; font-size: 13px;">Data Alliance</h6>
-              </div>
-              <div style="margin-bottom: 8px;">
-                <strong style="font-size: 12px;">Test Areas:</strong>
-                <ul style="margin: 4px 0 0 16px; font-size: 12px; line-height: 1.4;">
-                  <li>Data aggregation and catalog synchronization</li>
-                  <li>Search indexing and API endpoint validation</li>
-                  <li>Ava entity and avail ID standardization</li>
-                  <li>Recommendation engine data flow</li>
-                  <li>Regional metadata routing to Localization</li>
-                </ul>
-              </div>
-            </div>
-
-            <!-- Localization Alliance Team -->
-            <div style="margin-bottom: 16px; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px;">
-              <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 12px;">
-                <h6 style="margin: 0; font-weight: 700; color: #e11d48; font-size: 13px;">Localization Alliance</h6>
-              </div>
-              <div style="margin-bottom: 8px;">
-                <strong style="font-size: 12px;">Test Areas:</strong>
-                <ul style="margin: 4px 0 0 16px; font-size: 12px; line-height: 1.4;">
-                  <li>Regional content adaptation and cultural compliance</li>
-                  <li>Language processing and translation accuracy</li>
-                  <li>Subtitle validation and timing synchronization</li>
-                  <li>Audio dubbing quality and lip-sync validation</li>
-                  <li>Localized content delivery to Streaming</li>
-                </ul>
-              </div>
-            </div>
-
-            <!-- Streaming/Client QA Team -->
-            <div style="margin-bottom: 16px; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px;">
-              <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 12px;">
-                <h6 style="margin: 0; font-weight: 700; color: #f59e0b; font-size: 13px;">Streaming / Client QA</h6>
-              </div>
-              <div style="margin-bottom: 8px;">
-                <strong style="font-size: 12px;">Test Areas:</strong>
-                <ul style="margin: 4px 0 0 16px; font-size: 12px; line-height: 1.4;">
-                  <li>Content discovery and search functionality</li>
-                  <li>Multi-device playback compatibility</li>
-                  <li>Adaptive bitrate streaming behavior</li>
-                  <li>DRM playback and license acquisition</li>
-                  <li>Performance metrics and error handling</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-
-
-
-
-
-
-        </div>
-      </div>
-    </section>
-
-    <!-- ---------- RISKS ---------- -->
-    <section id="tab-risks" class="tab-panel">
-      <div class="card">
-        <div class="card-header">
-          <h3 class="card-title">Risks & Dependencies</h3>
-        </div>
-        <div class="card-content" id="riskDetails">
-          Select a phase or handshake from the E2E Flow.
-        </div>
-      </div>
     </section>
 
     <!-- ---------- EVIDENCE ---------- -->
