@@ -1,3 +1,80 @@
+/** Set only by readonly.html before this script loads. index.html never sets it. */
+function isReadOnly() {
+  return !!window.__CONTENT_FLOW_READ_ONLY__;
+}
+
+function applyReadOnlyShell() {
+  if (!isReadOnly()) return;
+
+  document.body.classList.add("read-only-mode");
+
+  const epicA = document.querySelector("header .epic-badge");
+  if (epicA && epicA.tagName === "A") {
+    const span = document.createElement("span");
+    span.className = epicA.className;
+    span.innerHTML = epicA.innerHTML;
+    epicA.replaceWith(span);
+  }
+
+  const hubLink = document.querySelector("#flowchart a.integration-hub-link");
+  if (hubLink && hubLink.tagName === "A") {
+    const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    g.setAttribute("class", "integration-hub-static");
+    while (hubLink.firstChild) {
+      g.appendChild(hubLink.firstChild);
+    }
+    hubLink.replaceWith(g);
+    g.querySelectorAll("[style]").forEach(el => {
+      const s = el.getAttribute("style");
+      if (!s) return;
+      const next = s
+        .replace(/cursor\s*:\s*pointer;?/gi, "")
+        .replace(/;\s*;/g, ";")
+        .trim()
+        .replace(/^;|;$/g, "")
+        .trim();
+      if (next) el.setAttribute("style", next);
+      else el.removeAttribute("style");
+    });
+    g.querySelectorAll("*").forEach(el => {
+      if (el.hasAttribute("cursor")) el.removeAttribute("cursor");
+    });
+  }
+
+  document.querySelectorAll(".tab-panel").forEach(p => p.classList.add("active"));
+  document.querySelectorAll(".tab-btn").forEach((btn, i) => {
+    btn.classList.toggle("active", i === 0);
+  });
+
+  document.getElementById("drawerClose")?.setAttribute("tabindex", "-1");
+}
+
+function softenReadOnlyCopy() {
+  if (!isReadOnly()) return;
+
+  document.querySelectorAll(".kpi-card").forEach(card => card.removeAttribute("title"));
+
+  const dynamicContext = document.getElementById("dynamicContext");
+  if (dynamicContext) {
+    const p = dynamicContext.querySelector("p");
+    if (p) {
+      p.textContent =
+        "Read-only snapshot: phase summaries are visible in the diagram above; drawer details are not available in this view.";
+    }
+  }
+
+  document.querySelectorAll(".legend-item").forEach(el => {
+    if (el.textContent.includes("Click = details")) {
+      el.textContent = "Hover = context hints (read-only)";
+    }
+  });
+
+  document.querySelectorAll("#flowchart .tooltip-small").forEach(t => {
+    if (t.textContent.includes("Click:")) {
+      t.textContent = "Read-only snapshot";
+    }
+  });
+}
 
 // Test case configuration - teams can update these values
 const testCaseConfig = {
@@ -290,6 +367,10 @@ const evidenceTestPlanCategories = [
 
 // ===== Drawer helpers =====
 function setupDrawer() {
+  if (isReadOnly()) {
+    return { openDrawer() {}, closeDrawer() {} };
+  }
+
   const drawer = document.getElementById("drawer");
   const overlay = document.getElementById("drawerOverlay");
   const closeBtn = document.getElementById("drawerClose");
@@ -313,12 +394,19 @@ function setupDrawer() {
 
     evidenceEl.innerHTML = "";
     (payload.evidence || []).forEach(link => {
-      const a = document.createElement("a");
-      a.href = link.url;
-      a.target = "_blank";
-      a.rel = "noreferrer";
-      a.textContent = link.label;
-      evidenceEl.appendChild(a);
+      if (isReadOnly()) {
+        const span = document.createElement("span");
+        span.className = "drawer-evidence-plain";
+        span.textContent = link.label;
+        evidenceEl.appendChild(span);
+      } else {
+        const a = document.createElement("a");
+        a.href = link.url;
+        a.target = "_blank";
+        a.rel = "noreferrer";
+        a.textContent = link.label;
+        evidenceEl.appendChild(a);
+      }
     });
 
     risksEl.innerHTML = "";
@@ -453,8 +541,9 @@ function renderHeatmap() {
     Streaming:    ["cell-na",    "cell-na",    "cell-amber", "cell-na", "cell-amber"]
   };
 
-  const heatmapCellTitle =
-    "Click to cycle: GOOD → IN‑PROGRESS → RISK → N/A";
+  const heatmapCellTitle = isReadOnly()
+    ? "Readiness snapshot (read-only)"
+    : "Click to cycle: GOOD → IN‑PROGRESS → RISK → N/A";
 
   let html = `<table><thead><tr><th>Alliance \\ Milestone</th>`;
   milestones.forEach(m => html += `<th>${m}</th>`);
@@ -513,40 +602,35 @@ function setupHeatmapCells() {
       cell.textContent = savedStatus.text;
     }
     
-    cell.addEventListener('click', () => {
-      // Find current status
-      let currentIndex = 0;
-      statusCycle.forEach((status, index) => {
-        if (cell.classList.contains(status.class)) {
-          currentIndex = index;
-        }
+    if (!isReadOnly()) {
+      cell.addEventListener('click', () => {
+        let currentIndex = 0;
+        statusCycle.forEach((status, index) => {
+          if (cell.classList.contains(status.class)) {
+            currentIndex = index;
+          }
+        });
+
+        statusCycle.forEach(status => cell.classList.remove(status.class));
+
+        const nextIndex = (currentIndex + 1) % statusCycle.length;
+        const newStatus = statusCycle[nextIndex];
+
+        cell.classList.add(newStatus.class);
+        cell.textContent = newStatus.text;
+
+        savedHeatmapStates[cellId] = nextIndex;
+        localStorage.setItem("heatmapCellStates-v3", JSON.stringify(savedHeatmapStates));
+
+        cell.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+          cell.style.transform = 'scale(1)';
+        }, 150);
       });
-      
-      // Remove current status class
-      statusCycle.forEach(status => cell.classList.remove(status.class));
-      
-      // Move to next status
-      const nextIndex = (currentIndex + 1) % statusCycle.length;
-      const newStatus = statusCycle[nextIndex];
-      
-      // Apply new status
-      cell.classList.add(newStatus.class);
-      cell.textContent = newStatus.text;
-      
-      // Save state to localStorage
-      savedHeatmapStates[cellId] = nextIndex;
-      localStorage.setItem("heatmapCellStates-v3", JSON.stringify(savedHeatmapStates));
-      
-      // Add visual feedback
-      cell.style.transform = 'scale(0.95)';
-      setTimeout(() => {
-        cell.style.transform = 'scale(1)';
-      }, 150);
-    });
-    
-    // Add hover effect
-    cell.style.cursor = 'pointer';
-    cell.style.transition = 'all 0.15s ease';
+
+      cell.style.cursor = 'pointer';
+      cell.style.transition = 'all 0.15s ease';
+    }
   });
 }
 
@@ -582,38 +666,36 @@ function setupKPICards() {
     
     // Apply the current status
     applyCardStatus(card, statusCycle[currentStatusIndex]);
-    
+
+    if (isReadOnly()) {
+      return;
+    }
+
     card.addEventListener('click', () => {
-      // Remove current status class
       statusCycle.forEach(status => card.classList.remove(status.class));
-      
-      // Move to next status
+
       currentStatusIndex = (currentStatusIndex + 1) % statusCycle.length;
       const newStatus = statusCycle[currentStatusIndex];
-      
-      // Apply new status
+
       applyCardStatus(card, newStatus);
-      
-      // Save state to localStorage
+
       savedStates[cardId] = currentStatusIndex;
       localStorage.setItem('kpiCardStates', JSON.stringify(savedStates));
-      
-      // Add visual feedback
+
       card.style.transform = 'scale(0.98)';
       setTimeout(() => {
         card.style.transform = 'scale(1)';
       }, 150);
     });
-    
-    // Add hover effect to indicate clickability
+
     card.style.cursor = 'pointer';
     card.style.transition = 'all 0.15s ease';
-    
+
     card.addEventListener('mouseenter', () => {
       card.style.transform = 'translateY(-2px)';
       card.style.boxShadow = '0 4px 20px rgba(0,0,0,0.1)';
     });
-    
+
     card.addEventListener('mouseleave', () => {
       card.style.transform = 'translateY(0)';
       card.style.boxShadow = 'var(--shadow)';
@@ -645,8 +727,13 @@ function renderEvidence() {
     .map(cat => {
       const wideClass = cat.wide ? " evidence-category-wide" : "";
       const listItems = cat.issues
-        .map(
-          iss => `
+        .map(iss =>
+          isReadOnly()
+            ? `
+        <li>
+          <span class="evidence-key-plain">${iss.key}</span>
+        </li>`
+            : `
         <li>
           <a href="${iss.url}" target="_blank" rel="noopener noreferrer">${iss.key}</a>
         </li>`
@@ -660,11 +747,15 @@ function renderEvidence() {
     })
     .join("");
 
+  const epicEl = isReadOnly()
+    ? `<span class="evidence-epic-link evidence-inline-plain">${epic.label}</span>`
+    : `<a class="evidence-epic-link" href="${epic.url}" target="_blank" rel="noopener noreferrer">${epic.label}</a>`;
+
   el.innerHTML = `
     <div class="evidence-layout">
       <div class="evidence-epic">
         <p class="evidence-epic-label">Program epic</p>
-        <a class="evidence-epic-link" href="${epic.url}" target="_blank" rel="noopener noreferrer">${epic.label}</a>
+        ${epicEl}
         <p class="muted evidence-epic-hint">All test plans below roll up to this epic for cross‑alliance content migration readiness.</p>
       </div>
       <div class="evidence-categories">
@@ -725,45 +816,45 @@ function setupTooltips(drawerApi) {
       });
     }
 
-    // Click on zone -> open drawer handshake details
-    zone.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const h = handshakeData[integrationId];
-      if (!h) return;
-      
-      drawerApi.openDrawer({
-        title: h.title,
-        owner: h.owner,
-        validations: h.validations,
-        evidence: h.evidence,
-        risks: h.risks
+    if (!isReadOnly()) {
+      zone.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const h = handshakeData[integrationId];
+        if (!h) return;
+
+        drawerApi.openDrawer({
+          title: h.title,
+          owner: h.owner,
+          validations: h.validations,
+          evidence: h.evidence,
+          risks: h.risks
+        });
       });
-    });
+    }
   });
 
+  if (!isReadOnly()) {
+    ["tooltip-media-data", "tooltip-data-streaming"].forEach(id => {
+      const t = document.getElementById(id);
+      if (!t) return;
+      t.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const integrationId =
+          id === "tooltip-media-data" ? "media-data" : "data-streaming";
+        const h = handshakeData[integrationId];
+        if (!h) return;
 
-
-  // Clicking Media→Data or Data→Streaming tooltip opens drawer too
-  ["tooltip-media-data", "tooltip-data-streaming"].forEach(id => {
-    const t = document.getElementById(id);
-    if (!t) return;
-    t.addEventListener("click", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      const integrationId =
-        id === "tooltip-media-data" ? "media-data" : "data-streaming";
-      const h = handshakeData[integrationId];
-      if (!h) return;
-      
-      drawerApi.openDrawer({
-        title: h.title,
-        owner: h.owner,
-        validations: h.validations,
-        evidence: h.evidence,
-        risks: h.risks
+        drawerApi.openDrawer({
+          title: h.title,
+          owner: h.owner,
+          validations: h.validations,
+          evidence: h.evidence,
+          risks: h.risks
+        });
       });
     });
-  });
+  }
 }
 
 // ===== Update Coverage and Risks tabs =====
@@ -779,42 +870,41 @@ function setupPhases(drawerApi) {
   const phases = document.querySelectorAll(".phase");
 
   phases.forEach(phase => {
-    phase.addEventListener("click", () => {
-      const phaseType = phase.getAttribute("data-phase");
-      const data = phaseData[phaseType];
-      
-      if (!data) return;
+    if (!isReadOnly()) {
+      phase.addEventListener("click", () => {
+        const phaseType = phase.getAttribute("data-phase");
+        const data = phaseData[phaseType];
 
-      const owner =
-        phaseType === "content" ? "Content Platform Alliance" :
-        phaseType === "media" ? "Media Platform Alliance" :
-        phaseType === "data" ? "Data Alliance" :
-        phaseType === "localization" ? "UI Localization Alliance" :
-        phaseType === "streaming" ? "Streaming / Client QA" :
-        "Cross‑Fleet QA";
+        if (!data) return;
 
-      // Update drawer with phase details
-      drawerApi.openDrawer({
-        title: data.title,
-        owner,
-        phaseType: phaseType,
-        validations: data.testPoints || [],
-        evidence: [
-          { label: "Epic CPTR‑68587", url: "https://jira.disney.com/browse/CPTR-68587" }
-        ],
-        risks: [
-          "Ownership must remain explicit at the phase boundary",
-          "Attach evidence per execution for traceability",
-          "Downstream validation depends on upstream readiness"
-        ]
+        const owner =
+          phaseType === "content" ? "Content Platform Alliance" :
+          phaseType === "media" ? "Media Platform Alliance" :
+          phaseType === "data" ? "Data Alliance" :
+          phaseType === "localization" ? "UI Localization Alliance" :
+          phaseType === "streaming" ? "Streaming / Client QA" :
+          "Cross‑Fleet QA";
+
+        drawerApi.openDrawer({
+          title: data.title,
+          owner,
+          phaseType: phaseType,
+          validations: data.testPoints || [],
+          evidence: [
+            { label: "Epic CPTR‑68587", url: "https://jira.disney.com/browse/CPTR-68587" }
+          ],
+          risks: [
+            "Ownership must remain explicit at the phase boundary",
+            "Attach evidence per execution for traceability",
+            "Downstream validation depends on upstream readiness"
+          ]
+        });
+
+        phases.forEach(p => p.classList.remove("active"));
+        phase.classList.add("active");
       });
+    }
 
-      // Highlight active phase
-      phases.forEach(p => p.classList.remove("active"));
-      phase.classList.add("active");
-    });
-
-    // Light hover effect
     phase.addEventListener("mouseenter", () => { phase.style.opacity = "0.9"; });
     phase.addEventListener("mouseleave", () => { phase.style.opacity = "1"; });
   });
@@ -824,7 +914,15 @@ function setupPhases(drawerApi) {
 
 // ===== App init =====
 document.addEventListener("DOMContentLoaded", () => {
-  setupTabs();
+  if (isReadOnly()) {
+    applyReadOnlyShell();
+    softenReadOnlyCopy();
+  }
+
+  if (!isReadOnly()) {
+    setupTabs();
+  }
+
   renderHeatmap();
   renderEvidence();
   setupKPICards();

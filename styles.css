@@ -277,9 +277,22 @@ a { color: inherit; }
 .flow-info-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: 14px;
+  align-items: start;
   font-size: var(--font-size-base);
   font-family: inherit;
+}
+.flow-info-grid > div {
+  padding: 12px 14px;
+  background: rgba(248, 250, 252, 0.85);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.flow-info-grid .flow-info-list-title {
+  margin-bottom: 6px;
+}
+.flow-info-grid .flow-info-list--nested {
+  padding-left: 16px;
 }
 .flow-info-list-title {
   font-weight: var(--font-weight-semibold);
@@ -503,7 +516,7 @@ a { color: inherit; }
 
 .kpi-row {
   display: grid;
-  grid-template-columns: repeat(5, minmax(160px, 1fr));
+  grid-template-columns: repeat(4, minmax(160px, 1fr));
   gap: 12px;
 }
 
@@ -593,10 +606,20 @@ a { color: inherit; }
 }
 .heatmap th, .heatmap td {
   border: 1px solid var(--border);
-  padding: 10px;
+  padding: 10px 12px;
   text-align: center;
   font-weight: var(--font-weight-medium);
   font-size: var(--font-size-base);
+}
+.heatmap tbody tr:nth-child(even) th {
+  background: rgba(248, 250, 252, 0.75);
+}
+.heatmap td.clickable-cell {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.02em;
+  min-width: 5.75rem;
+  vertical-align: middle;
 }
 .heatmap th { 
   background: var(--disney-blue-soft); 
@@ -1124,4 +1147,68 @@ a { color: inherit; }
   .header-container { flex-direction: column; align-items: flex-start; }
   .kpi-row { grid-template-columns: 1fr; }
   .drawer { width: 92vw; }
+}
+
+/* ---------- Read-only snapshot (readonly.html only) ---------- */
+body.read-only-mode .tab-panel {
+  display: block !important;
+  margin-bottom: 32px;
+}
+body.read-only-mode .tab-panel:last-of-type {
+  margin-bottom: 0;
+}
+body.read-only-mode .header-tabs {
+  pointer-events: none;
+  user-select: none;
+}
+body.read-only-mode .tab-btn {
+  cursor: default;
+}
+body.read-only-mode .tab-btn:not(.active) {
+  opacity: 0.72;
+}
+body.read-only-mode .kpi-card {
+  cursor: default;
+  pointer-events: none;
+  user-select: text;
+}
+body.read-only-mode .clickable-cell {
+  cursor: default;
+  user-select: text;
+}
+body.read-only-mode .clickable-cell:hover {
+  transform: none;
+  box-shadow: none;
+}
+body.read-only-mode .epic-badge:hover {
+  transform: none;
+  border-color: var(--border);
+  box-shadow: var(--shadow);
+}
+body.read-only-mode #flowchart .phase {
+  cursor: default;
+}
+body.read-only-mode #flowchart .integration-tooltip [cursor="pointer"],
+body.read-only-mode #flowchart .tooltip-click-area {
+  cursor: default !important;
+}
+
+.evidence-inline-plain,
+.evidence-key-plain {
+  font-size: inherit;
+  font-weight: var(--font-weight-semibold);
+  color: var(--blue);
+}
+.evidence-epic .evidence-inline-plain {
+  font-size: var(--font-size-lg);
+}
+.drawer-evidence-plain {
+  display: block;
+  margin-top: 8px;
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-base);
+  color: var(--text);
+}
+.drawer-links .drawer-evidence-plain {
+  color: var(--text);
 }
