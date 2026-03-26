@@ -21,6 +21,13 @@ A modern, interactive visualization of the end-to-end content integration pipeli
 
 Epic: CPTR-68587
 
+## Related repository
+
+The read-only GitHub Pages build lives in a **separate** clone next to this folder (same parent directory):
+
+- Path: `../Content_flow_Integration_READABLE/` (sibling of `content-integration-flow`)
+- Sync: `bash scripts/sync-readable-pages.sh`, then commit and push from that repository
+
 ## Technical Details
 
 - Pure HTML, CSS, and JavaScript (no dependencies)

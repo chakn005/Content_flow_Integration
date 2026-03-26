@@ -47,6 +47,3 @@ temp/
 
 # Deploy bundle for https://github.com/niloy812/E2E (nested git; push from E2E/ only)
 E2E/
-
-# Readable Pages mirror — track files only, not nested clone metadata
-Content_flow_Integration_READABLE/.git/
