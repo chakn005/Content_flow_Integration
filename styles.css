@@ -196,16 +196,6 @@ a { color: inherit; }
   border-color: var(--disney-blue);
 }
 
-a.tab-btn {
-  text-decoration: none;
-  display: inline-block;
-  box-sizing: border-box;
-  line-height: inherit;
-}
-a.tab-btn:hover {
-  color: var(--text);
-}
-
 .tab-panel { display: none; }
 .tab-panel.active { display: block; }
 

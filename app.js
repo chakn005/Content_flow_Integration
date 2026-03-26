@@ -421,7 +421,7 @@ function setupDrawer() {
 
 // ===== Tabs =====
 function setupTabs() {
-  const buttons = document.querySelectorAll("button.tab-btn");
+  const buttons = document.querySelectorAll(".tab-btn");
   const panels = document.querySelectorAll(".tab-panel");
 
   buttons.forEach(btn => {
