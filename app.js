@@ -8,44 +8,6 @@ function applyReadOnlyShell() {
 
   document.body.classList.add("read-only-mode");
 
-  const epicA = document.querySelector("header .epic-badge");
-  if (epicA && epicA.tagName === "A") {
-    const span = document.createElement("span");
-    span.className = epicA.className;
-    span.innerHTML = epicA.innerHTML;
-    epicA.replaceWith(span);
-  }
-
-  const hubLink = document.querySelector("#flowchart a.integration-hub-link");
-  if (hubLink && hubLink.tagName === "A") {
-    const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
-    g.setAttribute("class", "integration-hub-static");
-    while (hubLink.firstChild) {
-      g.appendChild(hubLink.firstChild);
-    }
-    hubLink.replaceWith(g);
-    g.querySelectorAll("[style]").forEach(el => {
-      const s = el.getAttribute("style");
-      if (!s) return;
-      const next = s
-        .replace(/cursor\s*:\s*pointer;?/gi, "")
-        .replace(/;\s*;/g, ";")
-        .trim()
-        .replace(/^;|;$/g, "")
-        .trim();
-      if (next) el.setAttribute("style", next);
-      else el.removeAttribute("style");
-    });
-    g.querySelectorAll("*").forEach(el => {
-      if (el.hasAttribute("cursor")) el.removeAttribute("cursor");
-    });
-  }
-
-  document.querySelectorAll(".tab-panel").forEach(p => p.classList.add("active"));
-  document.querySelectorAll(".tab-btn").forEach((btn, i) => {
-    btn.classList.toggle("active", i === 0);
-  });
-
   document.getElementById("drawerClose")?.setAttribute("tabindex", "-1");
 }
 
@@ -59,7 +21,7 @@ function softenReadOnlyCopy() {
     const p = dynamicContext.querySelector("p");
     if (p) {
       p.textContent =
-        "Read-only snapshot: phase summaries are visible in the diagram above; drawer details are not available in this view.";
+        "Read-only snapshot: use the tabs to move between views. Status controls and diagram drawers are locked; Jira and epic links stay available.";
     }
   }
 
@@ -727,13 +689,8 @@ function renderEvidence() {
     .map(cat => {
       const wideClass = cat.wide ? " evidence-category-wide" : "";
       const listItems = cat.issues
-        .map(iss =>
-          isReadOnly()
-            ? `
-        <li>
-          <span class="evidence-key-plain">${iss.key}</span>
-        </li>`
-            : `
+        .map(
+          iss => `
         <li>
           <a href="${iss.url}" target="_blank" rel="noopener noreferrer">${iss.key}</a>
         </li>`
@@ -747,9 +704,7 @@ function renderEvidence() {
     })
     .join("");
 
-  const epicEl = isReadOnly()
-    ? `<span class="evidence-epic-link evidence-inline-plain">${epic.label}</span>`
-    : `<a class="evidence-epic-link" href="${epic.url}" target="_blank" rel="noopener noreferrer">${epic.label}</a>`;
+  const epicEl = `<a class="evidence-epic-link" href="${epic.url}" target="_blank" rel="noopener noreferrer">${epic.label}</a>`;
 
   el.innerHTML = `
     <div class="evidence-layout">
@@ -919,9 +874,7 @@ document.addEventListener("DOMContentLoaded", () => {
     softenReadOnlyCopy();
   }
 
-  if (!isReadOnly()) {
-    setupTabs();
-  }
+  setupTabs();
 
   renderHeatmap();
   renderEvidence();

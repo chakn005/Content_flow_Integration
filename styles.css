@@ -1150,19 +1150,9 @@ a { color: inherit; }
 }
 
 /* ---------- Read-only snapshot (readonly.html only) ---------- */
-body.read-only-mode .tab-panel {
-  display: block !important;
-  margin-bottom: 32px;
-}
-body.read-only-mode .tab-panel:last-of-type {
-  margin-bottom: 0;
-}
-body.read-only-mode .header-tabs {
-  pointer-events: none;
-  user-select: none;
-}
+/* Tabs behave like interactive mode (one panel at a time); links stay usable. */
 body.read-only-mode .tab-btn {
-  cursor: default;
+  cursor: pointer;
 }
 body.read-only-mode .tab-btn:not(.active) {
   opacity: 0.72;
