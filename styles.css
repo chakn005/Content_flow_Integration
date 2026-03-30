@@ -673,6 +673,18 @@ a { color: inherit; }
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
+.heatmap-note {
+  margin: 12px 0 0;
+  font-family: inherit;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+  line-height: 1.5;
+  color: var(--text);
+}
+.heatmap-note strong {
+  font-weight: var(--font-weight-semibold);
+}
+
 /* ---------- Control Panel ---------- */
 .control-panel {
   display: grid;

@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
 
   <!-- Styles -->
-  <link rel="stylesheet" href="styles.css?v=16" />
+  <link rel="stylesheet" href="styles.css?v=18" />
 
   <!-- GitHub Pages -->
   <base href="./" />
@@ -171,6 +171,7 @@
           </div>
           <div class="card-content">
             <div id="heatmap" class="heatmap"></div>
+            <p class="heatmap-note"><strong>Note:</strong> A/V and Title Planning - Executed by Product.</p>
           </div>
         </div>
 
@@ -228,7 +229,7 @@
         <div class="diagram-header">
           <h2>Content Migration E2E Integration Flow</h2>
           <p class="diagram-description">
-            Content Platform → Media Platform → Data → UI Localization → Streaming → Migration Complete
+            Content Platform → Media Platform → UI Localization → Streaming → Migration Complete
           </p>
         </div>
 
@@ -249,8 +250,7 @@
               </filter>
             </defs>
 
-            <!-- Main Phases Row — uniform 200×148, 20px gaps, centers 250,470,690,910,1130 -->
-            <!-- Content Platform -->
+            <!-- Main Phases Row — four phases, 200×148, 20px gaps (centers 250, 470, 690, 910) -->
             <g class="phase" data-phase="content">
               <rect x="150" y="50" width="200" height="148" rx="12" class="phase-box content-platform" filter="url(#dropshadow)"/>
               <text x="250" y="76" class="phase-title">Content Platform</text>
@@ -260,7 +260,6 @@
               <text x="250" y="158" class="detail-text">Assets, Rights, UI Localization</text>
             </g>
 
-            <!-- Media Platform -->
             <g class="phase" data-phase="media">
               <rect x="370" y="50" width="200" height="148" rx="12" class="phase-box media-platform" filter="url(#dropshadow)"/>
               <text x="470" y="76" class="phase-title">Media Platform</text>
@@ -270,54 +269,38 @@
               <text x="470" y="158" class="detail-text">ABR, Subtitles, Audio</text>
             </g>
 
-            <!-- Data Layer -->
-            <g class="phase" data-phase="data">
-              <rect x="590" y="50" width="200" height="148" rx="12" class="phase-box data-layer" filter="url(#dropshadow)"/>
-              <text x="690" y="76" class="phase-title">Data Layer</text>
-              <text x="690" y="98" class="step-text">Data Aggregation</text>
-              <text x="690" y="118" class="step-text">Catalog Sync</text>
-              <text x="690" y="138" class="step-text">API Gateway</text>
-              <text x="690" y="158" class="detail-text">Search, Recommendations</text>
-            </g>
-
-            <!-- UI Localization -->
             <g class="phase" data-phase="localization">
-              <rect x="810" y="50" width="200" height="148" rx="12" class="phase-box localization" filter="url(#dropshadow)"/>
-              <text x="910" y="74" class="phase-title">UI Localization</text>
-              <text x="910" y="92" class="step-text">Language Processing</text>
-              <text x="910" y="110" class="step-text">Regional Adaptation</text>
-              <text x="910" y="128" class="step-text">Terminology &amp;</text>
-              <text x="910" y="146" class="step-text">Language Asset Management</text>
-              <text x="910" y="164" class="detail-text">UI strings only (excluding subtitles,</text>
-              <text x="910" y="182" class="detail-text">dubbing, and metadata)</text>
+              <rect x="590" y="50" width="200" height="148" rx="12" class="phase-box localization" filter="url(#dropshadow)"/>
+              <text x="690" y="74" class="phase-title">UI Localization</text>
+              <text x="690" y="92" class="step-text">Language Processing</text>
+              <text x="690" y="110" class="step-text">Regional Adaptation</text>
+              <text x="690" y="128" class="step-text">Terminology &amp;</text>
+              <text x="690" y="146" class="step-text">Language Asset Management</text>
+              <text x="690" y="164" class="detail-text">UI strings only (excluding subtitles,</text>
+              <text x="690" y="182" class="detail-text">dubbing, and metadata)</text>
             </g>
 
-            <!-- Streaming -->
             <g class="phase" data-phase="streaming">
-              <rect x="1030" y="50" width="200" height="148" rx="12" class="phase-box streaming" filter="url(#dropshadow)"/>
-              <text x="1130" y="76" class="phase-title">Streaming/Client</text>
-              <text x="1130" y="98" class="step-text">Content Discovery</text>
-              <text x="1130" y="118" class="step-text">Playback Engine</text>
-              <text x="1130" y="138" class="step-text">Multi-device Support</text>
-              <text x="1130" y="158" class="detail-text">Multi-device, CDN</text>
+              <rect x="810" y="50" width="200" height="148" rx="12" class="phase-box streaming" filter="url(#dropshadow)"/>
+              <text x="910" y="76" class="phase-title">Streaming/Client</text>
+              <text x="910" y="98" class="step-text">Content Discovery</text>
+              <text x="910" y="118" class="step-text">Playback Engine</text>
+              <text x="910" y="138" class="step-text">Multi-device Support</text>
+              <text x="910" y="158" class="detail-text">Multi-device, CDN</text>
             </g>
 
-            <!-- Integration Testing (2nd Row) -->
             <a href="https://jira.disney.com/browse/CPTR-68465" target="_blank" rel="noopener noreferrer" class="integration-hub-link">
               <rect x="450" y="228" width="700" height="104" rx="12" class="phase-box integration-hub" filter="url(#dropshadow)" style="cursor: pointer;"/>
               <text x="800" y="258" class="phase-title" style="cursor: pointer;">Integration Testing</text>
-              <text x="800" y="284" class="step-text integration-hub-line" style="cursor: pointer;">Content Platform: Metadata Handoff • Media Platform: Encoding Validation • Data: Catalog Sync</text>
+              <text x="800" y="284" class="step-text integration-hub-line" style="cursor: pointer;">Content Platform: Metadata Handoff • Media Platform: Encoding Validation</text>
               <text x="800" y="306" class="step-text integration-hub-line" style="cursor: pointer;">UI Localization: Language Processing • Streaming/Client: Playback Integration • Cross-Team Contract Testing</text>
             </a>
 
-            <!-- Connections from phases to Integration Hub -->
             <line x1="250" y1="198" x2="500" y2="228" class="flow-arrow" marker-end="url(#arrowhead)"/>
             <line x1="470" y1="198" x2="600" y2="228" class="flow-arrow" marker-end="url(#arrowhead)"/>
             <line x1="690" y1="198" x2="750" y2="228" class="flow-arrow" marker-end="url(#arrowhead)"/>
             <line x1="910" y1="198" x2="900" y2="228" class="flow-arrow" marker-end="url(#arrowhead)"/>
-            <line x1="1130" y1="198" x2="1100" y2="228" class="flow-arrow" marker-end="url(#arrowhead)"/>
 
-            <!-- Phase Testing Row — uniform 200×96 -->
             <g class="phase-testing-block">
               <rect x="150" y="378" width="200" height="96" rx="8" class="phase-box phase-testing" filter="url(#dropshadow)"/>
               <text x="250" y="400" class="phase-title">Content Tests</text>
@@ -327,51 +310,38 @@
             </g>
 
             <g class="phase-testing-block">
-              <rect x="380" y="378" width="200" height="96" rx="8" class="phase-box phase-testing" filter="url(#dropshadow)"/>
-              <text x="480" y="400" class="phase-title">Media Tests</text>
-              <text x="480" y="418" class="step-text">• Encoding Quality</text>
-              <text x="480" y="434" class="step-text">• DRM Validation</text>
-              <text x="480" y="450" class="step-text">• Package Integrity</text>
+              <rect x="370" y="378" width="200" height="96" rx="8" class="phase-box phase-testing" filter="url(#dropshadow)"/>
+              <text x="470" y="400" class="phase-title">Media Tests</text>
+              <text x="470" y="418" class="step-text">• Encoding Quality</text>
+              <text x="470" y="434" class="step-text">• DRM Validation</text>
+              <text x="470" y="450" class="step-text">• Package Integrity</text>
             </g>
 
             <g class="phase-testing-block">
-              <rect x="610" y="378" width="200" height="96" rx="8" class="phase-box phase-testing" filter="url(#dropshadow)"/>
-              <text x="710" y="400" class="phase-title">Data Tests</text>
-              <text x="710" y="418" class="step-text">• API Contract</text>
-              <text x="710" y="434" class="step-text">• Catalog Sync</text>
-              <text x="710" y="450" class="step-text">• Search Index</text>
+              <rect x="590" y="378" width="200" height="96" rx="8" class="phase-box phase-testing" filter="url(#dropshadow)"/>
+              <text x="690" y="400" class="phase-title">UI Localization Tests</text>
+              <text x="690" y="418" class="step-text">• String &amp; terminology QA</text>
+              <text x="690" y="434" class="step-text">• Locale &amp; language behavior</text>
+              <text x="690" y="450" class="step-text">• Layout &amp; text display</text>
             </g>
 
             <g class="phase-testing-block">
-              <rect x="840" y="378" width="200" height="96" rx="8" class="phase-box phase-testing" filter="url(#dropshadow)"/>
-              <text x="940" y="400" class="phase-title">UI Localization Tests</text>
-              <text x="940" y="418" class="step-text">• String &amp; terminology QA</text>
-              <text x="940" y="434" class="step-text">• Locale &amp; language behavior</text>
-              <text x="940" y="450" class="step-text">• Layout &amp; text display</text>
+              <rect x="810" y="378" width="200" height="96" rx="8" class="phase-box phase-testing" filter="url(#dropshadow)"/>
+              <text x="910" y="400" class="phase-title">Streaming Tests</text>
+              <text x="910" y="418" class="step-text">• Playback Quality</text>
+              <text x="910" y="434" class="step-text">• Discovery UX</text>
+              <text x="910" y="450" class="step-text">• Performance</text>
             </g>
 
-            <g class="phase-testing-block">
-              <rect x="1070" y="378" width="200" height="96" rx="8" class="phase-box phase-testing" filter="url(#dropshadow)"/>
-              <text x="1170" y="400" class="phase-title">Streaming Tests</text>
-              <text x="1170" y="418" class="step-text">• Playback Quality</text>
-              <text x="1170" y="434" class="step-text">• Discovery UX</text>
-              <text x="1170" y="450" class="step-text">• Performance</text>
-            </g>
-
-            <!-- Connections from Integration Hub to phase tests (hub bottom y=332) -->
             <line x1="500" y1="332" x2="250" y2="378" class="flow-arrow" marker-end="url(#arrowhead)"/>
-            <line x1="600" y1="332" x2="480" y2="378" class="flow-arrow" marker-end="url(#arrowhead)"/>
-            <line x1="750" y1="332" x2="710" y2="378" class="flow-arrow" marker-end="url(#arrowhead)"/>
-            <line x1="900" y1="332" x2="940" y2="378" class="flow-arrow" marker-end="url(#arrowhead)"/>
-            <line x1="1100" y1="332" x2="1170" y2="378" class="flow-arrow" marker-end="url(#arrowhead)"/>
+            <line x1="600" y1="332" x2="470" y2="378" class="flow-arrow" marker-end="url(#arrowhead)"/>
+            <line x1="750" y1="332" x2="690" y2="378" class="flow-arrow" marker-end="url(#arrowhead)"/>
+            <line x1="900" y1="332" x2="910" y2="378" class="flow-arrow" marker-end="url(#arrowhead)"/>
 
-            <!-- Arrows between test blocks (vertical center of 96px row) -->
-            <line x1="350" y1="426" x2="380" y2="426" class="flow-arrow" marker-end="url(#arrowhead)"/>
-            <line x1="580" y1="426" x2="610" y2="426" class="flow-arrow" marker-end="url(#arrowhead)"/>
-            <line x1="810" y1="426" x2="840" y2="426" class="flow-arrow" marker-end="url(#arrowhead)"/>
-            <line x1="1040" y1="426" x2="1070" y2="426" class="flow-arrow" marker-end="url(#arrowhead)"/>
+            <line x1="350" y1="426" x2="370" y2="426" class="flow-arrow" marker-end="url(#arrowhead)"/>
+            <line x1="570" y1="426" x2="590" y2="426" class="flow-arrow" marker-end="url(#arrowhead)"/>
+            <line x1="790" y1="426" x2="810" y2="426" class="flow-arrow" marker-end="url(#arrowhead)"/>
 
-            <!-- Tooltips -->
             <g class="integration-tooltip" id="tooltip-content-media" style="display: none;">
               <rect x="280" y="20" width="220" height="110" rx="8" fill="white"
                     stroke="#3b82f6" stroke-width="2" filter="url(#dropshadow)" cursor="pointer"/>
@@ -381,28 +351,6 @@
               <text x="290" y="90" class="tooltip-text">• Integrity checks</text>
               <text x="290" y="105" class="tooltip-text">• API contract checks</text>
               <rect x="320" y="115" width="140" height="18" fill="transparent" cursor="pointer" class="tooltip-click-area"/>
-            </g>
-
-            <g class="integration-tooltip" id="tooltip-media-data" style="display: none;">
-              <rect x="660" y="20" width="240" height="130" rx="8" fill="white"
-                    stroke="#3b82f6" stroke-width="2" filter="url(#dropshadow)" cursor="pointer"/>
-              <text x="670" y="40" class="tooltip-title">Media → Data</text>
-              <text x="670" y="60" class="tooltip-text">• Ingestion checks</text>
-              <text x="670" y="75" class="tooltip-text">• Metadata sync</text>
-              <text x="670" y="90" class="tooltip-text">• Consistency validation</text>
-              <text x="670" y="105" class="tooltip-text">• Search index updates</text>
-              <text x="670" y="125" class="tooltip-small">Click: open handshake details</text>
-            </g>
-
-            <g class="integration-tooltip" id="tooltip-data-streaming" style="display: none;">
-              <rect x="1020" y="250" width="240" height="130" rx="8" fill="white"
-                    stroke="#3b82f6" stroke-width="2" filter="url(#dropshadow)" cursor="pointer"/>
-              <text x="1030" y="270" class="tooltip-title">Data → Streaming</text>
-              <text x="1030" y="290" class="tooltip-text">• API response tests</text>
-              <text x="1030" y="305" class="tooltip-text">• Catalog correctness</text>
-              <text x="1030" y="320" class="tooltip-text">• Search/discovery</text>
-              <text x="1030" y="335" class="tooltip-text">• Performance signals</text>
-              <text x="1030" y="355" class="tooltip-small">Click: open handshake details</text>
             </g>
           </svg>
         </div>
@@ -421,9 +369,6 @@
               </div>
               <div class="legend-item">
                 <div class="legend-color media-platform"></div>Media Platform
-              </div>
-              <div class="legend-item">
-                <div class="legend-color data-layer"></div>Data Layer
               </div>
               <div class="legend-item">
                 <div class="legend-color localization"></div>UI Localization
@@ -453,7 +398,7 @@
               <div class="flow-info-block">
                 <h4 class="flow-info-heading">E2E Integration Overview</h4>
                 <p class="flow-info-p">
-                  Content migration requires seamless integration across five critical phases. Each phase must validate handoffs,
+                  Content migration requires seamless integration across four critical phases. Each phase must validate handoffs,
                   ensure data integrity, and maintain content quality throughout the pipeline.
                 </p>
               </div>
@@ -462,8 +407,7 @@
                 <h5 class="flow-info-subheading">Integration Dependencies</h5>
                 <ul class="flow-info-list">
                   <li><strong>Content → Media:</strong> Metadata transfer & format validation</li>
-                  <li><strong>Media → Data:</strong> Catalog sync & entity reconciliation</li>
-                  <li><strong>Data → UI Localization:</strong> Regional metadata & content routing</li>
+                  <li><strong>Media → UI Localization:</strong> Packaged assets & regional readiness for UI strings</li>
                   <li><strong>UI Localization → Streaming:</strong> Language delivery & discovery</li>
                 </ul>
               </div>
@@ -543,6 +487,6 @@
   </div>
 </aside>
 
-<script src="app.js?v=14"></script>
+<script src="app.js?v=16"></script>
 </body>
 </html>

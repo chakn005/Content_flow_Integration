@@ -491,14 +491,13 @@ function renderHeatmap() {
   if (!el) return;
 
   // Simple, static heatmap placeholder
-  const alliances = ["Content", "Media", "Data", "UI Localization", "Streaming"];
+  const alliances = ["Content", "Media", "UI Localization", "Streaming"];
   const milestones = ["Metadata/Artwork", "Avails/Rights", "AV Assets", "Title Planning & Exp.", "Live & Linear"];
 
   // Minimal placeholder statuses
   const grid = {
     Content:      ["cell-green", "cell-amber", "cell-amber", "cell-na", "cell-na"],
     Media:        ["cell-amber", "cell-amber", "cell-amber", "cell-na", "cell-na"],
-    Data:         ["cell-amber", "cell-amber", "cell-na",    "cell-na", "cell-na"],
     "UI Localization": ["cell-na",    "cell-amber", "cell-amber", "cell-na", "cell-na"],
     Streaming:    ["cell-na",    "cell-na",    "cell-amber", "cell-na", "cell-amber"]
   };
