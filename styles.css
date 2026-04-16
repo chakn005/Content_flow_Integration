@@ -804,6 +804,8 @@ a { color: inherit; }
 .diagram-container {
   padding: 10px 10px 14px;
   overflow: auto;
+  display: flex;
+  justify-content: center;
 }
 
 /* SVG base scaling */
@@ -811,6 +813,7 @@ a { color: inherit; }
   width: 100%;
   height: auto;
   min-width: 1300px;
+  max-width: 1160px;
   font-family: "Roboto", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
 }
 
