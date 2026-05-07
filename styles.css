@@ -1218,9 +1218,17 @@ body.read-only-mode .clickable-cell {
   cursor: default;
   user-select: text;
 }
+body.read-only-mode #heatmap .clickable-cell {
+  cursor: pointer;
+  user-select: none;
+}
 body.read-only-mode .clickable-cell:hover {
   transform: none;
   box-shadow: none;
+}
+body.read-only-mode #heatmap .clickable-cell:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 body.read-only-mode .epic-badge:hover {
   transform: none;

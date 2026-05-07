@@ -38,6 +38,61 @@ function softenReadOnlyCopy() {
   });
 }
 
+/**
+ * github.io uses one origin per user (e.g. https://chakn005.github.io), so localStorage
+ * is shared across all projects. Scope keys by pathname so this app does not collide
+ * with other sites, and migrate legacy unscoped keys once.
+ */
+function normalizeAppPathKey() {
+  try {
+    let p = window.location.pathname || "/";
+    p = p.replace(/\/index\.html$/i, "");
+    if (p.length > 1 && p.endsWith("/")) p = p.slice(0, -1);
+    return p || "/";
+  } catch {
+    return "/";
+  }
+}
+
+function scopedStorageKey(localKey) {
+  return `${localKey}:${normalizeAppPathKey()}`;
+}
+
+function loadScopedJson(localKey) {
+  const scoped = scopedStorageKey(localKey);
+  try {
+    let raw = localStorage.getItem(scoped);
+    if (!raw) {
+      raw = localStorage.getItem(localKey);
+      if (raw) {
+        try {
+          localStorage.setItem(scoped, raw);
+          localStorage.removeItem(localKey);
+        } catch (_) {}
+      }
+    }
+    if (!raw) raw = sessionStorage.getItem(scoped);
+    return raw ? JSON.parse(raw) : {};
+  } catch {
+    return {};
+  }
+}
+
+function saveScopedJson(localKey, obj) {
+  const scoped = scopedStorageKey(localKey);
+  const payload = JSON.stringify(obj);
+  try {
+    localStorage.setItem(scoped, payload);
+    try {
+      localStorage.removeItem(localKey);
+    } catch (_) {}
+  } catch (_) {
+    try {
+      sessionStorage.setItem(scoped, payload);
+    } catch (_) {}
+  }
+}
+
 // Test case configuration - teams can update these values
 const testCaseConfig = {
   "CPTR-68701": { // Content Platform
@@ -519,7 +574,7 @@ function renderHeatmap() {
   };
 
   const heatmapCellTitle = isReadOnly()
-    ? "Readiness snapshot (read-only)"
+    ? "Coverage cells: click to cycle status (saved in this browser only)"
     : "Click to cycle: COMPLETED → IN‑PROGRESS → PENDING → RISK → N/A";
 
   let html = `<table><thead><tr><th>Alliance \\ Milestone</th>`;
@@ -550,7 +605,7 @@ function renderHeatmap() {
 
 // ===== Heatmap Cell Status Cycling =====
 function setupHeatmapCells() {
-  const cells = document.querySelectorAll('.clickable-cell');
+  const cells = document.querySelectorAll("#heatmap .clickable-cell");
   
   // Status cycle for heatmap: Green -> Amber -> Pending -> Red -> N/A -> Green
   const statusCycle = [
@@ -561,8 +616,8 @@ function setupHeatmapCells() {
     { class: 'cell-na', text: 'N/A' }
   ];
   
-  // v4: adds PENDING; indices differ from v3 — do not reuse v3 storage
-  const savedHeatmapStates = JSON.parse(localStorage.getItem("heatmapCellStates-v4") || "{}");
+  const heatmapStorageKey = "heatmapCellStates-v4";
+  const savedHeatmapStates = loadScopedJson(heatmapStorageKey);
   
   cells.forEach(cell => {
     // Create unique identifier for each cell
@@ -585,36 +640,35 @@ function setupHeatmapCells() {
 
     setHeatmapCellAccessibleName(cell);
     
-    if (!isReadOnly()) {
-      cell.addEventListener('click', () => {
-        let currentIndex = 0;
-        statusCycle.forEach((status, index) => {
-          if (cell.classList.contains(status.class)) {
-            currentIndex = index;
-          }
-        });
-
-        statusCycle.forEach(status => cell.classList.remove(status.class));
-
-        const nextIndex = (currentIndex + 1) % statusCycle.length;
-        const newStatus = statusCycle[nextIndex];
-
-        cell.classList.add(newStatus.class);
-        cell.textContent = newStatus.text;
-        setHeatmapCellAccessibleName(cell);
-
-        savedHeatmapStates[cellId] = nextIndex;
-        localStorage.setItem("heatmapCellStates-v4", JSON.stringify(savedHeatmapStates));
-
-        cell.style.transform = 'scale(0.95)';
-        setTimeout(() => {
-          cell.style.transform = 'scale(1)';
-        }, 150);
+    // Heatmap is a personal snapshot: allow toggles even in read-only Pages builds
+    cell.addEventListener('click', () => {
+      let currentIndex = 0;
+      statusCycle.forEach((status, index) => {
+        if (cell.classList.contains(status.class)) {
+          currentIndex = index;
+        }
       });
 
-      cell.style.cursor = 'pointer';
-      cell.style.transition = 'all 0.15s ease';
-    }
+      statusCycle.forEach(status => cell.classList.remove(status.class));
+
+      const nextIndex = (currentIndex + 1) % statusCycle.length;
+      const newStatus = statusCycle[nextIndex];
+
+      cell.classList.add(newStatus.class);
+      cell.textContent = newStatus.text;
+      setHeatmapCellAccessibleName(cell);
+
+      savedHeatmapStates[cellId] = nextIndex;
+      saveScopedJson(heatmapStorageKey, savedHeatmapStates);
+
+      cell.style.transform = 'scale(0.95)';
+      setTimeout(() => {
+        cell.style.transform = 'scale(1)';
+      }, 150);
+    });
+
+    cell.style.cursor = 'pointer';
+    cell.style.transition = 'all 0.15s ease';
   });
 }
 
@@ -629,8 +683,8 @@ function setupKPICards() {
     { class: 'rag-red', circle: 'red', color: '#dc2626' }
   ];
   
-  // Load saved states from localStorage
-  const savedStates = JSON.parse(localStorage.getItem('kpiCardStates') || '{}');
+  const kpiStorageKey = "kpiCardStates";
+  const savedStates = loadScopedJson(kpiStorageKey);
   
   kpiCards.forEach((card, index) => {
     // Create unique identifier for each card
@@ -664,7 +718,7 @@ function setupKPICards() {
       applyCardStatus(card, newStatus);
 
       savedStates[cardId] = currentStatusIndex;
-      localStorage.setItem('kpiCardStates', JSON.stringify(savedStates));
+      saveScopedJson(kpiStorageKey, savedStates);
 
       card.style.transform = 'scale(0.98)';
       setTimeout(() => {
