@@ -520,7 +520,7 @@ function renderHeatmap() {
 
   const heatmapCellTitle = isReadOnly()
     ? "Readiness snapshot (read-only)"
-    : "Click to cycle: GOOD → IN‑PROGRESS → PENDING → RISK → N/A";
+    : "Click to cycle: COMPLETED → IN‑PROGRESS → PENDING → RISK → N/A";
 
   let html = `<table><thead><tr><th>Alliance \\ Milestone</th>`;
   milestones.forEach(m => html += `<th>${m}</th>`);
@@ -530,7 +530,7 @@ function renderHeatmap() {
     html += `<tr><th>${a}</th>`;
     grid[a].forEach((cls, i) => {
       const text =
-        cls === "cell-green" ? "GOOD" :
+        cls === "cell-green" ? "COMPLETED" :
         cls === "cell-amber" ? "IN‑PROGRESS" :
         cls === "cell-pending" ? "PENDING" :
         cls === "cell-red"   ? "RISK" :
@@ -554,7 +554,7 @@ function setupHeatmapCells() {
   
   // Status cycle for heatmap: Green -> Amber -> Pending -> Red -> N/A -> Green
   const statusCycle = [
-    { class: 'cell-green', text: 'GOOD' },
+    { class: 'cell-green', text: 'COMPLETED' },
     { class: 'cell-amber', text: 'IN‑PROGRESS' },
     { class: 'cell-pending', text: 'PENDING' },
     { class: 'cell-red', text: 'RISK' },
