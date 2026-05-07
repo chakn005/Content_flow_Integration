@@ -486,6 +486,22 @@ function setupTabs() {
 }
 
 // ===== Heatmap (UI placeholder) =====
+function heatmapEscAttr(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;");
+}
+
+function setHeatmapCellAccessibleName(cell) {
+  const alliance = cell.dataset.alliance || "";
+  const milestoneName = cell.dataset.milestoneName || "";
+  const status = (cell.textContent || "").trim();
+  cell.setAttribute(
+    "aria-label",
+    `${alliance}, ${milestoneName}: ${status}`
+  );
+}
+
 function renderHeatmap() {
   const el = document.getElementById("heatmap");
   if (!el) return;
@@ -504,7 +520,7 @@ function renderHeatmap() {
 
   const heatmapCellTitle = isReadOnly()
     ? "Readiness snapshot (read-only)"
-    : "Click to cycle: GOOD → IN‑PROGRESS → RISK → N/A";
+    : "Click to cycle: GOOD → IN‑PROGRESS → PENDING → RISK → N/A";
 
   let html = `<table><thead><tr><th>Alliance \\ Milestone</th>`;
   milestones.forEach(m => html += `<th>${m}</th>`);
@@ -516,9 +532,11 @@ function renderHeatmap() {
       const text =
         cls === "cell-green" ? "GOOD" :
         cls === "cell-amber" ? "IN‑PROGRESS" :
+        cls === "cell-pending" ? "PENDING" :
         cls === "cell-red"   ? "RISK" :
         "N/A";
-      html += `<td class="${cls} clickable-cell" data-alliance="${a}" data-milestone="${i}" title="${heatmapCellTitle}">${text}</td>`;
+      const ms = heatmapEscAttr(milestones[i]);
+      html += `<td class="${cls} clickable-cell" data-alliance="${heatmapEscAttr(a)}" data-milestone="${i}" data-milestone-name="${ms}" title="${heatmapCellTitle}">${text}</td>`;
     });
     html += `</tr>`;
   });
@@ -534,16 +552,17 @@ function renderHeatmap() {
 function setupHeatmapCells() {
   const cells = document.querySelectorAll('.clickable-cell');
   
-  // Status cycle for heatmap: Green -> Amber -> Red -> N/A -> Green
+  // Status cycle for heatmap: Green -> Amber -> Pending -> Red -> N/A -> Green
   const statusCycle = [
     { class: 'cell-green', text: 'GOOD' },
     { class: 'cell-amber', text: 'IN‑PROGRESS' },
+    { class: 'cell-pending', text: 'PENDING' },
     { class: 'cell-red', text: 'RISK' },
     { class: 'cell-na', text: 'N/A' }
   ];
   
-  // v2: grid includes "Title Planning & Exp." column; prior keys would mis-align cells
-  const savedHeatmapStates = JSON.parse(localStorage.getItem("heatmapCellStates-v3") || "{}");
+  // v4: adds PENDING; indices differ from v3 — do not reuse v3 storage
+  const savedHeatmapStates = JSON.parse(localStorage.getItem("heatmapCellStates-v4") || "{}");
   
   cells.forEach(cell => {
     // Create unique identifier for each cell
@@ -555,13 +574,16 @@ function setupHeatmapCells() {
     if (savedHeatmapStates[cellId] !== undefined) {
       const savedIndex = savedHeatmapStates[cellId];
       const savedStatus = statusCycle[savedIndex];
-      
-      // Remove all status classes
-      statusCycle.forEach(status => cell.classList.remove(status.class));
-      // Apply saved status
-      cell.classList.add(savedStatus.class);
-      cell.textContent = savedStatus.text;
+      if (savedStatus) {
+        // Remove all status classes
+        statusCycle.forEach(status => cell.classList.remove(status.class));
+        // Apply saved status
+        cell.classList.add(savedStatus.class);
+        cell.textContent = savedStatus.text;
+      }
     }
+
+    setHeatmapCellAccessibleName(cell);
     
     if (!isReadOnly()) {
       cell.addEventListener('click', () => {
@@ -579,9 +601,10 @@ function setupHeatmapCells() {
 
         cell.classList.add(newStatus.class);
         cell.textContent = newStatus.text;
+        setHeatmapCellAccessibleName(cell);
 
         savedHeatmapStates[cellId] = nextIndex;
-        localStorage.setItem("heatmapCellStates-v3", JSON.stringify(savedHeatmapStates));
+        localStorage.setItem("heatmapCellStates-v4", JSON.stringify(savedHeatmapStates));
 
         cell.style.transform = 'scale(0.95)';
         setTimeout(() => {

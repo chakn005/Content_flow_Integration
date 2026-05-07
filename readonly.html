@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
 
   <!-- Styles -->
-  <link rel="stylesheet" href="styles.css?v=18" />
+  <link rel="stylesheet" href="styles.css?v=19" />
 
   <!-- GitHub Pages -->
   <base href="./" />
@@ -171,6 +171,16 @@
           </div>
           <div class="card-content">
             <div id="heatmap" class="heatmap"></div>
+            <div class="heatmap-status-key" role="group" aria-label="Coverage heatmap status meanings">
+              <span class="heatmap-status-key-label">Statuses</span>
+              <div class="heatmap-status-key-items">
+                <span class="heatmap-status-key-item"><span class="heatmap-swatch cell-green" aria-hidden="true"></span>GOOD</span>
+                <span class="heatmap-status-key-item"><span class="heatmap-swatch cell-amber" aria-hidden="true"></span>IN‑PROGRESS</span>
+                <span class="heatmap-status-key-item"><span class="heatmap-swatch cell-pending" aria-hidden="true"></span>PENDING</span>
+                <span class="heatmap-status-key-item"><span class="heatmap-swatch cell-red" aria-hidden="true"></span>RISK</span>
+                <span class="heatmap-status-key-item"><span class="heatmap-swatch cell-na" aria-hidden="true"></span>N/A</span>
+              </div>
+            </div>
             <p class="heatmap-note"><strong>Note:</strong> A/V and Title Planning - Executed by Product.</p>
           </div>
         </div>
@@ -488,6 +498,6 @@
 </aside>
 
 <script>window.__CONTENT_FLOW_READ_ONLY__ = true;</script>
-<script src="app.js?v=16"></script>
+<script src="app.js?v=17"></script>
 </body>
 </html>
