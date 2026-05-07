@@ -565,12 +565,13 @@ function renderHeatmap() {
   const alliances = ["Content", "Media", "UI Localization", "Streaming"];
   const milestones = ["Metadata/Artwork", "Avails/Rights", "AV Assets", "Title Planning & Exp.", "Live & Linear"];
 
-  // Minimal placeholder statuses
+  // Default snapshot: N/A only for Product-owned milestones (AV Assets, Title Planning).
+  // First-time visitors (e.g. shared link) see this grid—not another user's local edits.
   const grid = {
-    Content:      ["cell-green", "cell-amber", "cell-amber", "cell-na", "cell-na"],
-    Media:        ["cell-amber", "cell-amber", "cell-amber", "cell-na", "cell-na"],
-    "UI Localization": ["cell-na",    "cell-amber", "cell-amber", "cell-na", "cell-na"],
-    Streaming:    ["cell-na",    "cell-na",    "cell-amber", "cell-na", "cell-amber"]
+    Content:           ["cell-green", "cell-amber", "cell-na", "cell-na", "cell-amber"],
+    Media:             ["cell-amber", "cell-amber", "cell-na", "cell-na", "cell-green"],
+    "UI Localization": ["cell-amber", "cell-amber", "cell-na", "cell-na", "cell-amber"],
+    Streaming:         ["cell-amber", "cell-pending", "cell-na", "cell-na", "cell-amber"]
   };
 
   const heatmapCellTitle = isReadOnly()

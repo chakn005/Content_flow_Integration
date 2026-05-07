@@ -722,6 +722,10 @@ a { color: inherit; }
 .heatmap-note strong {
   font-weight: var(--font-weight-semibold);
 }
+.heatmap-sharing-hint {
+  color: var(--text2);
+  font-size: var(--font-size-sm);
+}
 
 /* ---------- Control Panel ---------- */
 .control-panel {
