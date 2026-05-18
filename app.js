@@ -93,6 +93,167 @@ function saveScopedJson(localKey, obj) {
   }
 }
 
+const HEATMAP_STORAGE_KEY = "heatmapCellStates-v4";
+const KPI_STORAGE_KEY = "kpiCardStates";
+
+let sharedHeatmapStates = null;
+let sharedKpiStates = null;
+
+function getHeatmapStatesMap() {
+  if (sharedHeatmapStates) return sharedHeatmapStates;
+  sharedHeatmapStates = loadScopedJson(HEATMAP_STORAGE_KEY);
+  return sharedHeatmapStates;
+}
+
+function getKpiStatesMap() {
+  if (sharedKpiStates) return sharedKpiStates;
+  sharedKpiStates = loadScopedJson(KPI_STORAGE_KEY);
+  return sharedKpiStates;
+}
+
+function persistDashboardSnapshot() {
+  const heatmap = getHeatmapStatesMap();
+  const kpi = getKpiStatesMap();
+  saveScopedJson(HEATMAP_STORAGE_KEY, heatmap);
+  saveScopedJson(KPI_STORAGE_KEY, kpi);
+  const shared = window.ContentFlowSharedState;
+  if (shared && shared.isEnabled() && shared.canPublish()) {
+    shared.schedulePublish({ heatmap, kpi });
+  }
+}
+
+function applySharedPayload(payload) {
+  if (!payload) return;
+  if (payload.heatmap && Object.keys(payload.heatmap).length) {
+    sharedHeatmapStates = { ...payload.heatmap };
+    saveScopedJson(HEATMAP_STORAGE_KEY, sharedHeatmapStates);
+  }
+  if (payload.kpi && Object.keys(payload.kpi).length) {
+    sharedKpiStates = { ...payload.kpi };
+    saveScopedJson(KPI_STORAGE_KEY, sharedKpiStates);
+  }
+  refreshHeatmapFromState();
+  refreshKpiFromState();
+}
+
+function refreshHeatmapFromState() {
+  const statusCycle = [
+    { class: "cell-green", text: "COMPLETED" },
+    { class: "cell-amber", text: "IN‑PROGRESS" },
+    { class: "cell-pending", text: "PENDING" },
+    { class: "cell-red", text: "RISK" },
+    { class: "cell-na", text: "N/A" }
+  ];
+  const saved = getHeatmapStatesMap();
+  document.querySelectorAll("#heatmap .clickable-cell").forEach(cell => {
+    const cellId = `${cell.dataset.alliance}-${cell.dataset.milestone}`;
+    if (saved[cellId] === undefined) return;
+    const savedStatus = statusCycle[saved[cellId]];
+    if (!savedStatus) return;
+    statusCycle.forEach(s => cell.classList.remove(s.class));
+    cell.classList.add(savedStatus.class);
+    cell.textContent = savedStatus.text;
+    setHeatmapCellAccessibleName(cell);
+  });
+}
+
+function refreshKpiFromState() {
+  const statusCycle = [
+    { class: "rag-green", circle: "green", color: "#22c55e" },
+    { class: "rag-amber", circle: "amber", color: "#f59e0b" },
+    { class: "rag-red", circle: "red", color: "#dc2626" }
+  ];
+  const saved = getKpiStatesMap();
+  document.querySelectorAll(".kpi-card").forEach((card, index) => {
+    const cardId = card.querySelector(".kpi-title")?.textContent?.trim() || `card-${index}`;
+    if (saved[cardId] === undefined) return;
+    applyCardStatus(card, statusCycle[saved[cardId]]);
+  });
+}
+
+function updateSharingHint(isLive) {
+  document.querySelectorAll(".heatmap-sharing-hint").forEach(el => {
+    if (isLive) {
+      el.innerHTML =
+        "<strong>Sharing:</strong> Status is loaded from the team cloud. " +
+        "Editors with the edit key publish changes for everyone; others see updates automatically.";
+    }
+  });
+}
+
+function setupSharedSyncUI() {
+  const host = document.querySelector(".header-actions");
+  const shared = window.ContentFlowSharedState;
+  if (!host || !shared) return;
+
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.id = "sharedSyncControl";
+  btn.className = "sync-pill sync-pill--local";
+  btn.innerHTML = '<span class="sync-dot" aria-hidden="true"></span><span class="sync-label">Local only</span>';
+
+  const labels = {
+    local: "Local only",
+    loading: "Syncing…",
+    live: "Team view (read‑only)",
+    "live-editor": "Team view (editing)",
+    error: "Sync unavailable"
+  };
+
+  function paint(next) {
+    const label = labels[next] || labels.local;
+    btn.className = `sync-pill sync-pill--${next.replace(/[^a-z-]/g, "")}`;
+    btn.querySelector(".sync-label").textContent = label;
+    btn.title =
+      next === "local"
+        ? "Add Supabase URL and anon key in supabase-config.js to enable shared status"
+        : next === "live-editor"
+          ? "Changes publish to the team cloud"
+          : next === "live"
+            ? "Viewing shared status; enter edit key to publish"
+            : label;
+    updateSharingHint(next === "live" || next === "live-editor");
+  }
+
+  shared.onStatusChange(paint);
+
+  btn.addEventListener("click", () => {
+    if (!shared.isEnabled()) {
+      window.alert(
+        "Shared sync is not configured.\n\n" +
+          "1. Create a Supabase project and run supabase/schema.sql\n" +
+          "2. Set url and anonKey in supabase-config.js\n" +
+          "3. Redeploy GitHub Pages"
+      );
+      return;
+    }
+    if (shared.canPublish()) {
+      window.alert("You are publishing changes for everyone with the team edit key.");
+      return;
+    }
+    if (shared.promptForEditKey()) {
+      paint(shared.getStatus());
+      persistDashboardSnapshot();
+    }
+  });
+
+  host.insertBefore(btn, host.firstChild);
+  paint(shared.getStatus());
+}
+
+async function initSharedDashboardState() {
+  const shared = window.ContentFlowSharedState;
+  if (!shared) return;
+
+  setupSharedSyncUI();
+  if (!shared.init()) return;
+
+  const remote = await shared.fetchRemote();
+  if (remote) applySharedPayload(remote);
+
+  shared.subscribeRemote(applySharedPayload);
+}
+
 // Test case configuration - teams can update these values
 const testCaseConfig = {
   "CPTR-68701": { // Content Platform
@@ -617,8 +778,7 @@ function setupHeatmapCells() {
     { class: 'cell-na', text: 'N/A' }
   ];
   
-  const heatmapStorageKey = "heatmapCellStates-v4";
-  const savedHeatmapStates = loadScopedJson(heatmapStorageKey);
+  const savedHeatmapStates = getHeatmapStatesMap();
   
   cells.forEach(cell => {
     // Create unique identifier for each cell
@@ -660,7 +820,7 @@ function setupHeatmapCells() {
       setHeatmapCellAccessibleName(cell);
 
       savedHeatmapStates[cellId] = nextIndex;
-      saveScopedJson(heatmapStorageKey, savedHeatmapStates);
+      persistDashboardSnapshot();
 
       cell.style.transform = 'scale(0.95)';
       setTimeout(() => {
@@ -684,8 +844,7 @@ function setupKPICards() {
     { class: 'rag-red', circle: 'red', color: '#dc2626' }
   ];
   
-  const kpiStorageKey = "kpiCardStates";
-  const savedStates = loadScopedJson(kpiStorageKey);
+  const savedStates = getKpiStatesMap();
   
   kpiCards.forEach((card, index) => {
     // Create unique identifier for each card
@@ -719,7 +878,7 @@ function setupKPICards() {
       applyCardStatus(card, newStatus);
 
       savedStates[cardId] = currentStatusIndex;
-      saveScopedJson(kpiStorageKey, savedStates);
+      persistDashboardSnapshot();
 
       card.style.transform = 'scale(0.98)';
       setTimeout(() => {
@@ -945,13 +1104,15 @@ function setupPhases(drawerApi) {
 
 
 // ===== App init =====
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   if (isReadOnly()) {
     applyReadOnlyShell();
     softenReadOnlyCopy();
   }
 
   setupTabs();
+
+  await initSharedDashboardState();
 
   renderHeatmap();
   renderEvidence();

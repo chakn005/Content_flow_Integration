@@ -43,6 +43,19 @@ The read-only GitHub Pages build lives in a **separate** clone next to this fold
 - Safari 13+
 - Edge 80+
 
+## Shared status (Supabase)
+
+Heatmap and KPI colors can sync for everyone visiting the same URL (including [GitHub Pages](https://chakn005.github.io/Content_flow_Integration/)).
+
+1. Create a [Supabase](https://supabase.com) project.
+2. In **SQL Editor**, run [`supabase/schema.sql`](supabase/schema.sql) and set a strong `edit_key` in `dashboard_config`.
+3. In **Database → Replication**, enable realtime for `dashboard_state`.
+4. Copy **Project URL** and **anon public** key into [`supabase-config.js`](supabase-config.js).
+5. Commit, push, and redeploy Pages.
+6. Open the site, click **Team view** in the header, enter the edit key once per browser. Status changes then publish for all viewers; others receive updates via realtime.
+
+The edit key is never stored in git—only in Supabase and the editor’s browser session.
+
 ## Development
 
 No build process required. Simply open `index.html` in a browser or serve with any static file server.

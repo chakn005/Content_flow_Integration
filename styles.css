@@ -169,6 +169,41 @@ a { color: inherit; }
   transition: 120ms ease;
 }
 
+.sync-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  font: inherit;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text2);
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+.sync-pill:hover {
+  border-color: rgba(10, 42, 102, 0.35);
+}
+.sync-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #94a3b8;
+}
+.sync-pill--live .sync-dot,
+.sync-pill--live-editor .sync-dot {
+  background: #22c55e;
+}
+.sync-pill--loading .sync-dot {
+  background: #f59e0b;
+}
+.sync-pill--error .sync-dot {
+  background: #dc2626;
+}
+
 /* ---------- Tabs ---------- */
 .header-tabs {
   max-width: 1280px;
