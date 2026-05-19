@@ -56,6 +56,14 @@ Heatmap and KPI colors can sync for everyone visiting the same URL (including [G
 
 The edit key is never stored in git—only in Supabase and the editor’s browser session.
 
+## Related repository
+
+The **Vendor Resource Board** (leadership roster with live sheet sync) lives in a separate repo:
+
+- Path: `../vendor-resource-board/` (sibling of this folder)
+- Leadership URL: https://chakn005.github.io/vendor-resource-board/
+- Publisher URL: https://chakn005.github.io/vendor-resource-board/?publish=1
+
 ## Development
 
 No build process required. Simply open `index.html` in a browser or serve with any static file server.
