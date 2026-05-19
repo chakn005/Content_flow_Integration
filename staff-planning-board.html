@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Planning - ID Deactivation Board</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f7fa;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            color: #1a202c;
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .filters {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .filter-group label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #4a5568;
+            text-transform: uppercase;
+        }
+
+        .filter-group select,
+        .filter-group input {
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+            min-width: 180px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #718096;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1a202c;
+        }
+
+        .stat-card.pending { border-left: 4px solid #f59e0b; }
+        .stat-card.in-progress { border-left: 4px solid #3b82f6; }
+        .stat-card.completed { border-left: 4px solid #10b981; }
+        .stat-card.total { border-left: 4px solid #6366f1; }
+
+        .table-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #f7fafc;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        th {
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            color: #4a5568;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 14px;
+            color: #2d3748;
+        }
+
+        tbody tr:hover {
+            background: #f7fafc;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-in-progress {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .status-completed {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .rank-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            background: #e2e8f0;
+            color: #2d3748;
+        }
+
+        .rank-x {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        select.status-select {
+            padding: 6px 10px;
+            border: 2px solid;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        select.status-select.status-pending {
+            background-color: #fef2f2;
+            border-color: #ef4444;
+            color: #991b1b;
+        }
+
+        select.status-select.status-in-progress {
+            background-color: #fef9c3;
+            border-color: #eab308;
+            color: #854d0e;
+        }
+
+        select.status-select.status-completed {
+            background-color: #dcfce7;
+            border-color: #22c55e;
+            color: #166534;
+        }
+
+        input.submitted-by {
+            padding: 6px 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 13px;
+            width: 150px;
+        }
+
+        .export-btn {
+            padding: 10px 20px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-left: auto;
+        }
+
+        .export-btn:hover {
+            background: #2563eb;
+        }
+
+        .no-results {
+            padding: 40px;
+            text-align: center;
+            color: #718096;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Staff Planning - ID Deactivation Board</h1>
+            <p class="subtitle">Track ID deactivation status for transitioning staff members</p>
+        </header>
+
+        <div class="filters">
+            <div class="filter-group">
+                <label>Search Name</label>
+                <input type="text" id="searchName" placeholder="Search by name...">
+            </div>
+            <div class="filter-group">
+                <label>Fleet</label>
+                <select id="filterFleet">
+                    <option value="">All Fleets</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Vendor</label>
+                <select id="filterVendor">
+                    <option value="">All Vendors</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Transition Status</label>
+                <select id="filterTransition">
+                    <option value="">All</option>
+                    <option value="x">X (Ending)</option>
+                    <option value="Transition">Transition</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>ID Deactivation</label>
+                <select id="filterStatus">
+                    <option value="">All Statuses</option>
+                    <option value="Pending">Pending</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                </select>
+            </div>
+            <button class="export-btn" onclick="exportToCSV()">Export to CSV</button>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card total">
+                <div class="stat-label">Total Staff (X)</div>
+                <div class="stat-value" id="totalCount">0</div>
+            </div>
+            <div class="stat-card pending">
+                <div class="stat-label">Pending</div>
+                <div class="stat-value" id="pendingCount">0</div>
+            </div>
+            <div class="stat-card in-progress">
+                <div class="stat-label">In Progress</div>
+                <div class="stat-value" id="inProgressCount">0</div>
+            </div>
+            <div class="stat-card completed">
+                <div class="stat-label">Completed</div>
+                <div class="stat-value" id="completedCount">0</div>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Fleet</th>
+                        <th>Application</th>
+                        <th>Role</th>
+                        <th>Vendor</th>
+                        <th>Rank</th>
+                        <th>Transition</th>
+                        <th>End Date</th>
+                        <th>Manager</th>
+                        <th>ID Deactivation Status</th>
+                        <th>Submitted By</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                </tbody>
+            </table>
+            <div id="noResults" class="no-results" style="display: none;">
+                No staff members found matching the filters.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data structure - this would be populated from your Excel data
+        let staffData = [
+            // Globant staff with "x" transition
+            { name: "Candy Guerrero", fleet: "Title Planning", application: "Title Core: DTM", role: "SDET", vendor: "Globant", rank: "0", transition: "x", endDate: "4/30/26", manager: "Abramyan", idStatus: "Pending", submittedBy: "" },
+            { name: "Dorian Escobar", fleet: "Asset & Media", application: "ARIEL", role: "SDET", vendor: "Globant", rank: "1", transition: "x", endDate: "4/30/26", manager: "Yurch", idStatus: "Pending", submittedBy: "" },
+            { name: "Vaibhav Magar", fleet: "Title Planning", application: "CPT", role: "SDET", vendor: "Globant", rank: "0", transition: "x", endDate: "4/30/26", manager: "Abramyan", idStatus: "Pending", submittedBy: "" },
+            { name: "Victor Gomez", fleet: "Asset & Media", application: "Mobius", role: "SDET", vendor: "Globant", rank: "1", transition: "x", endDate: "5/29/26", manager: "Yurch", idStatus: "Pending", submittedBy: "" },
+            { name: "Bernardo Vargas", fleet: "Title Planning", application: "CPT", role: "SDET", vendor: "Globant", rank: "1", transition: "x", endDate: "4/30/26", manager: "Abramyan", idStatus: "Pending", submittedBy: "" },
+            { name: "Cristian Manzo", fleet: "Title Planning", application: "CAP", role: "SDET", vendor: "Globant", rank: "1", transition: "x", endDate: "4/30/26", manager: "Abramyan", idStatus: "Pending", submittedBy: "" },
+            { name: "Esteban Zuluaga", fleet: "Title Planning", application: "CAP", role: "SDET", vendor: "Globant", rank: "1", transition: "x", endDate: "4/30/26", manager: "Abramyan", idStatus: "Pending", submittedBy: "" },
+            { name: "Ilian Burgos", fleet: "Asset & Media", application: "Wonderland/Mandalorian", role: "SDET", vendor: "Globant", rank: "0", transition: "x", endDate: "5/29/26", manager: "Yurch", idStatus: "Pending", submittedBy: "" },
+            { name: "Jimena Aldape", fleet: "Title Planning", application: "Milestone Insights", role: "SDET", vendor: "Globant", rank: "1", transition: "x", endDate: "4/30/26", manager: "Yurch", idStatus: "Pending", submittedBy: "" },
+            { name: "Jonathan Morales", fleet: "Title Planning", application: "CPT", role: "SDET", vendor: "Globant", rank: "1", transition: "x", endDate: "4/30/26", manager: "Abramyan", idStatus: "Pending", submittedBy: "" },
+            { name: "Nikita Naik", fleet: "PE", application: "Mandalorian - Pod 2", role: "SDET", vendor: "Globant", rank: "0", transition: "x", endDate: "4/30/26", manager: "Yurch", idStatus: "Pending", submittedBy: "" },
+            { name: "Oscaromar Martinez", fleet: "Title Planning", application: "Milestone Insights", role: "SDET", vendor: "Globant", rank: "1", transition: "x", endDate: "4/30/26", manager: "Yurch", idStatus: "Pending", submittedBy: "" },
+            { name: "Sampada Kshirsagar", fleet: "PE", application: "Mandalorian - Pod 2", role: "SDET", vendor: "Globant", rank: "0", transition: "x", endDate: "5/8/26", manager: "Yurch", idStatus: "Pending", submittedBy: "" },
+            { name: "Supriya Game", fleet: "Asset & Media", application: "Wonderland", role: "SDET", vendor: "Globant", rank: "0", transition: "x", endDate: "6/30/26", manager: "Yurch", idStatus: "Pending", submittedBy: "" },
+            
+            // Beqisoft staff with "x" transition
+            { name: "Kulasekarapandiyan Dhinagaran", fleet: "MPSE", application: "Content Scheduling", role: "Manual QA", vendor: "Beqisoft", rank: "0", transition: "x", endDate: "6/12/26", manager: "Chakraborty", idStatus: "Pending", submittedBy: "" },
+            { name: "Hopeson Singh", fleet: "MPSE", application: "PALO", role: "Manual QA", vendor: "Beqisoft", rank: "0", transition: "x", endDate: "6/12/26", manager: "Chakraborty", idStatus: "Pending", submittedBy: "" },
+            { name: "Venkat Hariharan", fleet: "Asset & Media", application: "WF/AMP/SIP", role: "Lead/Mgr", vendor: "Beqisoft", rank: "0", transition: "x", endDate: "6/12/26", manager: "Chakraborty", idStatus: "Pending", submittedBy: "" },
+            { name: "Thoufeek Ahamed", fleet: "MPSE", application: "Content Manager (GECC)", role: "Manual QA", vendor: "Beqisoft", rank: "0", transition: "x", endDate: "6/12/26", manager: "Vibert", idStatus: "Pending", submittedBy: "" },
+            { name: "Agile Mathew", fleet: "Asset & Media", application: "DMM/TMM", role: "Manual QA", vendor: "Beqisoft", rank: "1", transition: "x", endDate: "6/12/26", manager: "Chakraborty", idStatus: "Pending", submittedBy: "" },
+            
+            // Zucitech staff with "x" transition
+            { name: "Sonu Patil", fleet: "PE", application: "Mandalorian - Pod 1", role: "SDET", vendor: "Zucitech", rank: "0", transition: "x", endDate: "4/30/26", manager: "Niloy", idStatus: "Pending", submittedBy: "" },
+            { name: "Chandulal Karthava Rayan", fleet: "Asset & Media", application: "ARIEL", role: "Manual QA", vendor: "Zucitech", rank: "1", transition: "x", endDate: "4/30/26", manager: "Yurch", idStatus: "Pending", submittedBy: "" },
+            { name: "Manoj Kumar", fleet: "Asset & Media", application: "DOT", role: "Manual QA", vendor: "Zucitech", rank: "0", transition: "x", endDate: "4/30/26", manager: "Yurch", idStatus: "Pending", submittedBy: "" },
+            { name: "Sai Rohit Voleti", fleet: "Asset & Media", application: "CAM - Sports Artwork", role: "SDET", vendor: "Zucitech", rank: "0", transition: "x", endDate: "5/8/26", manager: "Yurch", idStatus: "Pending", submittedBy: "" },
+            { name: "Akhil Kumar Betapudi", fleet: "Asset & Media", application: "SIP/AMP", role: "Manual QA", vendor: "Zucitech", rank: "0", transition: "x", endDate: "5/29/26", manager: "Chakraborty", idStatus: "Pending", submittedBy: "" },
+            { name: "Karthik Krishna", fleet: "Rights", application: "Apollo Cloud", role: "SDET", vendor: "Zucitech", rank: "1", transition: "x", endDate: "5/31/26", manager: "Vibert", idStatus: "Pending", submittedBy: "" },
+            { name: "Manjunatha Veerashekara", fleet: "Asset & Media", application: "DOT", role: "Manual QA", vendor: "Zucitech", rank: "0", transition: "x", endDate: "6/30/26", manager: "Yurch", idStatus: "Pending", submittedBy: "" },
+            { name: "Arvind (Tumbeti) Ravi", fleet: "Rights", application: "Falcon", role: "Manual QA", vendor: "Zucitech", rank: "0", transition: "x", endDate: "6/30/26", manager: "Vibert", idStatus: "Pending", submittedBy: "" },
+            { name: "Sachin Kumar", fleet: "Rights", application: "Falcon", role: "Manual QA", vendor: "Zucitech", rank: "0", transition: "x", endDate: "6/30/26", manager: "Vibert", idStatus: "Pending", submittedBy: "" },
+            { name: "Raghavendra Velpula", fleet: "Title Planning", application: "Title Core: Bolt/Belle/Sonar/Mars", role: "Manual QA", vendor: "Zucitech", rank: "0", transition: "x", endDate: "7/30/26", manager: "Abramyan", idStatus: "Pending", submittedBy: "" },
+            { name: "Anusha Torgalmath", fleet: "Title Planning", application: "Title Core: TRM/CPM/XAVIER", role: "Manual QA", vendor: "Zucitech", rank: "0", transition: "x", endDate: "7/30/26", manager: "Abramyan", idStatus: "Pending", submittedBy: "" },
+            
+            // LTI staff with "x" transition
+            { name: "Ashish Lamba", fleet: "Asset & Media", application: "Mobius", role: "SDET", vendor: "LTI", rank: "1", transition: "x", endDate: "5/30/26", manager: "Yurch", idStatus: "Pending", submittedBy: "" },
+            { name: "Sanjeevanee Kanase", fleet: "Asset & Media", application: "Mobius", role: "SDET", vendor: "LTI", rank: "1", transition: "x", endDate: "5/30/26", manager: "Yurch", idStatus: "Pending", submittedBy: "" },
+        ];
+
+        // Save data to localStorage
+        function saveData() {
+            localStorage.setItem('staffPlanningData', JSON.stringify(staffData));
+        }
+
+        // Load data from localStorage
+        function loadData() {
+            const saved = localStorage.getItem('staffPlanningData');
+            if (saved) {
+                staffData = JSON.parse(saved);
+            }
+        }
+
+        // Initialize
+        loadData();
+        populateFilters();
+        renderTable();
+        updateStats();
+
+        function populateFilters() {
+            const fleets = [...new Set(staffData.map(s => s.fleet))].sort();
+            const vendors = [...new Set(staffData.map(s => s.vendor))].sort();
+            
+            const fleetSelect = document.getElementById('filterFleet');
+            fleets.forEach(fleet => {
+                const option = document.createElement('option');
+                option.value = fleet;
+                option.textContent = fleet;
+                fleetSelect.appendChild(option);
+            });
+            
+            const vendorSelect = document.getElementById('filterVendor');
+            vendors.forEach(vendor => {
+                const option = document.createElement('option');
+                option.value = vendor;
+                option.textContent = vendor;
+                vendorSelect.appendChild(option);
+            });
+        }
+
+        function getFilteredData() {
+            const searchName = document.getElementById('searchName').value.toLowerCase();
+            const filterFleet = document.getElementById('filterFleet').value;
+            const filterVendor = document.getElementById('filterVendor').value;
+            const filterTransition = document.getElementById('filterTransition').value;
+            const filterStatus = document.getElementById('filterStatus').value;
+
+            return staffData.filter(staff => {
+                if (searchName && !staff.name.toLowerCase().includes(searchName)) return false;
+                if (filterFleet && staff.fleet !== filterFleet) return false;
+                if (filterVendor && staff.vendor !== filterVendor) return false;
+                if (filterTransition && staff.transition !== filterTransition) return false;
+                if (filterStatus && staff.idStatus !== filterStatus) return false;
+                return true;
+            });
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('tableBody');
+            const noResults = document.getElementById('noResults');
+            const filteredData = getFilteredData();
+            
+            tbody.innerHTML = '';
+            
+            if (filteredData.length === 0) {
+                noResults.style.display = 'block';
+                return;
+            }
+            
+            noResults.style.display = 'none';
+            
+            filteredData.forEach((staff, index) => {
+                const row = document.createElement('tr');
+                
+                const rankClass = staff.transition === 'x' ? 'rank-x' : '';
+                
+                row.innerHTML = `
+                    <td><strong>${staff.name}</strong></td>
+                    <td>${staff.fleet}</td>
+                    <td>${staff.application}</td>
+                    <td>${staff.role}</td>
+                    <td>${staff.vendor}</td>
+                    <td><span class="rank-badge ${rankClass}">${staff.rank}</span></td>
+                    <td><span class="rank-badge ${rankClass}">${staff.transition}</span></td>
+                    <td>${staff.endDate}</td>
+                    <td>${staff.manager}</td>
+                    <td>
+                        <select class="status-select status-${staff.idStatus.toLowerCase().replace(' ', '-')}" onchange="updateStatus(${staffData.indexOf(staff)}, this.value)">
+                            <option value="Pending" ${staff.idStatus === 'Pending' ? 'selected' : ''}>Pending</option>
+                            <option value="In Progress" ${staff.idStatus === 'In Progress' ? 'selected' : ''}>In Progress</option>
+                            <option value="Completed" ${staff.idStatus === 'Completed' ? 'selected' : ''}>Completed</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="text" class="submitted-by" value="${staff.submittedBy}" 
+                               onchange="updateSubmittedBy(${staffData.indexOf(staff)}, this.value)"
+                               placeholder="Enter name...">
+                    </td>
+                `;
+                
+                tbody.appendChild(row);
+            });
+        }
+
+        function updateStatus(index, status) {
+            staffData[index].idStatus = status;
+            saveData();
+            updateStats();
+            renderTable();
+        }
+
+        function updateSubmittedBy(index, name) {
+            staffData[index].submittedBy = name;
+            saveData();
+        }
+
+        function updateStats() {
+            const xStaff = staffData.filter(s => s.transition === 'x');
+            const pending = xStaff.filter(s => s.idStatus === 'Pending').length;
+            const inProgress = xStaff.filter(s => s.idStatus === 'In Progress').length;
+            const completed = xStaff.filter(s => s.idStatus === 'Completed').length;
+            
+            document.getElementById('totalCount').textContent = xStaff.length;
+            document.getElementById('pendingCount').textContent = pending;
+            document.getElementById('inProgressCount').textContent = inProgress;
+            document.getElementById('completedCount').textContent = completed;
+        }
+
+        function exportToCSV() {
+            const filteredData = getFilteredData();
+            const headers = ['Name', 'Fleet', 'Application', 'Role', 'Vendor', 'Rank', 'Transition', 'End Date', 'Manager', 'ID Deactivation Status', 'Submitted By'];
+            
+            let csv = headers.join(',') + '\n';
+            
+            filteredData.forEach(staff => {
+                const row = [
+                    `"${staff.name}"`,
+                    `"${staff.fleet}"`,
+                    `"${staff.application}"`,
+                    `"${staff.role}"`,
+                    `"${staff.vendor}"`,
+                    staff.rank,
+                    staff.transition,
+                    staff.endDate,
+                    staff.manager,
+                    staff.idStatus,
+                    `"${staff.submittedBy}"`
+                ];
+                csv += row.join(',') + '\n';
+            });
+            
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'staff-planning-id-deactivation.csv';
+            a.click();
+        }
+
+        // Add event listeners for filters
+        document.getElementById('searchName').addEventListener('input', renderTable);
+        document.getElementById('filterFleet').addEventListener('change', renderTable);
+        document.getElementById('filterVendor').addEventListener('change', renderTable);
+        document.getElementById('filterTransition').addEventListener('change', renderTable);
+        document.getElementById('filterStatus').addEventListener('change', renderTable);
+    </script>
+</body>
+</html>
