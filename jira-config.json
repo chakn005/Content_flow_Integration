@@ -9,18 +9,53 @@
     {
       "key": "CPTR-68587",
       "url": "https://jira.disney.com/browse/CPTR-68587",
-      "title": "",
-      "description": "",
-      "status": "",
-      "priority": "",
-      "assignee": "",
-      "reporter": "",
-      "created": "",
-      "updated": "",
-      "labels": [],
-      "components": [],
-      "linkedIssues": [],
-      "executions": []
+      "title": "Content Migration E2E Integration",
+      "description": "End-to-end integration testing for content migration across all alliances. Risk: Integration dependencies between platforms may cause delays.",
+      "status": "In Progress",
+      "priority": "High",
+      "assignee": "Niloy Chakraborty",
+      "reporter": "Michael Yurch",
+      "created": "2026-05-15T10:00:00.000Z",
+      "updated": "2026-06-01T15:21:55.328Z",
+      "labels": ["content-migration", "e2e-integration", "cross-alliance"],
+      "components": ["Content Platform", "Media Platform", "UI Localization", "Streaming"],
+      "linkedIssues": [
+        {
+          "key": "CPTR-68465",
+          "type": "relates to",
+          "direction": "outward"
+        }
+      ],
+      "executions": [
+        {
+          "key": "CPTR-68701",
+          "summary": "Content Platform - Metadata and Ingestion Tests",
+          "status": "Done",
+          "type": "Test",
+          "url": "https://jira.disney.com/browse/CPTR-68701"
+        },
+        {
+          "key": "CPTR-68702",
+          "summary": "Media Platform - Encoding and DRM Validation",
+          "status": "In Progress",
+          "type": "Test",
+          "url": "https://jira.disney.com/browse/CPTR-68702"
+        },
+        {
+          "key": "CPTR-68704",
+          "summary": "UI Localization - Language Processing Tests",
+          "status": "In Progress",
+          "type": "Test",
+          "url": "https://jira.disney.com/browse/CPTR-68704"
+        },
+        {
+          "key": "CPTR-68705",
+          "summary": "Streaming Client - Playback Integration Tests",
+          "status": "Done",
+          "type": "Test",
+          "url": "https://jira.disney.com/browse/CPTR-68705"
+        }
+      ]
     }
   ],
   "sync": {

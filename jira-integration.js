@@ -35,6 +35,9 @@ function updatePageWithJiraData(config) {
   // Update KPI cards based on Jira status
   updateKPIsFromJira(config);
   
+  // Update heatmap based on Jira executions
+  updateHeatmapFromJira(config);
+  
   // Add sync indicator
   addSyncIndicator(config);
 }
@@ -227,6 +230,91 @@ function updateKPIsFromJira(config) {
       }
     }
   });
+}
+
+// Update heatmap based on Jira executions and linked issues
+function updateHeatmapFromJira(config) {
+  const ticket = config.tickets[0];
+  
+  if (!ticket.executions || ticket.executions.length === 0) return;
+  
+  // Map Jira execution status to heatmap status
+  const statusMap = {
+    'Done': 0,           // COMPLETED (green)
+    'Completed': 0,
+    'Closed': 0,
+    'In Progress': 1,    // IN-PROGRESS (amber)
+    'In Review': 1,
+    'To Do': 2,          // PENDING
+    'Open': 2,
+    'Blocked': 3,        // RISK (red)
+    'Impediment': 3
+  };
+  
+  // Group executions by alliance/component
+  const allianceExecutions = {
+    'Content': [],
+    'Media': [],
+    'UI Localization': [],
+    'Streaming': []
+  };
+  
+  // Categorize executions by keywords in summary or type
+  ticket.executions.forEach(exec => {
+    const summary = (exec.summary || '').toLowerCase();
+    const type = (exec.type || '').toLowerCase();
+    
+    if (summary.includes('content') || summary.includes('metadata') || summary.includes('ingestion')) {
+      allianceExecutions['Content'].push(exec);
+    } else if (summary.includes('media') || summary.includes('encoding') || summary.includes('drm')) {
+      allianceExecutions['Media'].push(exec);
+    } else if (summary.includes('localization') || summary.includes('language') || summary.includes('ui')) {
+      allianceExecutions['UI Localization'].push(exec);
+    } else if (summary.includes('streaming') || summary.includes('playback') || summary.includes('client')) {
+      allianceExecutions['Streaming'].push(exec);
+    }
+  });
+  
+  // Update heatmap cells based on execution status
+  const heatmapStates = window.getHeatmapStatesMap ? window.getHeatmapStatesMap() : {};
+  
+  Object.keys(allianceExecutions).forEach(alliance => {
+    const executions = allianceExecutions[alliance];
+    if (executions.length === 0) return;
+    
+    // Calculate overall status for this alliance
+    let statusCounts = { 0: 0, 1: 0, 2: 0, 3: 0 };
+    executions.forEach(exec => {
+      const statusIndex = statusMap[exec.status] !== undefined ? statusMap[exec.status] : 2;
+      statusCounts[statusIndex]++;
+    });
+    
+    // Determine predominant status
+    let predominantStatus = 2; // Default to PENDING
+    let maxCount = 0;
+    Object.keys(statusCounts).forEach(status => {
+      if (statusCounts[status] > maxCount) {
+        maxCount = statusCounts[status];
+        predominantStatus = parseInt(status);
+      }
+    });
+    
+    // Update first milestone for this alliance (Metadata/Artwork)
+    const cellId = `${alliance}-0`;
+    heatmapStates[cellId] = predominantStatus;
+  });
+  
+  // Save updated heatmap states
+  if (window.saveScopedJson) {
+    window.saveScopedJson('heatmapCellStates-v4', heatmapStates);
+  }
+  
+  // Refresh heatmap display
+  if (window.refreshHeatmapFromState) {
+    window.refreshHeatmapFromState();
+  }
+  
+  console.log('Heatmap updated from Jira executions:', allianceExecutions);
 }
 
 // Add sync indicator to show last sync time
