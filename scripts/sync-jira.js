@@ -8,6 +8,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { URL } = require('url');
 
 // Load configuration files
 const CONFIG_PATH = path.join(__dirname, '..', 'jira-config.json');
@@ -37,7 +38,13 @@ function makeJiraRequest(url, credentials) {
   return new Promise((resolve, reject) => {
     const auth = Buffer.from(`${credentials.jiraUsername}:${credentials.jiraToken}`).toString('base64');
     
+    const urlObj = new URL(url);
+    
     const options = {
+      hostname: urlObj.hostname,
+      port: urlObj.port || 443,
+      path: urlObj.pathname + urlObj.search,
+      method: 'GET',
       headers: {
         'Authorization': `Basic ${auth}`,
         'Accept': 'application/json',
@@ -45,7 +52,7 @@ function makeJiraRequest(url, credentials) {
       }
     };
 
-    https.get(url, options, (res) => {
+    https.get(options, (res) => {
       let data = '';
 
       res.on('data', (chunk) => {
