@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jira Data Update Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #718096;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h2 {
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #4a5568;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .execution-item {
+            background: #f7fafc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .execution-info {
+            flex: 1;
+        }
+
+        .execution-key {
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 4px;
+        }
+
+        .execution-summary {
+            color: #4a5568;
+            font-size: 14px;
+        }
+
+        .execution-status {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .status-done {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .status-in-progress {
+            background: #feebc8;
+            color: #7c2d12;
+        }
+
+        .status-blocked {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5a67d8;
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #4a5568;
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e0;
+        }
+
+        .btn-danger {
+            background: #fc8181;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #f56565;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .add-execution-form {
+            background: #edf2f7;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .output {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .output.show {
+            display: block;
+        }
+
+        .success {
+            background: #c6f6d5;
+            color: #22543d;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .success.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📋 Jira Data Update Form</h1>
+            <p>Manually update CPTR-68587 data until API authentication is fixed</p>
+        </div>
+
+        <div id="success-message" class="success">
+            ✅ Data updated successfully! Copy the JSON below and save it to jira-config.json
+        </div>
+
+        <!-- Main Ticket -->
+        <div class="card">
+            <h2>🎫 Main Ticket: CPTR-68587</h2>
+            
+            <div class="form-group">
+                <label>Title</label>
+                <input type="text" id="title" placeholder="Content Migration E2E Integration">
+            </div>
+
+            <div class="form-group">
+                <label>Status</label>
+                <select id="status">
+                    <option value="Open">Open</option>
+                    <option value="In Progress" selected>In Progress</option>
+                    <option value="In Review">In Review</option>
+                    <option value="Done">Done</option>
+                    <option value="Blocked">Blocked</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Priority</label>
+                <select id="priority">
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High" selected>High</option>
+                    <option value="Critical">Critical</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Assignee</label>
+                <input type="text" id="assignee" placeholder="Niloy Chakraborty">
+            </div>
+
+            <div class="form-group">
+                <label>Description</label>
+                <textarea id="description" placeholder="End-to-end integration testing for content migration..."></textarea>
+            </div>
+        </div>
+
+        <!-- Test Executions -->
+        <div class="card">
+            <h2>🧪 Test Executions</h2>
+            
+            <div id="executions-list"></div>
+
+            <div class="add-execution-form">
+                <h3 style="margin-bottom: 15px; color: #2d3748;">Add New Execution</h3>
+                
+                <div class="form-group">
+                    <label>Execution Key (e.g., CPTR-68701)</label>
+                    <input type="text" id="new-exec-key" placeholder="CPTR-68701">
+                </div>
+
+                <div class="form-group">
+                    <label>Summary</label>
+                    <input type="text" id="new-exec-summary" placeholder="Content Platform - Metadata Tests">
+                </div>
+
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="new-exec-status">
+                        <option value="To Do">To Do</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Done">Done</option>
+                        <option value="Blocked">Blocked</option>
+                    </select>
+                </div>
+
+                <button class="btn btn-secondary" onclick="addExecution()">+ Add Execution</button>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="card">
+            <h2>💾 Save Changes</h2>
+            <p style="color: #718096; margin-bottom: 20px;">
+                Click "Generate JSON" to create the updated configuration. Then copy it to jira-config.json.
+            </p>
+            
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="generateJSON()">Generate JSON</button>
+                <button class="btn btn-secondary" onclick="loadCurrentData()">Load Current Data</button>
+                <button class="btn btn-secondary" onclick="resetForm()">Reset Form</button>
+            </div>
+        </div>
+
+        <!-- Output -->
+        <div class="card">
+            <h2>📄 Generated JSON</h2>
+            <p style="color: #718096; margin-bottom: 15px;">
+                Copy this entire JSON and paste it into jira-config.json
+            </p>
+            <div id="output" class="output"></div>
+        </div>
+    </div>
+
+    <script>
+        let executions = [];
+
+        // Load current data from jira-config.json
+        async function loadCurrentData() {
+            try {
+                const response = await fetch('jira-config.json');
+                const config = await response.json();
+                const ticket = config.tickets[0];
+
+                document.getElementById('title').value = ticket.title || '';
+                document.getElementById('status').value = ticket.status || 'In Progress';
+                document.getElementById('priority').value = ticket.priority || 'High';
+                document.getElementById('assignee').value = ticket.assignee || '';
+                document.getElementById('description').value = ticket.description || '';
+
+                executions = ticket.executions || [];
+                renderExecutions();
+
+                alert('✅ Current data loaded successfully!');
+            } catch (error) {
+                alert('❌ Could not load current data. Make sure jira-config.json exists.');
+            }
+        }
+
+        function addExecution() {
+            const key = document.getElementById('new-exec-key').value.trim();
+            const summary = document.getElementById('new-exec-summary').value.trim();
+            const status = document.getElementById('new-exec-status').value;
+
+            if (!key || !summary) {
+                alert('Please fill in both key and summary');
+                return;
+            }
+
+            executions.push({
+                key: key,
+                summary: summary,
+                status: status,
+                type: 'Test',
+                url: `https://jira.disney.com/browse/${key}`
+            });
+
+            document.getElementById('new-exec-key').value = '';
+            document.getElementById('new-exec-summary').value = '';
+            document.getElementById('new-exec-status').value = 'To Do';
+
+            renderExecutions();
+        }
+
+        function removeExecution(index) {
+            if (confirm('Remove this execution?')) {
+                executions.splice(index, 1);
+                renderExecutions();
+            }
+        }
+
+        function renderExecutions() {
+            const container = document.getElementById('executions-list');
+            
+            if (executions.length === 0) {
+                container.innerHTML = '<p style="color: #718096;">No executions added yet</p>';
+                return;
+            }
+
+            container.innerHTML = executions.map((exec, index) => `
+                <div class="execution-item">
+                    <div class="execution-info">
+                        <div class="execution-key">${exec.key}</div>
+                        <div class="execution-summary">${exec.summary}</div>
+                    </div>
+                    <div>
+                        <span class="execution-status status-${exec.status.toLowerCase().replace(' ', '-')}">${exec.status}</span>
+                        <button class="btn btn-danger" style="margin-left: 10px; padding: 6px 12px;" onclick="removeExecution(${index})">Remove</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function generateJSON() {
+            const config = {
+                jiraBaseUrl: "https://jira.disney.com",
+                project: {
+                    name: "Content Flow Integration",
+                    githubPagesUrl: "https://chakn005.github.io/Content_flow_Integration/",
+                    repository: "chakn005/Content_flow_Integration"
+                },
+                tickets: [
+                    {
+                        key: "CPTR-68587",
+                        url: "https://jira.disney.com/browse/CPTR-68587",
+                        title: document.getElementById('title').value || "Content Migration E2E Integration",
+                        description: document.getElementById('description').value || "",
+                        status: document.getElementById('status').value,
+                        priority: document.getElementById('priority').value,
+                        assignee: document.getElementById('assignee').value || "Niloy Chakraborty",
+                        reporter: "Michael Yurch",
+                        created: "2026-05-15T10:00:00.000Z",
+                        updated: new Date().toISOString(),
+                        labels: ["content-migration", "e2e-integration", "cross-alliance"],
+                        components: ["Content Platform", "Media Platform", "UI Localization", "Streaming"],
+                        linkedIssues: [
+                            {
+                                key: "CPTR-68465",
+                                type: "relates to",
+                                direction: "outward"
+                            }
+                        ],
+                        executions: executions
+                    }
+                ],
+                sync: {
+                    enabled: true,
+                    lastSyncDate: new Date().toISOString(),
+                    syncInterval: "daily",
+                    apiEndpoint: "https://jira.disney.com/rest/api/2",
+                    authMethod: "bearer"
+                },
+                mapping: {
+                    jiraStatusToProjectStatus: {
+                        "Open": "pending",
+                        "In Progress": "in-progress",
+                        "In Review": "review",
+                        "Done": "completed",
+                        "Blocked": "blocked"
+                    }
+                }
+            };
+
+            const json = JSON.stringify(config, null, 2);
+            const output = document.getElementById('output');
+            output.textContent = json;
+            output.classList.add('show');
+
+            document.getElementById('success-message').classList.add('show');
+
+            // Scroll to output
+            output.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function resetForm() {
+            if (confirm('Reset all fields?')) {
+                document.getElementById('title').value = '';
+                document.getElementById('status').value = 'In Progress';
+                document.getElementById('priority').value = 'High';
+                document.getElementById('assignee').value = '';
+                document.getElementById('description').value = '';
+                executions = [];
+                renderExecutions();
+                document.getElementById('output').classList.remove('show');
+                document.getElementById('success-message').classList.remove('show');
+            }
+        }
+
+        // Initialize
+        renderExecutions();
+        loadCurrentData();
+    </script>
+</body>
+</html>
