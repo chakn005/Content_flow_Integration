@@ -1,0 +1,61 @@
+name: Sync Jira Data
+
+on:
+  # Run daily at 9 AM UTC (adjust timezone as needed)
+  schedule:
+    - cron: '0 9 * * *'
+  
+  # Allow manual trigger from GitHub Actions tab
+  workflow_dispatch:
+  
+  # Run on push to main (optional - remove if you don't want this)
+  push:
+    branches:
+      - main
+    paths:
+      - 'scripts/sync-jira.js'
+      - '.github/workflows/sync-jira.yml'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      
+      - name: Create credentials file
+        run: |
+          echo '{
+            "jiraUsername": "${{ secrets.JIRA_USERNAME }}",
+            "jiraToken": "${{ secrets.JIRA_TOKEN }}"
+          }' > jira-credentials.json
+      
+      - name: Run Jira sync
+        run: node scripts/sync-jira.js
+        continue-on-error: true
+      
+      - name: Check for changes
+        id: git-check
+        run: |
+          git diff --exit-code jira-config.json || echo "changed=true" >> $GITHUB_OUTPUT
+      
+      - name: Commit and push if changed
+        if: steps.git-check.outputs.changed == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add jira-config.json
+          git commit -m "🔄 Auto-sync Jira data from CPTR-68587"
+          git push
+      
+      - name: Cleanup credentials
+        if: always()
+        run: rm -f jira-credentials.json
