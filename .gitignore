@@ -41,6 +41,10 @@ pids
 .env.test
 .env.production
 
+# Jira credentials (DO NOT COMMIT)
+jira-credentials.json
+.jira-credentials
+
 # Temporary folders
 tmp/
 temp/

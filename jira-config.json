@@ -1,0 +1,42 @@
+{
+  "jiraBaseUrl": "https://jira.disney.com",
+  "project": {
+    "name": "Content Flow Integration",
+    "githubPagesUrl": "https://chakn005.github.io/Content_flow_Integration/",
+    "repository": "chakn005/Content_flow_Integration"
+  },
+  "tickets": [
+    {
+      "key": "CPTR-68587",
+      "url": "https://jira.disney.com/browse/CPTR-68587",
+      "title": "",
+      "description": "",
+      "status": "",
+      "priority": "",
+      "assignee": "",
+      "reporter": "",
+      "created": "",
+      "updated": "",
+      "labels": [],
+      "components": [],
+      "linkedIssues": [],
+      "executions": []
+    }
+  ],
+  "sync": {
+    "enabled": true,
+    "lastSyncDate": "2026-06-01T15:21:55.328Z",
+    "syncInterval": "daily",
+    "apiEndpoint": "https://jira.disney.com/rest/api/2",
+    "authMethod": "bearer"
+  },
+  "mapping": {
+    "jiraStatusToProjectStatus": {
+      "Open": "pending",
+      "In Progress": "in-progress",
+      "In Review": "review",
+      "Done": "completed",
+      "Blocked": "blocked"
+    }
+  }
+}

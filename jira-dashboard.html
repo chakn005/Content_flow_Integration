@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jira Integration Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #718096;
+        }
+
+        .sync-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .sync-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .status-badge.enabled {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .status-badge.disabled {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+
+        .sync-button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .sync-button:hover {
+            background: #5a67d8;
+        }
+
+        .ticket-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .ticket-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 20px;
+        }
+
+        .ticket-key {
+            font-size: 14px;
+            font-weight: 700;
+            color: #667eea;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+
+        .ticket-key:hover {
+            text-decoration: underline;
+        }
+
+        .ticket-title {
+            font-size: 24px;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .ticket-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .meta-label {
+            font-size: 12px;
+            color: #718096;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .meta-value {
+            font-size: 14px;
+            color: #2d3748;
+        }
+
+        .ticket-description {
+            background: #f7fafc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            color: #4a5568;
+            line-height: 1.6;
+        }
+
+        .executions-section {
+            margin-top: 20px;
+        }
+
+        .executions-title {
+            font-size: 18px;
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .execution-item {
+            background: #f7fafc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .execution-info {
+            flex: 1;
+        }
+
+        .execution-key {
+            font-weight: 600;
+            color: #667eea;
+            text-decoration: none;
+            margin-right: 10px;
+        }
+
+        .execution-key:hover {
+            text-decoration: underline;
+        }
+
+        .execution-summary {
+            color: #4a5568;
+            font-size: 14px;
+        }
+
+        .labels {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .label {
+            background: #edf2f7;
+            color: #4a5568;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #718096;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: white;
+            font-size: 18px;
+        }
+
+        .error {
+            background: #fed7d7;
+            color: #742a2a;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .ticket-meta {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Jira Integration Dashboard</h1>
+            <p id="project-info">Loading project information...</p>
+            <div class="sync-info">
+                <div class="sync-status">
+                    <span class="meta-label">Sync Status:</span>
+                    <span id="sync-status" class="status-badge">Loading...</span>
+                    <span id="last-sync" class="meta-value"></span>
+                </div>
+                <button class="sync-button" onclick="syncNow()">Sync Now</button>
+            </div>
+        </div>
+
+        <div id="tickets-container">
+            <div class="loading">Loading tickets...</div>
+        </div>
+    </div>
+
+    <script>
+        let config = null;
+
+        async function loadConfig() {
+            try {
+                const response = await fetch('jira-config.json');
+                config = await response.json();
+                renderDashboard();
+            } catch (error) {
+                document.getElementById('tickets-container').innerHTML = `
+                    <div class="error">
+                        <strong>Error loading configuration:</strong> ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        function renderDashboard() {
+            // Update header
+            document.getElementById('project-info').textContent = 
+                `${config.project.name} - ${config.project.githubPagesUrl}`;
+            
+            const syncStatus = document.getElementById('sync-status');
+            syncStatus.textContent = config.sync.enabled ? 'Enabled' : 'Disabled';
+            syncStatus.className = `status-badge ${config.sync.enabled ? 'enabled' : 'disabled'}`;
+            
+            if (config.sync.lastSyncDate) {
+                const lastSync = new Date(config.sync.lastSyncDate);
+                document.getElementById('last-sync').textContent = 
+                    `Last synced: ${lastSync.toLocaleString()}`;
+            } else {
+                document.getElementById('last-sync').textContent = 'Never synced';
+            }
+
+            // Render tickets
+            const container = document.getElementById('tickets-container');
+            
+            if (!config.tickets || config.tickets.length === 0) {
+                container.innerHTML = '<div class="no-data">No tickets configured</div>';
+                return;
+            }
+
+            container.innerHTML = config.tickets.map(ticket => `
+                <div class="ticket-card">
+                    <div class="ticket-header">
+                        <div>
+                            <a href="${ticket.url}" target="_blank" class="ticket-key">${ticket.key}</a>
+                            <h2 class="ticket-title">${ticket.title || 'No title'}</h2>
+                        </div>
+                    </div>
+                    
+                    <div class="ticket-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Status</span>
+                            <span class="meta-value">${ticket.status || 'Unknown'}</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Priority</span>
+                            <span class="meta-value">${ticket.priority || 'None'}</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Assignee</span>
+                            <span class="meta-value">${ticket.assignee || 'Unassigned'}</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Reporter</span>
+                            <span class="meta-value">${ticket.reporter || 'Unknown'}</span>
+                        </div>
+                    </div>
+
+                    ${ticket.description ? `
+                        <div class="ticket-description">
+                            ${ticket.description}
+                        </div>
+                    ` : ''}
+
+                    ${ticket.labels && ticket.labels.length > 0 ? `
+                        <div class="labels">
+                            ${ticket.labels.map(label => `<span class="label">${label}</span>`).join('')}
+                        </div>
+                    ` : ''}
+
+                    ${ticket.executions && ticket.executions.length > 0 ? `
+                        <div class="executions-section">
+                            <h3 class="executions-title">Related Executions (${ticket.executions.length})</h3>
+                            ${ticket.executions.map(exec => `
+                                <div class="execution-item">
+                                    <div class="execution-info">
+                                        <a href="${exec.url}" target="_blank" class="execution-key">${exec.key}</a>
+                                        <span class="execution-summary">${exec.summary}</span>
+                                    </div>
+                                    <span class="status-badge ${exec.status.toLowerCase().replace(' ', '-')}">${exec.status}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+
+        function syncNow() {
+            alert('To sync, run: node scripts/sync-jira.js\n\nThis will fetch the latest data from Jira and update the dashboard.');
+        }
+
+        // Load config on page load
+        loadConfig();
+    </script>
+</body>
+</html>
