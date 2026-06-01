@@ -104,20 +104,23 @@ async function fetchJiraTicket(ticketKey, config, credentials) {
 }
 
 async function fetchExecutions(ticketKey, config, credentials) {
-  // Attempt to fetch test executions if available
-  // This depends on your Jira setup (Xray, Zephyr, etc.)
-  console.log(`Checking for executions related to ${ticketKey}...`);
+  // Attempt to fetch test executions and linked tickets
+  console.log(`Checking for executions and linked tickets for ${ticketKey}...`);
   
   try {
-    // Search for linked test executions
-    const jql = encodeURIComponent(`issue = ${ticketKey} OR "Epic Link" = ${ticketKey}`);
-    const url = `${config.jiraBaseUrl}/rest/api/2/search?jql=${jql}&fields=key,summary,status,issuetype`;
+    // Search for linked test executions and related tickets
+    const jql = encodeURIComponent(`issue = ${ticketKey} OR "Epic Link" = ${ticketKey} OR issueFunction in linkedIssuesOf("key = ${ticketKey}")`);
+    const url = `${config.jiraBaseUrl}/rest/api/2/search?jql=${jql}&fields=key,summary,status,issuetype&maxResults=100`;
     
     const result = await makeJiraRequest(url, credentials);
     
     const executions = result.issues
-      .filter(issue => issue.fields.issuetype.name.toLowerCase().includes('test') || 
-                       issue.fields.issuetype.name.toLowerCase().includes('execution'))
+      .filter(issue => 
+        issue.fields.issuetype.name.toLowerCase().includes('test') || 
+        issue.fields.issuetype.name.toLowerCase().includes('execution') ||
+        issue.fields.issuetype.name.toLowerCase().includes('story') ||
+        issue.fields.issuetype.name.toLowerCase().includes('task')
+      )
       .map(issue => ({
         key: issue.key,
         summary: issue.fields.summary,
