@@ -34,7 +34,6 @@ jobs:
       - name: Create credentials file
         run: |
           echo '{
-            "jiraUsername": "${{ secrets.JIRA_USERNAME }}",
             "jiraToken": "${{ secrets.JIRA_TOKEN }}"
           }' > jira-credentials.json
       
