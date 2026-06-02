@@ -17,8 +17,17 @@
       "reporter": "Michael Yurch",
       "created": "2026-05-15T10:00:00.000Z",
       "updated": "2026-06-01T15:21:55.328Z",
-      "labels": ["content-migration", "e2e-integration", "cross-alliance"],
-      "components": ["Content Platform", "Media Platform", "UI Localization", "Streaming"],
+      "labels": [
+        "content-migration",
+        "e2e-integration",
+        "cross-alliance"
+      ],
+      "components": [
+        "Content Platform",
+        "Media Platform",
+        "UI Localization",
+        "Streaming"
+      ],
       "linkedIssues": [
         {
           "key": "CPTR-68465",
@@ -60,7 +69,7 @@
   ],
   "sync": {
     "enabled": true,
-    "lastSyncDate": "2026-06-01T15:21:55.328Z",
+    "lastSyncDate": "2026-06-02T05:44:07.600Z",
     "syncInterval": "daily",
     "apiEndpoint": "https://jira.disney.com/rest/api/2",
     "authMethod": "bearer"
