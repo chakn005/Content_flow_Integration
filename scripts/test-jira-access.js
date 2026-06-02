@@ -24,7 +24,6 @@ function loadCredentials() {
 
 function makeRequest(url, credentials) {
   return new Promise((resolve, reject) => {
-    const auth = Buffer.from(`${credentials.jiraUsername}:${credentials.jiraToken}`).toString('base64');
     const urlObj = new URL(url);
     
     const options = {
@@ -33,7 +32,7 @@ function makeRequest(url, credentials) {
       path: urlObj.pathname + urlObj.search,
       method: 'GET',
       headers: {
-        'Authorization': `Basic ${auth}`,
+        'Authorization': `Bearer ${credentials.jiraToken}`,
         'Accept': 'application/json'
       }
     };
@@ -81,7 +80,7 @@ async function main() {
   console.log('╚════════════════════════════════════════════════╝');
   
   const credentials = loadCredentials();
-  console.log(`\nTesting with: ${credentials.jiraUsername}`);
+  console.log(`\nTesting with token authentication`);
   console.log('═'.repeat(50));
   
   const tests = [

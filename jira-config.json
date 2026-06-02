@@ -9,67 +9,133 @@
     {
       "key": "CPTR-68587",
       "url": "https://jira.disney.com/browse/CPTR-68587",
-      "title": "Content Migration E2E Integration",
-      "description": "End-to-end integration testing for content migration across all alliances. Risk: Integration dependencies between platforms may cause delays.",
+      "title": "QA HotStar Migration-Cross Fleet & Alliance traceability",
+      "description": "This epic provides traceability of the testing efforts across fleets and alliances for the HotStar migration initiative, for tests performed in the QA and Staging environments.",
       "status": "In Progress",
-      "priority": "High",
-      "assignee": "Niloy Chakraborty",
+      "priority": "P2",
+      "assignee": "Unassigned",
       "reporter": "Michael Yurch",
-      "created": "2026-05-15T10:00:00.000Z",
-      "updated": "2026-06-01T15:21:55.328Z",
-      "labels": [
-        "content-migration",
-        "e2e-integration",
-        "cross-alliance"
-      ],
-      "components": [
-        "Content Platform",
-        "Media Platform",
-        "UI Localization",
-        "Streaming"
-      ],
+      "created": "2026-02-24T06:59:13.896-0800",
+      "updated": "2026-04-28T00:27:33.835-0700",
+      "labels": [],
+      "components": [],
       "linkedIssues": [
         {
-          "key": "CPTR-68465",
-          "type": "relates to",
+          "key": "MDETESTQA-3447",
+          "type": "Related",
+          "direction": "outward"
+        },
+        {
+          "key": "PRODREQ-93064",
+          "type": "Related",
           "direction": "outward"
         }
       ],
       "executions": [
         {
-          "key": "CPTR-68701",
-          "summary": "Content Platform - Metadata and Ingestion Tests",
+          "key": "RIGHTS-27423",
+          "summary": "FDA - Test Plan - Version 26-05-13 FDA Vibranium Release 6.0.0",
           "status": "Done",
-          "type": "Test",
-          "url": "https://jira.disney.com/browse/CPTR-68701"
+          "type": "Test Plan",
+          "url": "https://jira.disney.com/browse/RIGHTS-27423"
         },
         {
-          "key": "CPTR-68702",
-          "summary": "Media Platform - Encoding and DRM Validation",
-          "status": "In Progress",
-          "type": "Test",
-          "url": "https://jira.disney.com/browse/CPTR-68702"
+          "key": "PRODREQ-93064",
+          "summary": "[Testing] Integration testing for Vibranium avail creation",
+          "status": "Open",
+          "type": "Story",
+          "url": "https://jira.disney.com/browse/PRODREQ-93064"
         },
         {
-          "key": "CPTR-68704",
-          "summary": "UI Localization - Language Processing Tests",
-          "status": "In Progress",
-          "type": "Test",
-          "url": "https://jira.disney.com/browse/CPTR-68704"
-        },
-        {
-          "key": "CPTR-68705",
-          "summary": "Streaming Client - Playback Integration Tests",
+          "key": "PRODREQ-88253",
+          "summary": "Hotstar Migration: Metadata & Artwork validation",
           "status": "Done",
-          "type": "Test",
-          "url": "https://jira.disney.com/browse/CPTR-68705"
+          "type": "Story",
+          "url": "https://jira.disney.com/browse/PRODREQ-88253"
+        },
+        {
+          "key": "OMFG-19253",
+          "summary": "Hotstar Migration Metadata & Artwork integration CP&MP_QA",
+          "status": "Done",
+          "type": "Test Plan",
+          "url": "https://jira.disney.com/browse/OMFG-19253"
+        },
+        {
+          "key": "OMFG-18837",
+          "summary": "AMP - Hotstar Migration",
+          "status": "Done",
+          "type": "Test Plan",
+          "url": "https://jira.disney.com/browse/OMFG-18837"
+        },
+        {
+          "key": "MDETESTQA-3447",
+          "summary": "Vibranium Test Plan",
+          "status": "Backlog",
+          "type": "Test Plan",
+          "url": "https://jira.disney.com/browse/MDETESTQA-3447"
+        },
+        {
+          "key": "LOCQA-144",
+          "summary": "[LQA] VOD-Hotstar Migration",
+          "status": "Open",
+          "type": "Test Plan",
+          "url": "https://jira.disney.com/browse/LOCQA-144"
+        },
+        {
+          "key": "GPLBELLE-3971",
+          "summary": "BELLE- Hotstar Migration",
+          "status": "Done",
+          "type": "Test Plan",
+          "url": "https://jira.disney.com/browse/GPLBELLE-3971"
+        },
+        {
+          "key": "EXP-4184",
+          "summary": "Xavier – HotStar Migration",
+          "status": "Done",
+          "type": "Test Plan",
+          "url": "https://jira.disney.com/browse/EXP-4184"
+        },
+        {
+          "key": "DPQA-6323",
+          "summary": "Disney+ Client-VOD-Hotstar Migration",
+          "status": "Backlog",
+          "type": "Test Plan",
+          "url": "https://jira.disney.com/browse/DPQA-6323"
+        },
+        {
+          "key": "DMEDNINJA-16594",
+          "summary": "SIP - Hotstar Migration - Regression",
+          "status": "Done",
+          "type": "Test Plan",
+          "url": "https://jira.disney.com/browse/DMEDNINJA-16594"
+        },
+        {
+          "key": "CPTR-69483",
+          "summary": "HotStar Migration -  Assets, Rights & Avails ",
+          "status": "New",
+          "type": "Test Plan",
+          "url": "https://jira.disney.com/browse/CPTR-69483"
+        },
+        {
+          "key": "CPTR-68465",
+          "summary": "HotStar Migration_CrossFleet/Alliance_Integration_traceability",
+          "status": "In Progress",
+          "type": "Test Plan",
+          "url": "https://jira.disney.com/browse/CPTR-68465"
+        },
+        {
+          "key": "BOLTM-7048",
+          "summary": "BOLT - Hotstar Migration",
+          "status": "Done",
+          "type": "Test Plan",
+          "url": "https://jira.disney.com/browse/BOLTM-7048"
         }
       ]
     }
   ],
   "sync": {
     "enabled": true,
-    "lastSyncDate": "2026-06-02T05:44:07.600Z",
+    "lastSyncDate": "2026-06-02T05:52:48.934Z",
     "syncInterval": "daily",
     "apiEndpoint": "https://jira.disney.com/rest/api/2",
     "authMethod": "bearer"

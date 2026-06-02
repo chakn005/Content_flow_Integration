@@ -36,17 +36,16 @@ function saveJSON(filePath, data) {
 
 function makeJiraRequest(url, credentials) {
   return new Promise((resolve, reject) => {
-    const auth = Buffer.from(`${credentials.jiraUsername}:${credentials.jiraToken}`).toString('base64');
-    
     const urlObj = new URL(url);
     
+    // Try Bearer token authentication (like your working project)
     const options = {
       hostname: urlObj.hostname,
       port: urlObj.port || 443,
       path: urlObj.pathname + urlObj.search,
       method: 'GET',
       headers: {
-        'Authorization': `Basic ${auth}`,
+        'Authorization': `Bearer ${credentials.jiraToken}`,
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       }
@@ -151,9 +150,8 @@ async function main() {
   const credentials = loadJSON(CREDENTIALS_PATH);
   
   // Validate credentials
-  if (credentials.jiraUsername === 'YOUR_JIRA_USERNAME_OR_EMAIL' || 
-      credentials.jiraToken === 'YOUR_JIRA_API_TOKEN') {
-    console.error('❌ Please update jira-credentials.json with your actual credentials');
+  if (credentials.jiraToken === 'YOUR_JIRA_API_TOKEN') {
+    console.error('❌ Please update jira-credentials.json with your actual token');
     process.exit(1);
   }
   
