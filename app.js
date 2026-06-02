@@ -190,6 +190,7 @@ function setupSharedSyncUI() {
   btn.type = "button";
   btn.id = "sharedSyncControl";
   btn.className = "sync-pill sync-pill--local";
+  btn.style.display = "none"; // Hide the sync status button
   btn.innerHTML = '<span class="sync-dot" aria-hidden="true"></span><span class="sync-label">Local only</span>';
 
   const labels = {
