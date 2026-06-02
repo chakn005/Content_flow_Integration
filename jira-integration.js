@@ -262,15 +262,45 @@ function updateHeatmapFromJira(config) {
   // Categorize executions by keywords in summary or type
   ticket.executions.forEach(exec => {
     const summary = (exec.summary || '').toLowerCase();
-    const type = (exec.type || '').toLowerCase();
+    const key = (exec.key || '').toLowerCase();
     
-    if (summary.includes('content') || summary.includes('metadata') || summary.includes('ingestion')) {
+    // Content Platform: FDA, Metadata, Artwork, Assets, Rights, Avails, Content
+    if (summary.includes('fda') || summary.includes('metadata') || summary.includes('artwork') || 
+        summary.includes('asset') || summary.includes('rights') || summary.includes('avail') ||
+        summary.includes('content') || summary.includes('ingestion') || 
+        key.includes('rights') || key.includes('cptr') || key.includes('omfg') || 
+        key.includes('prodreq')) {
       allianceExecutions['Content'].push(exec);
-    } else if (summary.includes('media') || summary.includes('encoding') || summary.includes('drm')) {
+    }
+    
+    // Media Platform: AMP, SIP, BOLT, Encoding, DRM, Packaging, Media
+    else if (summary.includes('amp') || summary.includes('sip') || summary.includes('bolt') ||
+             summary.includes('encoding') || summary.includes('drm') || summary.includes('package') ||
+             summary.includes('media') || summary.includes('vibranium') ||
+             key.includes('dmedninja') || key.includes('boltm')) {
       allianceExecutions['Media'].push(exec);
-    } else if (summary.includes('localization') || summary.includes('language') || summary.includes('ui')) {
+    }
+    
+    // UI Localization: LQA, Localization, Language, UI strings
+    else if (summary.includes('lqa') || summary.includes('localization') || 
+             summary.includes('language') || summary.includes('ui') ||
+             key.includes('locqa')) {
       allianceExecutions['UI Localization'].push(exec);
-    } else if (summary.includes('streaming') || summary.includes('playback') || summary.includes('client')) {
+    }
+    
+    // Streaming/Client: Disney+, Client, Xavier, BELLE, Streaming, Playback
+    else if (summary.includes('client') || summary.includes('disney+') || summary.includes('xavier') ||
+             summary.includes('belle') || summary.includes('streaming') || summary.includes('playback') ||
+             key.includes('dpqa') || key.includes('exp') || key.includes('gplbelle')) {
+      allianceExecutions['Streaming'].push(exec);
+    }
+    
+    // Fallback: Integration/CrossFleet goes to all
+    else if (summary.includes('integration') || summary.includes('crossfleet') || summary.includes('cross fleet') ||
+             summary.includes('traceability')) {
+      allianceExecutions['Content'].push(exec);
+      allianceExecutions['Media'].push(exec);
+      allianceExecutions['UI Localization'].push(exec);
       allianceExecutions['Streaming'].push(exec);
     }
   });

@@ -1105,6 +1105,12 @@ function setupPhases(drawerApi) {
 
 
 // ===== App init =====
+// Expose functions for Jira integration
+window.getHeatmapStatesMap = getHeatmapStatesMap;
+window.refreshHeatmapFromState = refreshHeatmapFromState;
+window.saveScopedJson = saveScopedJson;
+window.persistDashboardSnapshot = persistDashboardSnapshot;
+
 document.addEventListener("DOMContentLoaded", async () => {
   if (isReadOnly()) {
     applyReadOnlyShell();
