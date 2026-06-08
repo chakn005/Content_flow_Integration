@@ -209,8 +209,7 @@ function updateKPIsFromJira(config) {
   const componentMap = {
     'Content Platform': '.kpi-card:nth-child(1)',
     'Media Platform': '.kpi-card:nth-child(2)',
-    'UI Localization': '.kpi-card:nth-child(3)',
-    'Streaming': '.kpi-card:nth-child(4)'
+    'Streaming': '.kpi-card:nth-child(3)'
   };
   
   ticket.components.forEach(component => {
@@ -255,7 +254,6 @@ function updateHeatmapFromJira(config) {
   const allianceExecutions = {
     'Content': [],
     'Media': [],
-    'UI Localization': [],
     'Streaming': []
   };
   
@@ -281,13 +279,6 @@ function updateHeatmapFromJira(config) {
       allianceExecutions['Media'].push(exec);
     }
     
-    // UI Localization: LQA, Localization, Language, UI strings
-    else if (summary.includes('lqa') || summary.includes('localization') || 
-             summary.includes('language') || summary.includes('ui') ||
-             key.includes('locqa')) {
-      allianceExecutions['UI Localization'].push(exec);
-    }
-    
     // Streaming/Client: Disney+, Client, Xavier, BELLE, Streaming, Playback
     else if (summary.includes('client') || summary.includes('disney+') || summary.includes('xavier') ||
              summary.includes('belle') || summary.includes('streaming') || summary.includes('playback') ||
@@ -300,7 +291,6 @@ function updateHeatmapFromJira(config) {
              summary.includes('traceability')) {
       allianceExecutions['Content'].push(exec);
       allianceExecutions['Media'].push(exec);
-      allianceExecutions['UI Localization'].push(exec);
       allianceExecutions['Streaming'].push(exec);
     }
   });

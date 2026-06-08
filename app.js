@@ -272,11 +272,6 @@ const testCaseConfig = {
     total: 32,
     integrationPoints: { completed: 4, total: 6 }
   },
-  "CPTR-68704": { // Localization
-    completed: 21,
-    total: 27,
-    integrationPoints: { completed: 3, total: 4 }
-  },
   "CPTR-68705": { // Streaming/Client
     completed: 31,
     total: 33,
@@ -361,22 +356,6 @@ const phaseData = {
       "Cache invalidation and refresh cycles"
     ]
   },
-  localization: {
-    title: "UI Localization Phase",
-    description: "UI strings, terminology, and language asset management",
-    steps: [
-      "Language Processing: Translate and adapt in-product UI copy",
-      "Regional Adaptation: Market-specific presentation of UI strings",
-      "Terminology & Language Asset Management: Glossaries, TMS, and string lifecycle",
-      "Scope: UI strings only (excludes subtitles, dubbing, and metadata pipelines)"
-    ],
-    testPoints: [
-      "String coverage and context accuracy in product UI",
-      "Terminology consistency across client surfaces",
-      "Language switching and locale behavior",
-      "Regression checks for UI string updates"
-    ]
-  },
   streaming: {
     title: "Streaming/Client Phase",
     description: "End-user content delivery and playback",
@@ -403,7 +382,6 @@ const phaseData = {
       "Content Platform Testing: Source content validation and metadata handoff verification",
       "Media Platform Testing: Encoding quality checks and package integrity validation",
       "Data Layer Testing: Catalog synchronization and search index validation",
-      "UI Localization Testing: UI string, terminology, and language-asset checks",
       "Streaming/Client Testing: Playback integration and multi-device compatibility",
       "Cross-Team Integration: Contract testing between phase handoffs",
       "End-to-End Validation: Complete user journey testing across all phases"
@@ -453,36 +431,20 @@ const handshakeData = {
       "Avoid reliance on DMC media IDs"
     ]
   },
-  "data-localization": {
-    title: "Handshake: Data → UI Localization",
-    owner: "UI Localization Alliance",
-    validations: [
-      "Content metadata transfer for localization",
-      "Regional availability rules validation",
-      "Language-specific content routing"
-    ],
-    evidence: [
-      { label: "Epic CPTR‑68587", url: "https://jira.disney.com/browse/CPTR-68587" }
-    ],
-    risks: [
-      "Metadata completeness for localization workflows",
-      "Regional content availability conflicts"
-    ]
-  },
-  "localization-streaming": {
-    title: "Handshake: UI Localization → Streaming",
+  "media-streaming": {
+    title: "Handshake: Media → Streaming",
     owner: "Streaming / Client QA",
     validations: [
-      "Localized content delivery validation",
-      "Language switching functionality",
-      "Regional content discovery"
+      "Packaged asset delivery validation",
+      "Playback readiness across target devices",
+      "Catalog and discovery integration checks"
     ],
     evidence: [
       { label: "Epic CPTR‑68587", url: "https://jira.disney.com/browse/CPTR-68587" }
     ],
     risks: [
-      "Localized content caching issues",
-      "Language preference persistence"
+      "Delayed propagation or caching can mask issues",
+      "Downstream observability gaps"
     ]
   },
   "data-streaming": {
@@ -623,17 +585,11 @@ function setupDrawer() {
             critical: "Search indexing and API consistency enable content discovery and recommendations.",
             dependencies: "Requires Media Platform processed assets and metadata synchronization."
           },
-          localization: {
-            icon: "🌍",
-            focus: "UI Strings & Language Asset Management",
-            critical: "Accurate UI copy, terminology, and language assets drive consistent in-app experiences.",
-            dependencies: "Needs Data Layer catalog sync and regional metadata routing."
-          },
           streaming: {
             icon: "📺",
             focus: "Content Delivery & Playback",
             critical: "Multi-device compatibility and CDN optimization ensure optimal user experience.",
-            dependencies: "Requires UI Localization processing and content discovery integration."
+            dependencies: "Requires Media Platform packaging and content discovery integration."
           }
         };
         
@@ -724,7 +680,7 @@ function renderHeatmap() {
   if (!el) return;
 
   // Simple, static heatmap placeholder
-  const alliances = ["Content", "Media", "UI Localization", "Streaming"];
+  const alliances = ["Content", "Media", "Streaming"];
   const milestones = ["Metadata/Artwork", "Avails/Rights", "AV Assets", "Title Planning & Exp.", "Live & Linear"];
 
   // Default snapshot: N/A only for Product-owned milestones (AV Assets, Title Planning).
@@ -732,7 +688,6 @@ function renderHeatmap() {
   const grid = {
     Content:           ["cell-green", "cell-amber", "cell-na", "cell-na", "cell-amber"],
     Media:             ["cell-amber", "cell-amber", "cell-na", "cell-na", "cell-green"],
-    "UI Localization": ["cell-amber", "cell-amber", "cell-na", "cell-na", "cell-amber"],
     Streaming:         ["cell-amber", "cell-pending", "cell-na", "cell-na", "cell-amber"]
   };
 
@@ -1073,7 +1028,6 @@ function setupPhases(drawerApi) {
           phaseType === "content" ? "Content Platform Alliance" :
           phaseType === "media" ? "Media Platform Alliance" :
           phaseType === "data" ? "Data Alliance" :
-          phaseType === "localization" ? "UI Localization Alliance" :
           phaseType === "streaming" ? "Streaming / Client QA" :
           "Cross‑Fleet QA";
 
