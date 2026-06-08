@@ -24,6 +24,20 @@ function loadJSON(filePath) {
   }
 }
 
+function loadCredentials() {
+  if (process.env.JIRA_TOKEN) {
+    return { jiraToken: process.env.JIRA_TOKEN };
+  }
+
+  try {
+    const data = fs.readFileSync(CREDENTIALS_PATH, 'utf8');
+    return JSON.parse(data);
+  } catch (error) {
+    console.error('No JIRA_TOKEN env var and jira-credentials.json is missing or invalid.');
+    process.exit(1);
+  }
+}
+
 function saveJSON(filePath, data) {
   try {
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
@@ -147,7 +161,7 @@ async function main() {
   
   // Load configuration
   const config = loadJSON(CONFIG_PATH);
-  const credentials = loadJSON(CREDENTIALS_PATH);
+  const credentials = loadCredentials();
   
   // Validate credentials
   if (credentials.jiraToken === 'YOUR_JIRA_API_TOKEN') {

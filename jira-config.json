@@ -70,16 +70,9 @@
         {
           "key": "MDETESTQA-3447",
           "summary": "Vibranium Test Plan",
-          "status": "Backlog",
+          "status": "Closed",
           "type": "Test Plan",
           "url": "https://jira.disney.com/browse/MDETESTQA-3447"
-        },
-        {
-          "key": "LOCQA-144",
-          "summary": "[LQA] VOD-Hotstar Migration",
-          "status": "Open",
-          "type": "Test Plan",
-          "url": "https://jira.disney.com/browse/LOCQA-144"
         },
         {
           "key": "GPLBELLE-3971",
@@ -112,14 +105,14 @@
         {
           "key": "CPTR-69483",
           "summary": "HotStar Migration -  Assets, Rights & Avails ",
-          "status": "New",
+          "status": "Complete",
           "type": "Test Plan",
           "url": "https://jira.disney.com/browse/CPTR-69483"
         },
         {
           "key": "CPTR-68465",
           "summary": "HotStar Migration_CrossFleet/Alliance_Integration_traceability",
-          "status": "In Progress",
+          "status": "Complete",
           "type": "Test Plan",
           "url": "https://jira.disney.com/browse/CPTR-68465"
         },
@@ -135,7 +128,7 @@
   ],
   "sync": {
     "enabled": true,
-    "lastSyncDate": "2026-06-02T05:52:48.934Z",
+    "lastSyncDate": "2026-06-08T06:08:23.636Z",
     "syncInterval": "daily",
     "apiEndpoint": "https://jira.disney.com/rest/api/2",
     "authMethod": "bearer"
