@@ -321,10 +321,13 @@ function updateHeatmapFromJira(config) {
     
     // Update first milestone for this alliance (Metadata/Artwork)
     const cellId = `${alliance}-0`;
+    if (window.isHeatmapCellManual && window.isHeatmapCellManual(cellId)) {
+      return;
+    }
     heatmapStates[cellId] = predominantStatus;
   });
   
-  // Save updated heatmap states
+  // Save updated heatmap states (manual overrides are left unchanged)
   if (window.saveScopedJson) {
     window.saveScopedJson('heatmapCellStates-v4', heatmapStates);
   }

@@ -94,15 +94,54 @@ function saveScopedJson(localKey, obj) {
 }
 
 const HEATMAP_STORAGE_KEY = "heatmapCellStates-v4";
+const HEATMAP_MANUAL_KEY = "heatmapManualOverrides-v1";
+const HEATMAP_MANUAL_MIGRATION_KEY = "heatmapManualMigration-v1";
 const KPI_STORAGE_KEY = "kpiCardStates";
 
 let sharedHeatmapStates = null;
+let sharedHeatmapManualOverrides = null;
 let sharedKpiStates = null;
 
 function getHeatmapStatesMap() {
   if (sharedHeatmapStates) return sharedHeatmapStates;
   sharedHeatmapStates = loadScopedJson(HEATMAP_STORAGE_KEY);
   return sharedHeatmapStates;
+}
+
+function getHeatmapManualOverrides() {
+  if (sharedHeatmapManualOverrides) return sharedHeatmapManualOverrides;
+  sharedHeatmapManualOverrides = loadScopedJson(HEATMAP_MANUAL_KEY);
+  return sharedHeatmapManualOverrides;
+}
+
+function markHeatmapCellManual(cellId) {
+  const overrides = getHeatmapManualOverrides();
+  overrides[cellId] = true;
+  saveScopedJson(HEATMAP_MANUAL_KEY, overrides);
+}
+
+function isHeatmapCellManual(cellId) {
+  return !!getHeatmapManualOverrides()[cellId];
+}
+
+/** One-time: treat existing saved heatmap cells as user-owned so Jira does not overwrite them. */
+function migrateExistingHeatmapToManual() {
+  const migrationScoped = scopedStorageKey(HEATMAP_MANUAL_MIGRATION_KEY);
+  try {
+    if (localStorage.getItem(migrationScoped)) return;
+  } catch (_) {
+    return;
+  }
+
+  const saved = loadScopedJson(HEATMAP_STORAGE_KEY);
+  const overrides = getHeatmapManualOverrides();
+  Object.keys(saved).forEach(cellId => {
+    overrides[cellId] = true;
+  });
+  saveScopedJson(HEATMAP_MANUAL_KEY, overrides);
+  try {
+    localStorage.setItem(migrationScoped, "1");
+  } catch (_) {}
 }
 
 function getKpiStatesMap() {
@@ -177,6 +216,10 @@ function updateSharingHint(isLive) {
       el.innerHTML =
         "<strong>Sharing:</strong> Status is loaded from the team cloud. " +
         "Editors with the edit key publish changes for everyone; others see updates automatically.";
+    } else {
+      el.innerHTML =
+        "<strong>Sharing:</strong> Your heatmap edits are saved in this browser and kept across reloads. " +
+        "Jira sync will not overwrite cells you have set. Use team cloud sync to share with others.";
     }
   });
 }
@@ -776,6 +819,7 @@ function setupHeatmapCells() {
       setHeatmapCellAccessibleName(cell);
 
       savedHeatmapStates[cellId] = nextIndex;
+      markHeatmapCellManual(cellId);
       persistDashboardSnapshot();
 
       cell.style.transform = 'scale(0.95)';
@@ -1061,6 +1105,7 @@ function setupPhases(drawerApi) {
 // ===== App init =====
 // Expose functions for Jira integration
 window.getHeatmapStatesMap = getHeatmapStatesMap;
+window.isHeatmapCellManual = isHeatmapCellManual;
 window.refreshHeatmapFromState = refreshHeatmapFromState;
 window.saveScopedJson = saveScopedJson;
 window.persistDashboardSnapshot = persistDashboardSnapshot;
@@ -1073,6 +1118,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   setupTabs();
 
+  migrateExistingHeatmapToManual();
   await initSharedDashboardState();
 
   renderHeatmap();
