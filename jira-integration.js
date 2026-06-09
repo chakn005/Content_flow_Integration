@@ -40,6 +40,11 @@ function updatePageWithJiraData(config) {
   
   // Add sync indicator
   addSyncIndicator(config);
+
+  // Test Coverage tab
+  if (window.renderTestCoverageTab) {
+    renderTestCoverageTab(config);
+  }
 }
 
 // Update the epic badge with current status

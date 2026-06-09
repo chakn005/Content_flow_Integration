@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Coverage Options Preview — CPTR-68587</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=24" />
+  <link rel="stylesheet" href="coverage-options.css?v=1" />
+  <base href="./" />
+</head>
+<body>
+<div class="app">
+  <div class="preview-banner">
+    Local preview — compare coverage UI options for CPTR-68587
+    <a href="index.html">← Back to main board</a>
+  </div>
+
+  <header class="header">
+    <div class="header-container">
+      <div class="header-top">
+        <div class="brand">
+          <div class="brand-icon" aria-hidden="true">E2E</div>
+          <div>
+            <h1 class="brand-title">Coverage Options Preview</h1>
+            <p class="brand-subtitle" id="epicTitle">Loading CPTR-68587…</p>
+          </div>
+        </div>
+        <div class="header-actions">
+          <a class="epic-badge" href="https://jira.disney.com/browse/CPTR-68587" target="_blank" rel="noopener noreferrer">
+            Epic CPTR‑68587
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-container" style="padding-top:0;">
+      <nav class="option-tabs" aria-label="Coverage option previews">
+        <button type="button" class="option-tab active" data-option="a">Option A — Coverage tab</button>
+        <button type="button" class="option-tab" data-option="b">Option B — Evidence upgrade</button>
+        <button type="button" class="option-tab" data-option="c">Option C — Matrix</button>
+        <button type="button" class="option-tab" data-option="d">Option D — Xray (sample)</button>
+        <button type="button" class="option-tab" data-option="e">Option E — Overview card</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div id="optionContent" class="option-panel active">
+      <div class="preview-loading">Loading jira-config.json…</div>
+    </div>
+  </main>
+</div>
+
+<script src="coverage-options.js?v=1"></script>
+</body>
+</html>
