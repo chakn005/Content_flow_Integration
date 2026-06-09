@@ -114,8 +114,8 @@
       <nav class="header-tabs" aria-label="Primary navigation">
         <button class="tab-btn active" data-tab="overview">Overview</button>
         <button class="tab-btn" data-tab="flow">E2E Flow</button>
-        <button class="tab-btn" data-tab="evidence">Evidence</button>
         <button class="tab-btn" data-tab="coverage">Test Coverage</button>
+        <button class="tab-btn" data-tab="evidence">Evidence</button>
       </nav>
     </div>
   </header>
@@ -419,17 +419,6 @@
 
     </section>
 
-    <!-- ---------- EVIDENCE ---------- -->
-    <section id="tab-evidence" class="tab-panel">
-      <div class="card">
-        <div class="card-header">
-          <h3 class="card-title">Evidence & Traceability</h3>
-          <p class="muted">Jira test plans grouped by alliance, keyed to the program epic below.</p>
-        </div>
-        <div class="card-content" id="evidenceList"></div>
-      </div>
-    </section>
-
     <!-- ---------- TEST COVERAGE ---------- -->
     <section id="tab-coverage" class="tab-panel">
       <div class="card">
@@ -440,6 +429,17 @@
         <div class="card-content" id="testCoverageContent">
           <p class="muted">Loading coverage from Jira…</p>
         </div>
+      </div>
+    </section>
+
+    <!-- ---------- EVIDENCE ---------- -->
+    <section id="tab-evidence" class="tab-panel">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Evidence & Traceability</h3>
+          <p class="muted">Jira test plans grouped by alliance, keyed to the program epic below.</p>
+        </div>
+        <div class="card-content" id="evidenceList"></div>
       </div>
     </section>
 
