@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
 
   <!-- Styles -->
-  <link rel="stylesheet" href="styles.css?v=26" />
+  <link rel="stylesheet" href="styles.css?v=27" />
 
   <!-- GitHub Pages -->
   <base href="./" />
@@ -174,11 +174,12 @@
               </div>
             </div>
             <p class="heatmap-note"><strong>Note:</strong> A/V and Title Planning - Executed by Product.</p>
-            <p class="heatmap-note heatmap-sharing-hint"><strong>Sharing:</strong> Your address bar stays at <code>https://chakn005.github.io/Content_flow_Integration/</code>. Click <strong>Copy share link</strong> — the copied URL includes <code>updated=</code> (latest change time) and <code>s=</code> (heatmap data).</p>
+            <p class="heatmap-note heatmap-sharing-hint"><strong>Sharing:</strong> Normal editing keeps a clean site URL. <strong>Copy share link</strong> adds <code>?updated=…&amp;s=…</code> to the copied URL. Opening that link keeps the timestamp visible in the address bar.</p>
             <div class="heatmap-share-bar">
               <button type="button" id="copyHeatmapShareLink" class="heatmap-share-btn">Copy share link</button>
               <span id="heatmapShareUpdated" class="heatmap-share-updated muted" aria-live="polite"></span>
             </div>
+            <p id="heatmapShareUrlPreview" class="heatmap-share-preview muted" aria-live="polite"></p>
           </div>
         </div>
 
@@ -483,6 +484,6 @@
 <script src="shared-state.js?v=1"></script>
 <script src="test-coverage.js?v=1"></script>
 <script src="jira-integration.js?v=4"></script>
-<script src="app.js?v=29"></script>
+<script src="app.js?v=30"></script>
 </body>
 </html>

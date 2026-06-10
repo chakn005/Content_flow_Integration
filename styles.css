@@ -1458,6 +1458,13 @@ body.read-only-mode #flowchart .tooltip-click-area {
   font-size: var(--font-size-sm);
 }
 
+.heatmap-share-preview {
+  margin: 8px 0 0;
+  font-size: var(--font-size-xs);
+  word-break: break-all;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
 .heatmap-sharing-hint code {
   font-size: var(--font-size-xs);
   background: rgba(10, 42, 102, 0.08);

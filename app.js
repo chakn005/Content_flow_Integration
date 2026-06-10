@@ -307,21 +307,60 @@ function getCanonicalSiteUrl() {
   return `${window.location.origin}${path}`;
 }
 
-function setHeatmapShareQuery(url, updatedIso, heatmap) {
-  url.searchParams.set("updated", formatShareTimestampForUrl(updatedIso));
+function captureHeatmapState() {
+  const heatmap = { ...getHeatmapStatesMap() };
+  const statusClasses = ["cell-green", "cell-amber", "cell-pending", "cell-red", "cell-na"];
+
+  document.querySelectorAll("#heatmap .clickable-cell").forEach(cell => {
+    const cellId = `${cell.dataset.alliance}-${cell.dataset.milestone}`;
+    for (let i = 0; i < statusClasses.length; i += 1) {
+      if (cell.classList.contains(statusClasses[i])) {
+        heatmap[cellId] = i;
+        break;
+      }
+    }
+  });
+  return heatmap;
+}
+
+function persistHeatmapForSharing(heatmap, updatedIso) {
+  sharedHeatmapStates = heatmap;
+  saveScopedJson(HEATMAP_STORAGE_KEY, heatmap);
+  Object.keys(heatmap).forEach(cellId => markHeatmapCellManual(cellId));
+  setHeatmapSharedUpdatedAt(updatedIso);
+}
+
+function buildHeatmapShareUrlFrom(heatmap, updatedIso) {
+  const stamp = formatShareTimestampForUrl(updatedIso);
+  if (!stamp || !Object.keys(heatmap).length) return getCanonicalSiteUrl();
+
+  const url = new URL(getCanonicalSiteUrl());
+  url.searchParams.set("updated", stamp);
   url.searchParams.set("s", packHeatmapCompact(heatmap));
   url.searchParams.delete("hm");
+  return url.toString();
 }
 
 function buildHeatmapShareUrl() {
-  const heatmap = getHeatmapStatesMap();
-  const base = getCanonicalSiteUrl();
-  if (!Object.keys(heatmap).length) return base;
+  const heatmap = captureHeatmapState();
+  const updated = new Date().toISOString();
+  persistHeatmapForSharing(heatmap, updated);
+  return buildHeatmapShareUrlFrom(heatmap, updated);
+}
 
-  const updated = getHeatmapSharedUpdatedAt() || new Date().toISOString();
-  const url = new URL(base);
-  setHeatmapShareQuery(url, updated, heatmap);
-  return url.toString();
+function updateShareUrlPreview(shareUrl) {
+  const el = document.getElementById("heatmapShareUrlPreview");
+  if (!el) return;
+  if (!shareUrl) {
+    el.textContent = "";
+    return;
+  }
+  try {
+    const query = new URL(shareUrl).search;
+    el.textContent = query || "";
+  } catch {
+    el.textContent = "";
+  }
 }
 
 function getCleanSiteUrl() {
@@ -350,7 +389,6 @@ function applyHeatmapFromQueryString() {
       const heatmap = unpackHeatmapCompact(dataOnly);
       if (!updatedIso || !Object.keys(heatmap).length) return false;
       applyHeatmapSharePayload(heatmap, updatedIso);
-      restoreCleanSiteUrl();
       return true;
     }
 
@@ -359,7 +397,6 @@ function applyHeatmapFromQueryString() {
       const parsed = parseHeatmapShareToken(dataOnly);
       if (!parsed) return false;
       applyHeatmapSharePayload(parsed.heatmap, parsed.updatedIso);
-      restoreCleanSiteUrl();
       return true;
     }
 
@@ -380,7 +417,6 @@ function applyHeatmapFromQueryString() {
     if (!Object.keys(legacyHeatmap).length) return false;
 
     applyHeatmapSharePayload(legacyHeatmap, updated);
-    restoreCleanSiteUrl();
     return true;
   } catch {
     return false;
@@ -483,9 +519,9 @@ function updateSharingHint(isLive) {
         "Editors with the edit key publish changes for everyone; others see updates automatically.";
     } else {
       el.innerHTML =
-        "<strong>Sharing:</strong> Your address bar stays at " +
-        "<code>https://chakn005.github.io/Content_flow_Integration/</code>. " +
-        "Click <strong>Copy share link</strong> — the copied URL includes <code>updated=</code> (latest change time) and <code>s=</code> (heatmap data).";
+        "<strong>Sharing:</strong> Normal editing keeps a clean site URL. " +
+        "<strong>Copy share link</strong> adds <code>?updated=…&amp;s=…</code> to the copied URL. " +
+        "Opening that link keeps the timestamp visible in the address bar.";
     }
   });
 }
@@ -496,8 +532,19 @@ function setupHeatmapShareUI(loadedFromShare) {
 
   updateHeatmapShareUpdatedLabel(getHeatmapSharedUpdatedAt(), loadedFromShare);
 
+  if (loadedFromShare && window.location.search) {
+    updateShareUrlPreview(window.location.href);
+  } else {
+    const heatmap = captureHeatmapState();
+    const updated = getHeatmapSharedUpdatedAt() || new Date().toISOString();
+    updateShareUrlPreview(buildHeatmapShareUrlFrom(heatmap, updated));
+  }
+
   copyBtn.addEventListener("click", async () => {
     const shareUrl = buildHeatmapShareUrl();
+    updateShareUrlPreview(shareUrl);
+    updateHeatmapShareUpdatedLabel(getHeatmapSharedUpdatedAt(), false);
+
     const stamp = formatHeatmapShareDate(getHeatmapSharedUpdatedAt());
     try {
       await navigator.clipboard.writeText(shareUrl);
