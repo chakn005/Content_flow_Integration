@@ -317,15 +317,19 @@ function buildHeatmapShareUrl() {
   return url.toString();
 }
 
-function syncHeatmapToUrl(updated) {
-  const heatmap = getHeatmapStatesMap();
-  if (!Object.keys(heatmap).length) return;
+function getCleanSiteUrl() {
+  return window.location.href.split("?")[0].split("#")[0];
+}
 
+/** Keep the browser address bar on the canonical site URL (no share query params). */
+function restoreCleanSiteUrl() {
   try {
-    const url = new URL(window.location.href);
-    setHeatmapShareQuery(url, updated, heatmap);
-    history.replaceState(null, "", url);
-    updateHeatmapShareUpdatedLabel(updated);
+    const clean = getCleanSiteUrl();
+    if (window.location.href !== clean && window.location.pathname + window.location.search !== clean) {
+      history.replaceState(null, "", clean);
+    } else if (window.location.search) {
+      history.replaceState(null, "", clean);
+    }
   } catch (_) {}
 }
 
@@ -337,6 +341,7 @@ function applyHeatmapFromQueryString() {
       const parsed = parseHeatmapShareToken(compact);
       if (!parsed) return false;
       applyHeatmapSharePayload(parsed.heatmap, parsed.updatedIso);
+      restoreCleanSiteUrl();
       return true;
     }
 
@@ -357,7 +362,7 @@ function applyHeatmapFromQueryString() {
     if (!Object.keys(legacyHeatmap).length) return false;
 
     applyHeatmapSharePayload(legacyHeatmap, updated);
-    syncHeatmapToUrl(updated);
+    restoreCleanSiteUrl();
     return true;
   } catch {
     return false;
@@ -388,7 +393,7 @@ function persistDashboardSnapshot() {
   if (Object.keys(heatmap).length) {
     const updated = new Date().toISOString();
     setHeatmapSharedUpdatedAt(updated);
-    syncHeatmapToUrl(updated);
+    updateHeatmapShareUpdatedLabel(updated);
   }
 
   const shared = window.ContentFlowSharedState;
@@ -454,8 +459,8 @@ function updateSharingHint(isLive) {
         "Editors with the edit key publish changes for everyone; others see updates automatically.";
     } else {
       el.innerHTML =
-        "<strong>Sharing:</strong> Copy the short share link so colleagues see your heatmap. " +
-        "The URL uses <code>s=date-time.data</code> (UTC update time + compact snapshot). " +
+        "<strong>Sharing:</strong> Your address bar stays on the normal site URL. " +
+        "Click <strong>Copy share link</strong> to copy a short URL with <code>s=date-time.data</code> for colleagues. " +
         "Jira sync will not overwrite cells you have set.";
     }
   });
@@ -1391,8 +1396,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   renderHeatmap();
   setupHeatmapShareUI();
-  if (!loadedHeatmapFromUrl && Object.keys(getHeatmapStatesMap()).length) {
-    syncHeatmapToUrl(getHeatmapSharedUpdatedAt() || new Date().toISOString());
+  if (!loadedHeatmapFromUrl) {
+    restoreCleanSiteUrl();
   }
   renderEvidence();
   setupKPICards();
