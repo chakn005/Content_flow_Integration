@@ -238,6 +238,8 @@ function updateKPIsFromJira(config) {
 
 // Update heatmap based on Jira executions and linked issues
 function updateHeatmapFromJira(config) {
+  if (window.__heatmapLoadedFromShare) return;
+
   const ticket = config.tickets[0];
   
   if (!ticket.executions || ticket.executions.length === 0) return;

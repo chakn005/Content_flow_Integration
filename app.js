@@ -194,18 +194,20 @@ function fromBase64Url(encoded) {
   return bytes;
 }
 
-/** Pack 15 heatmap cells into ~8 URL-safe characters. */
+/** Pack 15 heatmap cells (45 bits) into ~8 URL-safe characters. Uses BigInt — JS bitwise ops are 32-bit only. */
 function packHeatmapCompact(heatmap) {
-  let bits = 0;
+  let bits = 0n;
   HEATMAP_CELL_ORDER.forEach((cellId, index) => {
     const value = heatmap[cellId];
-    const packed = value !== undefined && value >= 0 && value <= 4 ? value : 7;
-    bits |= (packed & 7) << (index * 3);
+    const packed = BigInt(
+      value !== undefined && value >= 0 && value <= 4 ? value : 7
+    );
+    bits |= packed << BigInt(index * 3);
   });
 
   const bytes = new Uint8Array(6);
   for (let i = 0; i < 6; i += 1) {
-    bytes[i] = (bits >> (i * 8)) & 0xff;
+    bytes[i] = Number((bits >> BigInt(i * 8)) & 0xffn);
   }
   return toBase64Url(bytes);
 }
@@ -215,13 +217,13 @@ function unpackHeatmapCompact(encoded) {
   if (!encoded) return heatmap;
 
   const bytes = fromBase64Url(encoded);
-  let bits = 0;
+  let bits = 0n;
   for (let i = 0; i < bytes.length; i += 1) {
-    bits |= bytes[i] << (i * 8);
+    bits |= BigInt(bytes[i]) << BigInt(i * 8);
   }
 
   HEATMAP_CELL_ORDER.forEach((cellId, index) => {
-    const value = (bits >> (index * 3)) & 7;
+    const value = Number((bits >> BigInt(index * 3)) & 7n);
     if (value <= 4) heatmap[cellId] = value;
   });
   return heatmap;
@@ -291,13 +293,14 @@ function applyHeatmapSharePayload(decoded, updatedIso) {
   sharedHeatmapStates = decoded;
   saveScopedJson(HEATMAP_STORAGE_KEY, decoded);
 
-  const overrides = {};
+  const overrides = { ...getHeatmapManualOverrides() };
   Object.keys(decoded).forEach(cellId => {
     overrides[cellId] = true;
   });
   sharedHeatmapManualOverrides = overrides;
   saveScopedJson(HEATMAP_MANUAL_KEY, overrides);
   setHeatmapSharedUpdatedAt(updatedIso);
+  window.__heatmapLoadedFromShare = true;
 }
 
 function getCanonicalSiteUrl() {
@@ -307,17 +310,31 @@ function getCanonicalSiteUrl() {
   return `${window.location.origin}${path}`;
 }
 
-function captureHeatmapState() {
-  const heatmap = { ...getHeatmapStatesMap() };
-  const statusClasses = ["cell-green", "cell-amber", "cell-pending", "cell-red", "cell-na"];
+const HEATMAP_STATUS_CLASSES = ["cell-green", "cell-amber", "cell-pending", "cell-red", "cell-na"];
 
+function getStatusIndexFromCell(cell) {
+  if (!cell) return undefined;
+  for (let i = 0; i < HEATMAP_STATUS_CLASSES.length; i += 1) {
+    if (cell.classList.contains(HEATMAP_STATUS_CLASSES[i])) return i;
+  }
+  return undefined;
+}
+
+/** Always capture all 15 cells — DOM first, then saved state as fallback. */
+function captureHeatmapState() {
+  const saved = getHeatmapStatesMap();
+  const cellById = new Map();
   document.querySelectorAll("#heatmap .clickable-cell").forEach(cell => {
-    const cellId = `${cell.dataset.alliance}-${cell.dataset.milestone}`;
-    for (let i = 0; i < statusClasses.length; i += 1) {
-      if (cell.classList.contains(statusClasses[i])) {
-        heatmap[cellId] = i;
-        break;
-      }
+    cellById.set(`${cell.dataset.alliance}-${cell.dataset.milestone}`, cell);
+  });
+
+  const heatmap = {};
+  HEATMAP_CELL_ORDER.forEach(cellId => {
+    const fromDom = getStatusIndexFromCell(cellById.get(cellId));
+    if (fromDom !== undefined) {
+      heatmap[cellId] = fromDom;
+    } else if (saved[cellId] !== undefined && saved[cellId] >= 0 && saved[cellId] <= 4) {
+      heatmap[cellId] = saved[cellId];
     }
   });
   return heatmap;
@@ -1458,12 +1475,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   await initSharedDashboardState();
 
   renderHeatmap();
-  setupHeatmapShareUI(loadedHeatmapFromUrl);
-  if (!loadedHeatmapFromUrl) {
-    restoreCleanSiteUrl();
-  } else {
+  if (loadedHeatmapFromUrl) {
+    refreshHeatmapFromState();
     updateHeatmapShareUpdatedLabel(getHeatmapSharedUpdatedAt(), true);
+  } else {
+    restoreCleanSiteUrl();
   }
+  setupHeatmapShareUI(loadedHeatmapFromUrl);
   renderEvidence();
   setupKPICards();
 
