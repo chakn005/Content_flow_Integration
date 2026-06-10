@@ -227,15 +227,48 @@ function unpackHeatmapCompact(encoded) {
   return heatmap;
 }
 
-function isoFromShareTimestamp(timestamp) {
-  const seconds = parseInt(timestamp, 10);
-  if (Number.isNaN(seconds) || seconds <= 0) return "";
-  return new Date(seconds * 1000).toISOString();
+/** URL-safe readable UTC timestamp, e.g. 2026-06-08T18-33-00Z */
+function formatShareTimestampForUrl(iso) {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return "";
+
+  const pad = (n) => String(n).padStart(2, "0");
+  return `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())}` +
+    `T${pad(d.getUTCHours())}-${pad(d.getUTCMinutes())}-${pad(d.getUTCSeconds())}Z`;
+}
+
+function parseShareTimestampFromUrl(timestamp) {
+  if (!timestamp) return "";
+
+  const readable = timestamp.match(
+    /^(\d{4})-(\d{2})-(\d{2})T(\d{2})-(\d{2})-(\d{2})Z$/
+  );
+  if (readable) {
+    const iso = new Date(Date.UTC(
+      +readable[1],
+      +readable[2] - 1,
+      +readable[3],
+      +readable[4],
+      +readable[5],
+      +readable[6]
+    )).toISOString();
+    return Number.isNaN(Date.parse(iso)) ? "" : iso;
+  }
+
+  // Legacy unix seconds, e.g. 1781075629
+  if (/^\d{10}$/.test(timestamp)) {
+    const seconds = parseInt(timestamp, 10);
+    if (!Number.isNaN(seconds) && seconds > 0) {
+      return new Date(seconds * 1000).toISOString();
+    }
+  }
+
+  return "";
 }
 
 function buildHeatmapShareToken(updatedIso, heatmap) {
-  const seconds = Math.floor(new Date(updatedIso).getTime() / 1000);
-  return `${seconds}.${packHeatmapCompact(heatmap)}`;
+  const stamp = formatShareTimestampForUrl(updatedIso);
+  return `${stamp}.${packHeatmapCompact(heatmap)}`;
 }
 
 function parseHeatmapShareToken(token) {
@@ -245,7 +278,7 @@ function parseHeatmapShareToken(token) {
 
   const timestamp = token.slice(0, dot);
   const data = token.slice(dot + 1);
-  const updatedIso = isoFromShareTimestamp(timestamp);
+  const updatedIso = parseShareTimestampFromUrl(timestamp);
   if (!updatedIso || !data) return null;
 
   const heatmap = unpackHeatmapCompact(data);
@@ -422,7 +455,7 @@ function updateSharingHint(isLive) {
     } else {
       el.innerHTML =
         "<strong>Sharing:</strong> Copy the short share link so colleagues see your heatmap. " +
-        "The URL uses <code>s=timestamp.data</code> (update time + compact snapshot). " +
+        "The URL uses <code>s=date-time.data</code> (UTC update time + compact snapshot). " +
         "Jira sync will not overwrite cells you have set.";
     }
   });
