@@ -325,9 +325,7 @@ function getCleanSiteUrl() {
 function restoreCleanSiteUrl() {
   try {
     const clean = getCleanSiteUrl();
-    if (window.location.href !== clean && window.location.pathname + window.location.search !== clean) {
-      history.replaceState(null, "", clean);
-    } else if (window.location.search) {
+    if (window.location.search || window.location.href !== clean) {
       history.replaceState(null, "", clean);
     }
   } catch (_) {}
