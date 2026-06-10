@@ -1424,3 +1424,43 @@ body.read-only-mode #flowchart .tooltip-click-area {
   padding-bottom: 6px;
   border-bottom: 2px solid var(--disney-blue-soft);
 }
+
+/* ---------- Heatmap URL sharing ---------- */
+.heatmap-share-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.heatmap-share-btn {
+  border: 1px solid var(--disney-blue);
+  background: var(--disney-blue);
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.heatmap-share-btn:hover {
+  background: #1F5BB5;
+}
+
+.heatmap-share-btn:active {
+  transform: scale(0.98);
+}
+
+.heatmap-share-updated {
+  font-size: var(--font-size-sm);
+}
+
+.heatmap-sharing-hint code {
+  font-size: var(--font-size-xs);
+  background: rgba(10, 42, 102, 0.08);
+  padding: 1px 5px;
+  border-radius: 4px;
+}

@@ -96,6 +96,7 @@ function saveScopedJson(localKey, obj) {
 const HEATMAP_STORAGE_KEY = "heatmapCellStates-v4";
 const HEATMAP_MANUAL_KEY = "heatmapManualOverrides-v1";
 const HEATMAP_MANUAL_MIGRATION_KEY = "heatmapManualMigration-v1";
+const HEATMAP_SHARED_UPDATED_KEY = "heatmapSharedUpdatedAt-v1";
 const KPI_STORAGE_KEY = "kpiCardStates";
 
 let sharedHeatmapStates = null;
@@ -150,11 +151,119 @@ function getKpiStatesMap() {
   return sharedKpiStates;
 }
 
+function getHeatmapSharedUpdatedAt() {
+  try {
+    return localStorage.getItem(scopedStorageKey(HEATMAP_SHARED_UPDATED_KEY)) || "";
+  } catch {
+    return "";
+  }
+}
+
+function setHeatmapSharedUpdatedAt(iso) {
+  try {
+    localStorage.setItem(scopedStorageKey(HEATMAP_SHARED_UPDATED_KEY), iso);
+  } catch (_) {}
+}
+
+function encodeHeatmapForQuery(heatmap) {
+  return Object.keys(heatmap)
+    .sort()
+    .map(cellId => `${cellId}:${heatmap[cellId]}`)
+    .join(",");
+}
+
+function decodeHeatmapFromQuery(encoded) {
+  const heatmap = {};
+  if (!encoded || typeof encoded !== "string") return heatmap;
+  encoded.split(",").forEach(part => {
+    const sep = part.lastIndexOf(":");
+    if (sep <= 0) return;
+    const cellId = part.slice(0, sep);
+    const index = parseInt(part.slice(sep + 1), 10);
+    if (!cellId || Number.isNaN(index) || index < 0 || index > 4) return;
+    heatmap[cellId] = index;
+  });
+  return heatmap;
+}
+
+function buildHeatmapShareUrl() {
+  const heatmap = getHeatmapStatesMap();
+  const base = window.location.href.split("?")[0];
+  if (!Object.keys(heatmap).length) return base;
+
+  const updated = getHeatmapSharedUpdatedAt() || new Date().toISOString();
+  const url = new URL(base);
+  url.searchParams.set("updated", updated);
+  url.searchParams.set("hm", encodeHeatmapForQuery(heatmap));
+  return url.toString();
+}
+
+function syncHeatmapToUrl(updated) {
+  const heatmap = getHeatmapStatesMap();
+  if (!Object.keys(heatmap).length) return;
+
+  try {
+    const url = new URL(window.location.href);
+    url.searchParams.set("updated", updated);
+    url.searchParams.set("hm", encodeHeatmapForQuery(heatmap));
+    history.replaceState(null, "", url);
+    updateHeatmapShareUpdatedLabel(updated);
+  } catch (_) {}
+}
+
+function applyHeatmapFromQueryString() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const hm = params.get("hm");
+    const updated = params.get("updated");
+    if (!hm || !updated || Number.isNaN(Date.parse(updated))) return false;
+
+    const decoded = decodeHeatmapFromQuery(hm);
+    if (!Object.keys(decoded).length) return false;
+
+    sharedHeatmapStates = decoded;
+    saveScopedJson(HEATMAP_STORAGE_KEY, decoded);
+
+    const overrides = {};
+    Object.keys(decoded).forEach(cellId => {
+      overrides[cellId] = true;
+    });
+    sharedHeatmapManualOverrides = overrides;
+    saveScopedJson(HEATMAP_MANUAL_KEY, overrides);
+    setHeatmapSharedUpdatedAt(updated);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function formatHeatmapShareDate(iso) {
+  if (!iso || Number.isNaN(Date.parse(iso))) return "Unknown";
+  return new Date(iso).toLocaleString(undefined, {
+    dateStyle: "medium",
+    timeStyle: "short"
+  });
+}
+
+function updateHeatmapShareUpdatedLabel(iso) {
+  const el = document.getElementById("heatmapShareUpdated");
+  if (!el) return;
+  const when = formatHeatmapShareDate(iso || getHeatmapSharedUpdatedAt());
+  el.textContent = when ? `Last updated: ${when}` : "";
+}
+
 function persistDashboardSnapshot() {
   const heatmap = getHeatmapStatesMap();
   const kpi = getKpiStatesMap();
   saveScopedJson(HEATMAP_STORAGE_KEY, heatmap);
   saveScopedJson(KPI_STORAGE_KEY, kpi);
+
+  if (Object.keys(heatmap).length) {
+    const updated = new Date().toISOString();
+    setHeatmapSharedUpdatedAt(updated);
+    syncHeatmapToUrl(updated);
+  }
+
   const shared = window.ContentFlowSharedState;
   if (shared && shared.isEnabled() && shared.canPublish()) {
     shared.schedulePublish({ heatmap, kpi });
@@ -218,8 +327,36 @@ function updateSharingHint(isLive) {
         "Editors with the edit key publish changes for everyone; others see updates automatically.";
     } else {
       el.innerHTML =
-        "<strong>Sharing:</strong> Your heatmap edits are saved in this browser and kept across reloads. " +
-        "Jira sync will not overwrite cells you have set. Use team cloud sync to share with others.";
+        "<strong>Sharing:</strong> Copy the share link so colleagues see your heatmap. " +
+        "The URL includes <code>updated</code> (latest change time) and <code>hm</code> (cell statuses). " +
+        "Jira sync will not overwrite cells you have set.";
+    }
+  });
+}
+
+function setupHeatmapShareUI() {
+  const copyBtn = document.getElementById("copyHeatmapShareLink");
+  if (!copyBtn) return;
+
+  const params = new URLSearchParams(window.location.search);
+  const loadedFromShare = params.has("hm") && params.has("updated");
+  if (loadedFromShare) {
+    updateHeatmapShareUpdatedLabel(params.get("updated"));
+  } else {
+    updateHeatmapShareUpdatedLabel(getHeatmapSharedUpdatedAt());
+  }
+
+  copyBtn.addEventListener("click", async () => {
+    const shareUrl = buildHeatmapShareUrl();
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      const prev = copyBtn.textContent;
+      copyBtn.textContent = "Link copied!";
+      setTimeout(() => {
+        copyBtn.textContent = prev;
+      }, 2000);
+    } catch {
+      window.prompt("Copy this share link:", shareUrl);
     }
   });
 }
@@ -1119,9 +1256,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   setupTabs();
 
   migrateExistingHeatmapToManual();
+  const loadedHeatmapFromUrl = applyHeatmapFromQueryString();
   await initSharedDashboardState();
 
   renderHeatmap();
+  setupHeatmapShareUI();
+  if (!loadedHeatmapFromUrl && Object.keys(getHeatmapStatesMap()).length) {
+    syncHeatmapToUrl(getHeatmapSharedUpdatedAt() || new Date().toISOString());
+  }
   renderEvidence();
   setupKPICards();
 

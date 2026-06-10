@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
 
   <!-- Styles -->
-  <link rel="stylesheet" href="styles.css?v=25" />
+  <link rel="stylesheet" href="styles.css?v=26" />
 
   <!-- GitHub Pages -->
   <base href="./" />
@@ -174,7 +174,11 @@
               </div>
             </div>
             <p class="heatmap-note"><strong>Note:</strong> A/V and Title Planning - Executed by Product.</p>
-            <p class="heatmap-note heatmap-sharing-hint"><strong>Sharing:</strong> Your heatmap edits are saved in this browser and kept across reloads. Jira sync will not overwrite cells you have set. Use team cloud sync to share with others.</p>
+            <p class="heatmap-note heatmap-sharing-hint"><strong>Sharing:</strong> Copy the share link so colleagues see your heatmap. The URL includes <code>updated</code> (latest change time) and <code>hm</code> (cell statuses). Jira sync will not overwrite cells you have set.</p>
+            <div class="heatmap-share-bar">
+              <button type="button" id="copyHeatmapShareLink" class="heatmap-share-btn">Copy share link</button>
+              <span id="heatmapShareUpdated" class="heatmap-share-updated muted" aria-live="polite"></span>
+            </div>
           </div>
         </div>
 
@@ -479,6 +483,6 @@
 <script src="shared-state.js?v=1"></script>
 <script src="test-coverage.js?v=1"></script>
 <script src="jira-integration.js?v=4"></script>
-<script src="app.js?v=24"></script>
+<script src="app.js?v=25"></script>
 </body>
 </html>
