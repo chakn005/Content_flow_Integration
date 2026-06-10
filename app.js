@@ -300,15 +300,22 @@ function applyHeatmapSharePayload(decoded, updatedIso) {
   setHeatmapSharedUpdatedAt(updatedIso);
 }
 
+function getCanonicalSiteUrl() {
+  let path = window.location.pathname || "/";
+  path = path.replace(/\/index\.html$/i, "");
+  if (path.length > 1 && !path.endsWith("/")) path += "/";
+  return `${window.location.origin}${path}`;
+}
+
 function setHeatmapShareQuery(url, updatedIso, heatmap) {
-  url.searchParams.set("s", buildHeatmapShareToken(updatedIso, heatmap));
-  url.searchParams.delete("updated");
+  url.searchParams.set("updated", formatShareTimestampForUrl(updatedIso));
+  url.searchParams.set("s", packHeatmapCompact(heatmap));
   url.searchParams.delete("hm");
 }
 
 function buildHeatmapShareUrl() {
   const heatmap = getHeatmapStatesMap();
-  const base = window.location.href.split("?")[0];
+  const base = getCanonicalSiteUrl();
   if (!Object.keys(heatmap).length) return base;
 
   const updated = getHeatmapSharedUpdatedAt() || new Date().toISOString();
@@ -318,7 +325,7 @@ function buildHeatmapShareUrl() {
 }
 
 function getCleanSiteUrl() {
-  return window.location.href.split("?")[0].split("#")[0];
+  return getCanonicalSiteUrl();
 }
 
 /** Keep the browser address bar on the canonical site URL (no share query params). */
@@ -334,9 +341,22 @@ function restoreCleanSiteUrl() {
 function applyHeatmapFromQueryString() {
   try {
     const params = new URLSearchParams(window.location.search);
-    const compact = params.get("s");
-    if (compact) {
-      const parsed = parseHeatmapShareToken(compact);
+    const dataOnly = params.get("s");
+    const updatedParam = params.get("updated");
+
+    // Current format: ?updated=2026-06-10T07-16-46Z&s=_n99P_5_
+    if (updatedParam && dataOnly && !dataOnly.includes(".")) {
+      const updatedIso = parseShareTimestampFromUrl(updatedParam);
+      const heatmap = unpackHeatmapCompact(dataOnly);
+      if (!updatedIso || !Object.keys(heatmap).length) return false;
+      applyHeatmapSharePayload(heatmap, updatedIso);
+      restoreCleanSiteUrl();
+      return true;
+    }
+
+    // Legacy combined token: ?s=2026-06-10T07-16-46Z._n99P_5_
+    if (dataOnly && dataOnly.includes(".")) {
+      const parsed = parseHeatmapShareToken(dataOnly);
       if (!parsed) return false;
       applyHeatmapSharePayload(parsed.heatmap, parsed.updatedIso);
       restoreCleanSiteUrl();
@@ -345,7 +365,7 @@ function applyHeatmapFromQueryString() {
 
     // Legacy long URLs: ?updated=...&hm=...
     const hm = params.get("hm");
-    const updated = params.get("updated");
+    const updated = updatedParam;
     if (!hm || !updated || Number.isNaN(Date.parse(updated))) return false;
 
     const legacyHeatmap = {};
@@ -375,11 +395,17 @@ function formatHeatmapShareDate(iso) {
   });
 }
 
-function updateHeatmapShareUpdatedLabel(iso) {
+function updateHeatmapShareUpdatedLabel(iso, loadedFromShare) {
   const el = document.getElementById("heatmapShareUpdated");
   if (!el) return;
   const when = formatHeatmapShareDate(iso || getHeatmapSharedUpdatedAt());
-  el.textContent = when ? `Last updated: ${when}` : "";
+  if (!when || when === "Unknown") {
+    el.textContent = "";
+    return;
+  }
+  el.textContent = loadedFromShare
+    ? `Loaded shared snapshot: ${when}`
+    : `Last updated: ${when}`;
 }
 
 function persistDashboardSnapshot() {
@@ -457,37 +483,29 @@ function updateSharingHint(isLive) {
         "Editors with the edit key publish changes for everyone; others see updates automatically.";
     } else {
       el.innerHTML =
-        "<strong>Sharing:</strong> Your address bar stays on the normal site URL. " +
-        "Click <strong>Copy share link</strong> to copy a short URL with <code>s=date-time.data</code> for colleagues. " +
-        "Jira sync will not overwrite cells you have set.";
+        "<strong>Sharing:</strong> Your address bar stays at " +
+        "<code>https://chakn005.github.io/Content_flow_Integration/</code>. " +
+        "Click <strong>Copy share link</strong> — the copied URL includes <code>updated=</code> (latest change time) and <code>s=</code> (heatmap data).";
     }
   });
 }
 
-function setupHeatmapShareUI() {
+function setupHeatmapShareUI(loadedFromShare) {
   const copyBtn = document.getElementById("copyHeatmapShareLink");
   if (!copyBtn) return;
 
-  const params = new URLSearchParams(window.location.search);
-  const compact = params.get("s");
-  const parsed = compact ? parseHeatmapShareToken(compact) : null;
-  if (parsed) {
-    updateHeatmapShareUpdatedLabel(parsed.updatedIso);
-  } else if (params.has("updated")) {
-    updateHeatmapShareUpdatedLabel(params.get("updated"));
-  } else {
-    updateHeatmapShareUpdatedLabel(getHeatmapSharedUpdatedAt());
-  }
+  updateHeatmapShareUpdatedLabel(getHeatmapSharedUpdatedAt(), loadedFromShare);
 
   copyBtn.addEventListener("click", async () => {
     const shareUrl = buildHeatmapShareUrl();
+    const stamp = formatHeatmapShareDate(getHeatmapSharedUpdatedAt());
     try {
       await navigator.clipboard.writeText(shareUrl);
       const prev = copyBtn.textContent;
-      copyBtn.textContent = "Link copied!";
+      copyBtn.textContent = stamp ? `Copied · ${stamp}` : "Link copied!";
       setTimeout(() => {
         copyBtn.textContent = prev;
-      }, 2000);
+      }, 2500);
     } catch {
       window.prompt("Copy this share link:", shareUrl);
     }
@@ -1393,9 +1411,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   await initSharedDashboardState();
 
   renderHeatmap();
-  setupHeatmapShareUI();
+  setupHeatmapShareUI(loadedHeatmapFromUrl);
   if (!loadedHeatmapFromUrl) {
     restoreCleanSiteUrl();
+  } else {
+    updateHeatmapShareUpdatedLabel(getHeatmapSharedUpdatedAt(), true);
   }
   renderEvidence();
   setupKPICards();
