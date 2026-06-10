@@ -165,25 +165,112 @@ function setHeatmapSharedUpdatedAt(iso) {
   } catch (_) {}
 }
 
-function encodeHeatmapForQuery(heatmap) {
-  return Object.keys(heatmap)
-    .sort()
-    .map(cellId => `${cellId}:${heatmap[cellId]}`)
-    .join(",");
+const HEATMAP_CELL_ORDER = (() => {
+  const order = [];
+  ["Content", "Media", "Streaming"].forEach(alliance => {
+    for (let milestone = 0; milestone < 5; milestone += 1) {
+      order.push(`${alliance}-${milestone}`);
+    }
+  });
+  return order;
+})();
+
+function toBase64Url(bytes) {
+  let binary = "";
+  bytes.forEach(byte => {
+    binary += String.fromCharCode(byte);
+  });
+  return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
 
-function decodeHeatmapFromQuery(encoded) {
+function fromBase64Url(encoded) {
+  let b64 = encoded.replace(/-/g, "+").replace(/_/g, "/");
+  while (b64.length % 4) b64 += "=";
+  const binary = atob(b64);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i += 1) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  return bytes;
+}
+
+/** Pack 15 heatmap cells into ~8 URL-safe characters. */
+function packHeatmapCompact(heatmap) {
+  let bits = 0;
+  HEATMAP_CELL_ORDER.forEach((cellId, index) => {
+    const value = heatmap[cellId];
+    const packed = value !== undefined && value >= 0 && value <= 4 ? value : 7;
+    bits |= (packed & 7) << (index * 3);
+  });
+
+  const bytes = new Uint8Array(6);
+  for (let i = 0; i < 6; i += 1) {
+    bytes[i] = (bits >> (i * 8)) & 0xff;
+  }
+  return toBase64Url(bytes);
+}
+
+function unpackHeatmapCompact(encoded) {
   const heatmap = {};
-  if (!encoded || typeof encoded !== "string") return heatmap;
-  encoded.split(",").forEach(part => {
-    const sep = part.lastIndexOf(":");
-    if (sep <= 0) return;
-    const cellId = part.slice(0, sep);
-    const index = parseInt(part.slice(sep + 1), 10);
-    if (!cellId || Number.isNaN(index) || index < 0 || index > 4) return;
-    heatmap[cellId] = index;
+  if (!encoded) return heatmap;
+
+  const bytes = fromBase64Url(encoded);
+  let bits = 0;
+  for (let i = 0; i < bytes.length; i += 1) {
+    bits |= bytes[i] << (i * 8);
+  }
+
+  HEATMAP_CELL_ORDER.forEach((cellId, index) => {
+    const value = (bits >> (index * 3)) & 7;
+    if (value <= 4) heatmap[cellId] = value;
   });
   return heatmap;
+}
+
+function isoFromShareTimestamp(timestamp) {
+  const seconds = parseInt(timestamp, 10);
+  if (Number.isNaN(seconds) || seconds <= 0) return "";
+  return new Date(seconds * 1000).toISOString();
+}
+
+function buildHeatmapShareToken(updatedIso, heatmap) {
+  const seconds = Math.floor(new Date(updatedIso).getTime() / 1000);
+  return `${seconds}.${packHeatmapCompact(heatmap)}`;
+}
+
+function parseHeatmapShareToken(token) {
+  if (!token || typeof token !== "string") return null;
+  const dot = token.indexOf(".");
+  if (dot <= 0) return null;
+
+  const timestamp = token.slice(0, dot);
+  const data = token.slice(dot + 1);
+  const updatedIso = isoFromShareTimestamp(timestamp);
+  if (!updatedIso || !data) return null;
+
+  const heatmap = unpackHeatmapCompact(data);
+  if (!Object.keys(heatmap).length) return null;
+
+  return { updatedIso, heatmap };
+}
+
+function applyHeatmapSharePayload(decoded, updatedIso) {
+  sharedHeatmapStates = decoded;
+  saveScopedJson(HEATMAP_STORAGE_KEY, decoded);
+
+  const overrides = {};
+  Object.keys(decoded).forEach(cellId => {
+    overrides[cellId] = true;
+  });
+  sharedHeatmapManualOverrides = overrides;
+  saveScopedJson(HEATMAP_MANUAL_KEY, overrides);
+  setHeatmapSharedUpdatedAt(updatedIso);
+}
+
+function setHeatmapShareQuery(url, updatedIso, heatmap) {
+  url.searchParams.set("s", buildHeatmapShareToken(updatedIso, heatmap));
+  url.searchParams.delete("updated");
+  url.searchParams.delete("hm");
 }
 
 function buildHeatmapShareUrl() {
@@ -193,8 +280,7 @@ function buildHeatmapShareUrl() {
 
   const updated = getHeatmapSharedUpdatedAt() || new Date().toISOString();
   const url = new URL(base);
-  url.searchParams.set("updated", updated);
-  url.searchParams.set("hm", encodeHeatmapForQuery(heatmap));
+  setHeatmapShareQuery(url, updated, heatmap);
   return url.toString();
 }
 
@@ -204,8 +290,7 @@ function syncHeatmapToUrl(updated) {
 
   try {
     const url = new URL(window.location.href);
-    url.searchParams.set("updated", updated);
-    url.searchParams.set("hm", encodeHeatmapForQuery(heatmap));
+    setHeatmapShareQuery(url, updated, heatmap);
     history.replaceState(null, "", url);
     updateHeatmapShareUpdatedLabel(updated);
   } catch (_) {}
@@ -214,23 +299,32 @@ function syncHeatmapToUrl(updated) {
 function applyHeatmapFromQueryString() {
   try {
     const params = new URLSearchParams(window.location.search);
+    const compact = params.get("s");
+    if (compact) {
+      const parsed = parseHeatmapShareToken(compact);
+      if (!parsed) return false;
+      applyHeatmapSharePayload(parsed.heatmap, parsed.updatedIso);
+      return true;
+    }
+
+    // Legacy long URLs: ?updated=...&hm=...
     const hm = params.get("hm");
     const updated = params.get("updated");
     if (!hm || !updated || Number.isNaN(Date.parse(updated))) return false;
 
-    const decoded = decodeHeatmapFromQuery(hm);
-    if (!Object.keys(decoded).length) return false;
-
-    sharedHeatmapStates = decoded;
-    saveScopedJson(HEATMAP_STORAGE_KEY, decoded);
-
-    const overrides = {};
-    Object.keys(decoded).forEach(cellId => {
-      overrides[cellId] = true;
+    const legacyHeatmap = {};
+    hm.split(",").forEach(part => {
+      const sep = part.lastIndexOf(":");
+      if (sep <= 0) return;
+      const cellId = part.slice(0, sep);
+      const index = parseInt(part.slice(sep + 1), 10);
+      if (!cellId || Number.isNaN(index) || index < 0 || index > 4) return;
+      legacyHeatmap[cellId] = index;
     });
-    sharedHeatmapManualOverrides = overrides;
-    saveScopedJson(HEATMAP_MANUAL_KEY, overrides);
-    setHeatmapSharedUpdatedAt(updated);
+    if (!Object.keys(legacyHeatmap).length) return false;
+
+    applyHeatmapSharePayload(legacyHeatmap, updated);
+    syncHeatmapToUrl(updated);
     return true;
   } catch {
     return false;
@@ -327,8 +421,8 @@ function updateSharingHint(isLive) {
         "Editors with the edit key publish changes for everyone; others see updates automatically.";
     } else {
       el.innerHTML =
-        "<strong>Sharing:</strong> Copy the share link so colleagues see your heatmap. " +
-        "The URL includes <code>updated</code> (latest change time) and <code>hm</code> (cell statuses). " +
+        "<strong>Sharing:</strong> Copy the short share link so colleagues see your heatmap. " +
+        "The URL uses <code>s=timestamp.data</code> (update time + compact snapshot). " +
         "Jira sync will not overwrite cells you have set.";
     }
   });
@@ -339,8 +433,11 @@ function setupHeatmapShareUI() {
   if (!copyBtn) return;
 
   const params = new URLSearchParams(window.location.search);
-  const loadedFromShare = params.has("hm") && params.has("updated");
-  if (loadedFromShare) {
+  const compact = params.get("s");
+  const parsed = compact ? parseHeatmapShareToken(compact) : null;
+  if (parsed) {
+    updateHeatmapShareUpdatedLabel(parsed.updatedIso);
+  } else if (params.has("updated")) {
     updateHeatmapShareUpdatedLabel(params.get("updated"));
   } else {
     updateHeatmapShareUpdatedLabel(getHeatmapSharedUpdatedAt());
